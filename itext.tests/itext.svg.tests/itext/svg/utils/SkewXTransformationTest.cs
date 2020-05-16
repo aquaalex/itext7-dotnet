@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -45,9 +45,10 @@ using iText.IO.Util;
 using iText.Kernel.Geom;
 using iText.StyledXmlParser.Css.Util;
 using iText.Svg.Exceptions;
+using iText.Test;
 
 namespace iText.Svg.Utils {
-    public class SkewXTransformationTest {
+    public class SkewXTransformationTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void NormalSkewXTest() {
             AffineTransform expected = new AffineTransform(1d, 0d, Math.Tan(MathUtil.ToRadians((float)CssUtils.ParseFloat

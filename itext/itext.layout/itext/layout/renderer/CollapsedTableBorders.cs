@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -50,10 +50,19 @@ using iText.Layout.Properties;
 
 namespace iText.Layout.Renderer {
     internal class CollapsedTableBorders : TableBorders {
+        /// <summary>
+        /// The list of the cells' borders which should be collapsed
+        /// with the first border of this TableRenderer instance, to be drawn on the area.
+        /// </summary>
         private IList<Border> topBorderCollapseWith = new List<Border>();
 
+        /// <summary>
+        /// The list of the cells' borders which should be collapsed
+        /// with the last border of this TableRenderer instance, to be drawn on the area.
+        /// </summary>
         private IList<Border> bottomBorderCollapseWith = new List<Border>();
 
+        // region constructors
         public CollapsedTableBorders(IList<CellRenderer[]> rows, int numberOfColumns, Border[] tableBoundingBorders
             )
             : base(rows, numberOfColumns, tableBoundingBorders) {
@@ -64,7 +73,6 @@ namespace iText.Layout.Renderer {
             : base(rows, numberOfColumns, tableBoundingBorders, largeTableIndexOffset) {
         }
 
-        // region constructors
         // endregion
         // region getters
         public virtual IList<Border> GetTopBorderCollapseWith() {
@@ -182,7 +190,6 @@ namespace iText.Layout.Renderer {
                         int row = index - 1;
                         while (col < numberOfColumns) {
                             if (null != rows[row - largeTableIndexOffset][col]) {
-                                // TODO
                                 CellRenderer cell = rows[row - largeTableIndexOffset][col];
                                 Border cellModelBottomBorder = TableBorderUtil.GetCellSideBorder(((Cell)cell.GetModelElement()), Property.
                                     BORDER_BOTTOM);
@@ -382,8 +389,7 @@ namespace iText.Layout.Renderer {
         // region draw
         protected internal override TableBorders DrawHorizontalBorder(int i, float startX, float y1, PdfCanvas canvas
             , float[] countedColumnWidth) {
-            IList<Border> borders = GetHorizontalBorder(startRow + i);
-            /*- largeTableIndexOffset*/
+            IList<Border> borders = GetHorizontalBorder(startRow + /*- largeTableIndexOffset*/ i);
             float x1 = startX;
             float x2 = x1 + countedColumnWidth[0];
             if (i == 0) {

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -46,13 +46,16 @@ using iText.Kernel.Counter.Event;
 namespace iText.Kernel.Counter.Data {
     /// <summary>
     /// Interface that is responsible for creating new instance of
-    /// <see cref="EventData{T}"/>
-    /// .
+    /// <see cref="EventData{T}"/>.
+    /// </summary>
+    /// <remarks>
+    /// Interface that is responsible for creating new instance of
+    /// <see cref="EventData{T}"/>.
     /// Used in
     /// <see cref="EventDataHandler{T, V}"/>
-    /// </summary>
-    /// 
-    /// 
+    /// </remarks>
+    /// <typeparam name="T">data signature type</typeparam>
+    /// <typeparam name="V">data type</typeparam>
     public interface IEventDataFactory<T, V>
         where V : EventData<T> {
         V Create(IEvent @event, IMetaInfo metaInfo);

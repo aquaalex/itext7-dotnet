@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -62,9 +62,6 @@ namespace iText.Barcodes {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="iText.Kernel.PdfException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void Barcode01Test() {
             String filename = "barcodeQRCode01.pdf";
@@ -81,9 +78,6 @@ namespace iText.Barcodes {
                  + "cmp_" + filename, destinationFolder, "diff_"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="iText.Kernel.PdfException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void Barcode02Test() {
             String filename = "barcodeQRCode02.pdf";
@@ -100,9 +94,6 @@ namespace iText.Barcodes {
                  + "cmp_" + filename, destinationFolder, "diff_"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="iText.Kernel.PdfException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BarcodeVersioningTest() {
             String filename = "barcodeQRCodeVersioning.pdf";

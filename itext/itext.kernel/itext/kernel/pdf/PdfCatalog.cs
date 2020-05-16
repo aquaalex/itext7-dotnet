@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -44,6 +44,7 @@ address: sales@itextpdf.com
 using System;
 using System.Collections.Generic;
 using Common.Logging;
+using iText.IO.Util;
 using iText.Kernel;
 using iText.Kernel.Pdf.Action;
 using iText.Kernel.Pdf.Collection;
@@ -54,7 +55,8 @@ namespace iText.Kernel.Pdf {
     public class PdfCatalog : PdfObjectWrapper<PdfDictionary> {
         private readonly PdfPagesTree pageTree;
 
-        protected internal IDictionary<PdfName, PdfNameTree> nameTrees = new Dictionary<PdfName, PdfNameTree>();
+        protected internal IDictionary<PdfName, PdfNameTree> nameTrees = new LinkedDictionary<PdfName, PdfNameTree
+            >();
 
         protected internal PdfNumTree pageLabels;
 
@@ -64,15 +66,23 @@ namespace iText.Kernel.Pdf {
 
         private PdfOutline outlines;
 
+        //This HashMap contents all pages of the document and outlines associated to them
         private IDictionary<PdfObject, IList<PdfOutline>> pagesWithOutlines = new Dictionary<PdfObject, IList<PdfOutline
             >>();
 
+        //This flag determines if Outline tree of the document has been built via calling getOutlines method. If this flag is false all outline operations will be ignored
         private bool outlineMode;
+
+        private static readonly ICollection<PdfName> PAGE_MODES = new HashSet<PdfName>(JavaUtil.ArraysAsList(PdfName
+            .UseNone, PdfName.UseOutlines, PdfName.UseThumbs, PdfName.FullScreen, PdfName.UseOC, PdfName.UseAttachments
+            ));
+
+        private static readonly ICollection<PdfName> PAGE_LAYOUTS = new HashSet<PdfName>(JavaUtil.ArraysAsList(PdfName
+            .SinglePage, PdfName.OneColumn, PdfName.TwoColumnLeft, PdfName.TwoColumnRight, PdfName.TwoPageLeft, PdfName
+            .TwoPageRight));
 
         protected internal PdfCatalog(PdfDictionary pdfObject)
             : base(pdfObject) {
-            //This HashMap contents all pages of the document and outlines associated to them
-            //This flag determines if Outline tree of the document has been built via calling getOutlines method. If this flag is false all outline operations will be ignored
             if (pdfObject == null) {
                 throw new PdfException(PdfException.DocumentHasNoPdfCatalogObject);
             }
@@ -86,18 +96,18 @@ namespace iText.Kernel.Pdf {
             : this((PdfDictionary)new PdfDictionary().MakeIndirect(pdfDocument)) {
         }
 
-        /// <summary>Use this method to get the <B>Optional Content Properties Dictionary</B>.</summary>
+        /// <summary>Use this method to get the <b>Optional Content Properties Dictionary</b>.</summary>
         /// <remarks>
-        /// Use this method to get the <B>Optional Content Properties Dictionary</B>.
+        /// Use this method to get the <b>Optional Content Properties Dictionary</b>.
         /// Note that if you call this method, then the PdfDictionary with OCProperties will be
         /// generated from PdfOCProperties object right before closing the PdfDocument,
         /// so if you want to make low-level changes in Pdf structures themselves (PdfArray, PdfDictionary, etc),
         /// then you should address directly those objects, e.g.:
-        /// <CODE>
+        /// <c>
         /// PdfCatalog pdfCatalog = pdfDoc.getCatalog();
         /// PdfDictionary ocProps = pdfCatalog.getAsDictionary(PdfName.OCProperties);
         /// // manipulate with ocProps.
-        /// </CODE>
+        /// </c>
         /// Also note that this method is implicitly called when creating a new PdfLayer instance,
         /// so you should either use hi-level logic of operating with layers,
         /// or manipulate low-level Pdf objects by yourself.
@@ -167,15 +177,12 @@ namespace iText.Kernel.Pdf {
         /// ,
         /// <c>PdfName.UseOC</c>
         /// ,
-        /// <c>PdfName.UseAttachments</c>
-        /// .
+        /// <c>PdfName.UseAttachments</c>.
         /// </remarks>
         /// <param name="pageMode">page mode.</param>
         /// <returns>current instance of PdfCatalog</returns>
         public virtual iText.Kernel.Pdf.PdfCatalog SetPageMode(PdfName pageMode) {
-            if (pageMode.Equals(PdfName.UseNone) || pageMode.Equals(PdfName.UseOutlines) || pageMode.Equals(PdfName.UseThumbs
-                ) || pageMode.Equals(PdfName.FullScreen) || pageMode.Equals(PdfName.UseOC) || pageMode.Equals(PdfName.
-                UseAttachments)) {
+            if (PAGE_MODES.Contains(pageMode)) {
                 return Put(PdfName.PageMode, pageMode);
             }
             return this;
@@ -188,9 +195,7 @@ namespace iText.Kernel.Pdf {
         /// <summary>This method sets a page layout of the document</summary>
         /// <param name="pageLayout"/>
         public virtual iText.Kernel.Pdf.PdfCatalog SetPageLayout(PdfName pageLayout) {
-            if (pageLayout.Equals(PdfName.SinglePage) || pageLayout.Equals(PdfName.OneColumn) || pageLayout.Equals(PdfName
-                .TwoColumnLeft) || pageLayout.Equals(PdfName.TwoColumnRight) || pageLayout.Equals(PdfName.TwoPageLeft)
-                 || pageLayout.Equals(PdfName.TwoPageRight)) {
+            if (PAGE_LAYOUTS.Contains(pageLayout)) {
                 return Put(PdfName.PageLayout, pageLayout);
             }
             return this;

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,6 @@ namespace iText.StyledXmlParser.Node.Impl.Jsoup {
         /* (non-Javadoc)
         * @see com.itextpdf.styledxmlparser.html.IXmlParser#parse(java.io.InputStream, java.lang.String)
         */
-        /// <exception cref="System.IO.IOException"/>
         public virtual IDocumentNode Parse(Stream htmlStream, String charset) {
             // Based on some brief investigations, it seems that Jsoup uses baseUri for resolving relative uri's into absolute
             // on user demand. We perform such resolving in ResourceResolver class, therefore it is not needed here.

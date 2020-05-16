@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -68,9 +68,14 @@ namespace iText.Layout.Renderer {
     /// <summary>
     /// Defines the most common properties and behavior that are shared by most
     /// <see cref="IRenderer"/>
+    /// implementations.
+    /// </summary>
+    /// <remarks>
+    /// Defines the most common properties and behavior that are shared by most
+    /// <see cref="IRenderer"/>
     /// implementations. All default Renderers are subclasses of
     /// this default implementation.
-    /// </summary>
+    /// </remarks>
     public abstract class AbstractRenderer : IRenderer {
         /// <summary>
         /// The maximum difference between
@@ -82,6 +87,7 @@ namespace iText.Layout.Renderer {
         /// <summary>The infinity value which is used while layouting</summary>
         protected internal const float INF = 1e6f;
 
+        // TODO linkedList?
         protected internal IList<IRenderer> childRenderers = new List<IRenderer>();
 
         protected internal IList<IRenderer> positionedRenderers = new List<IRenderer>();
@@ -105,7 +111,6 @@ namespace iText.Layout.Renderer {
         /// <summary>Creates a renderer for the specified layout element.</summary>
         /// <param name="modelElement">the layout element that will be drawn by this renderer</param>
         protected internal AbstractRenderer(IElement modelElement) {
-            // TODO linkedList?
             this.modelElement = modelElement;
         }
 
@@ -209,12 +214,8 @@ namespace iText.Layout.Renderer {
 
         /// <summary>
         /// Checks if this renderer or its model element have the specified property,
-        /// i.e.
-        /// </summary>
-        /// <remarks>
-        /// Checks if this renderer or its model element have the specified property,
         /// i.e. if it was set to this very element or its very model element earlier.
-        /// </remarks>
+        /// </summary>
         /// <param name="property">the property to be checked</param>
         /// <returns>
         /// 
@@ -319,8 +320,7 @@ namespace iText.Layout.Renderer {
 
         /// <summary>
         /// Returns a property with a certain key, as a
-        /// <see cref="iText.Layout.Properties.TransparentColor"/>
-        /// .
+        /// <see cref="iText.Layout.Properties.TransparentColor"/>.
         /// </summary>
         /// <param name="property">
         /// an
@@ -867,13 +867,12 @@ namespace iText.Layout.Renderer {
             }
         }
 
-        /// <summary>Indicates whether this renderer is flushed or not, i.e.</summary>
-        /// <remarks>
+        /// <summary>
         /// Indicates whether this renderer is flushed or not, i.e. if
         /// <see cref="Draw(DrawContext)"/>
         /// has already
         /// been called.
-        /// </remarks>
+        /// </summary>
         /// <returns>whether the renderer has been flushed</returns>
         /// <seealso cref="Draw(DrawContext)"/>
         public virtual bool IsFlushed() {
@@ -924,8 +923,7 @@ namespace iText.Layout.Renderer {
         /// Gets the bounding box that contains all content written to the
         /// <see cref="DrawContext"/>
         /// by this
-        /// <see cref="IRenderer"/>
-        /// .
+        /// <see cref="IRenderer"/>.
         /// </summary>
         /// <returns>
         /// the smallest
@@ -1779,8 +1777,8 @@ namespace iText.Layout.Renderer {
                 return;
             }
             // Update height related properties on split or overflow
-            float? parentResolvedHeightPropertyValue = RetrieveResolvedParentDeclaredHeight();
             // For relative heights, we need the parent's resolved height declaration
+            float? parentResolvedHeightPropertyValue = RetrieveResolvedParentDeclaredHeight();
             UnitValue maxHeightUV = GetPropertyAsUnitValue(this, Property.MAX_HEIGHT);
             if (maxHeightUV != null) {
                 if (maxHeightUV.IsPointValue()) {
@@ -1943,8 +1941,8 @@ namespace iText.Layout.Renderer {
         /// <summary>Gets borders of the element in the specified order: top, right, bottom, left.</summary>
         /// <returns>
         /// an array of BorderDrawer objects.
-        /// In case when certain border isn't set <code>Property.BORDER</code> is used,
-        /// and if <code>Property.BORDER</code> is also not set then <code>null</code> is returned
+        /// In case when certain border isn't set <c>Property.BORDER</c> is used,
+        /// and if <c>Property.BORDER</c> is also not set then <c>null</c> is returned
         /// on position of this border
         /// </returns>
         protected internal virtual Border[] GetBorders() {
@@ -1955,8 +1953,8 @@ namespace iText.Layout.Renderer {
         ///     </summary>
         /// <returns>
         /// an array of BorderRadius objects.
-        /// In case when certain border radius isn't set <code>Property.BORDER_RADIUS</code> is used,
-        /// and if <code>Property.BORDER_RADIUS</code> is also not set then <code>null</code> is returned
+        /// In case when certain border radius isn't set <c>Property.BORDER_RADIUS</c> is used,
+        /// and if <c>Property.BORDER_RADIUS</c> is also not set then <c>null</c> is returned
         /// on position of this border radius
         /// </returns>
         protected internal virtual BorderRadius[] GetBorderRadii() {
@@ -1991,7 +1989,7 @@ namespace iText.Layout.Renderer {
 
         /// <summary>
         /// Calculates the bounding box of the content in the coordinate system of the pdf entity on which content is placed,
-        /// e.g.
+        /// e.g. document page or form xObject.
         /// </summary>
         /// <remarks>
         /// Calculates the bounding box of the content in the coordinate system of the pdf entity on which content is placed,
@@ -2032,25 +2030,11 @@ namespace iText.Layout.Renderer {
         /// <param name="points">list of the points calculated bbox will enclose.</param>
         /// <returns>array of float values which denote left, bottom, right, top lines of bbox in this specific order</returns>
         protected internal virtual Rectangle CalculateBBox(IList<Point> points) {
-            double minX = double.MaxValue;
-            double minY = double.MaxValue;
-            double maxX = -double.MaxValue;
-            double maxY = -double.MaxValue;
-            foreach (Point p in points) {
-                minX = Math.Min(p.GetX(), minX);
-                minY = Math.Min(p.GetY(), minY);
-                maxX = Math.Max(p.GetX(), maxX);
-                maxY = Math.Max(p.GetY(), maxY);
-            }
-            return new Rectangle((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
+            return Rectangle.CalculateBBox(points);
         }
 
         protected internal virtual IList<Point> RectangleToPointsList(Rectangle rect) {
-            IList<Point> points = new List<Point>();
-            points.AddAll(JavaUtil.ArraysAsList(new Point(rect.GetLeft(), rect.GetBottom()), new Point(rect.GetRight()
-                , rect.GetBottom()), new Point(rect.GetRight(), rect.GetTop()), new Point(rect.GetLeft(), rect.GetTop(
-                ))));
-            return points;
+            return JavaUtil.ArraysAsList(rect.ToPointsArray());
         }
 
         protected internal virtual IList<Point> TransformPoints(IList<Point> points, AffineTransform transform) {
@@ -2197,9 +2181,39 @@ namespace iText.Layout.Renderer {
             return fc;
         }
 
-        // This method is intended to get first valid PdfFont in this renderer, based of font property.
-        // It is usually done for counting some layout characteristics like ascender or descender.
-        // NOTE: It neither change Font Property of renderer, nor is guarantied to contain all glyphs used in renderer.
+        /// <summary>
+        /// Gets any valid
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// for this renderer, based on
+        /// <see cref="iText.Layout.Properties.Property.FONT"/>
+        /// ,
+        /// <see cref="iText.Layout.Properties.Property.FONT_PROVIDER"/>
+        /// and
+        /// <see cref="iText.Layout.Properties.Property.FONT_SET"/>
+        /// properties.
+        /// </summary>
+        /// <remarks>
+        /// Gets any valid
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// for this renderer, based on
+        /// <see cref="iText.Layout.Properties.Property.FONT"/>
+        /// ,
+        /// <see cref="iText.Layout.Properties.Property.FONT_PROVIDER"/>
+        /// and
+        /// <see cref="iText.Layout.Properties.Property.FONT_SET"/>
+        /// properties.
+        /// This method will not change font property of renderer. Also it is not guarantied that returned font will contain
+        /// all glyphs used in renderer or its children.
+        /// <para />
+        /// This method is usually needed for evaluating some layout characteristics like ascender or descender.
+        /// </remarks>
+        /// <returns>
+        /// a valid
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// instance based on renderer
+        /// <see cref="iText.Layout.Properties.Property.FONT"/>
+        /// property.
+        /// </returns>
         internal virtual PdfFont ResolveFirstPdfFont() {
             Object font = this.GetProperty<Object>(Property.FONT);
             if (font is PdfFont) {
@@ -2208,7 +2222,7 @@ namespace iText.Layout.Renderer {
             else {
                 if (font is String || font is String[]) {
                     if (font is String) {
-                        // TODO remove this if-clause before 7.2
+                        // TODO DEVSIX-3814 remove this if-clause before 7.2
                         ILog logger = LogManager.GetLogger(typeof(iText.Layout.Renderer.AbstractRenderer));
                         logger.Warn(iText.IO.LogMessageConstant.FONT_PROPERTY_OF_STRING_TYPE_IS_DEPRECATED_USE_STRINGS_ARRAY_INSTEAD
                             );
@@ -2219,8 +2233,12 @@ namespace iText.Layout.Renderer {
                     if (provider == null) {
                         throw new InvalidOperationException(PdfException.FontProviderNotSetFontFamilyNotResolved);
                     }
+                    FontSet fontSet = this.GetProperty<FontSet>(Property.FONT_SET);
+                    if (provider.GetFontSet().IsEmpty() && (fontSet == null || fontSet.IsEmpty())) {
+                        throw new InvalidOperationException(PdfException.FontProviderNotSetFontFamilyNotResolved);
+                    }
                     FontCharacteristics fc = CreateFontCharacteristics();
-                    return ResolveFirstPdfFont((String[])font, provider, fc);
+                    return ResolveFirstPdfFont((String[])font, provider, fc, fontSet);
                 }
                 else {
                     throw new InvalidOperationException("String[] or PdfFont expected as value of FONT property");
@@ -2228,13 +2246,31 @@ namespace iText.Layout.Renderer {
             }
         }
 
-        // This method is intended to get first valid PdfFont described in font string,
-        // with specific FontCharacteristics with the help of specified font provider.
-        // This method is intended to be called from previous method that deals with Font Property.
-        // NOTE: It neither change Font Property of renderer, nor is guarantied to contain all glyphs used in renderer.
-        // TODO this mechanism does not take text into account
-        internal virtual PdfFont ResolveFirstPdfFont(String[] font, FontProvider provider, FontCharacteristics fc) {
-            return provider.GetPdfFont(provider.GetFontSelector(JavaUtil.ArraysAsList(font), fc).BestMatch());
+        /// <summary>
+        /// Get first valid
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// for this renderer, based on given font-families, font provider and font characteristics.
+        /// </summary>
+        /// <remarks>
+        /// Get first valid
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// for this renderer, based on given font-families, font provider and font characteristics.
+        /// This method will not change font property of renderer. Also it is not guarantied that returned font will contain
+        /// all glyphs used in renderer or its children.
+        /// <para />
+        /// This method is usually needed for evaluating some layout characteristics like ascender or descender.
+        /// </remarks>
+        /// <returns>
+        /// a valid
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// instance based on renderer
+        /// <see cref="iText.Layout.Properties.Property.FONT"/>
+        /// property.
+        /// </returns>
+        internal virtual PdfFont ResolveFirstPdfFont(String[] font, FontProvider provider, FontCharacteristics fc, 
+            FontSet additionalFonts) {
+            FontSelector fontSelector = provider.GetFontSelector(JavaUtil.ArraysAsList(font), fc, additionalFonts);
+            return provider.GetPdfFont(fontSelector.BestMatch(), additionalFonts);
         }
 
         internal static Border[] GetBorders(IRenderer renderer) {

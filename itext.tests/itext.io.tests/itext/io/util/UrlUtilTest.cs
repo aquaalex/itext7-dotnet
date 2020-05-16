@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -42,6 +42,7 @@ address: sales@itextpdf.com
 */
 using System;
 using System.IO;
+using System.Text;
 using iText.Test;
 
 namespace iText.IO.Util {
@@ -55,7 +56,6 @@ namespace iText.IO.Util {
         }
 
         // Tests that after invocation of the getFinalURL method for local files, no handles are left open and the file is free to be removed
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void GetFinalURLDoesNotLockFileTest() {
             FileInfo tempFile = FileUtil.CreateTempFile(destinationFolder);
@@ -73,10 +73,23 @@ namespace iText.IO.Util {
         }
 
         [NUnit.Framework.Test]
-        public void nullBaseUriTest() {
+        public void NullBaseUriTest() {
             String expected = "";
             FileInfo tempFile = null;
             NUnit.Framework.Assert.AreEqual(expected, FileUtil.GetParentDirectory(tempFile));
+        }
+
+        [NUnit.Framework.Test]
+        public void OpenStreamTest() {
+            String projectFolder = iText.Test.TestUtil.GetParentProjectDirectory(NUnit.Framework.TestContext
+                .CurrentContext.TestDirectory);
+            string resPath = projectFolder + "/resources/itext/io/util/textFile.dat";
+            Stream openStream = UrlUtil.OpenStream(new Uri(resPath));
+
+            byte[] bytes = StreamUtil.InputStreamToArray(openStream);
+            String actual = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+            NUnit.Framework.Assert.AreEqual("Hello world from text file!", actual);
+            
         }
     }
 }

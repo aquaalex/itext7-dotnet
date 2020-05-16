@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -69,6 +69,10 @@ namespace iText.IO.Util {
 
         public static String GetStringForBytes(byte[] bytes, int offset, int length, String encoding) {
             return EncodingUtil.GetEncoding(encoding).GetString(bytes, offset, length);
+        }
+        
+        public static String GetStringForBytes(byte[] bytes, int offset, int length, Encoding encoding) {
+            return encoding.GetString(bytes, offset, length);
         }
 
         public static String GetStringForBytes(byte[] bytes, String encoding) {

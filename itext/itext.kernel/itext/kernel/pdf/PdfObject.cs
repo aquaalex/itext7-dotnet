@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -74,9 +74,8 @@ namespace iText.Kernel.Pdf {
         ///     </summary>
         protected internal const short FREE = 1 << 1;
 
-        /// <summary>Indicates that definition of the indirect reference of the object still not found (e.g.</summary>
-        /// <remarks>Indicates that definition of the indirect reference of the object still not found (e.g. keys in XRefStm).
-        ///     </remarks>
+        /// <summary>Indicates that definition of the indirect reference of the object still not found (e.g. keys in XRefStm).
+        ///     </summary>
         protected internal const short READING = 1 << 2;
 
         /// <summary>Indicates that object changed (is used in append mode).</summary>
@@ -320,19 +319,14 @@ namespace iText.Kernel.Pdf {
         ///     </summary>
         /// <remarks>
         /// Sets the 'modified' flag to the indirect object, the flag denotes that the object was modified since the document opening.
-        /// <p>
-        /// This flag is meaningful only if the
-        /// <see cref="PdfDocument"/>
-        /// is opened in append mode
-        /// (see
+        /// It is recommended to set this flag after changing any PDF object.
+        /// <para />
+        /// For example flag is used in the append mode (see
         /// <see cref="StampingProperties.UseAppendMode()"/>
         /// ).
-        /// </p>
-        /// <p>
         /// In append mode the whole document is preserved as is, and only changes to the document are
         /// appended to the end of the document file. Because of this, only modified objects need to be flushed and are
         /// allowed to be flushed (i.e. to be written).
-        /// </p>
         /// </remarks>
         /// <returns>
         /// this
@@ -351,12 +345,17 @@ namespace iText.Kernel.Pdf {
         /// Checks if it's forbidden to release this
         /// <see cref="PdfObject"/>
         /// instance.
+        /// </summary>
+        /// <remarks>
+        /// Checks if it's forbidden to release this
+        /// <see cref="PdfObject"/>
+        /// instance.
         /// Some objects are vital for the living period of
         /// <see cref="PdfDocument"/>
         /// or may be
         /// prevented from releasing by high-level entities dealing with the objects.
         /// Also it's not possible to release the objects that have been modified.
-        /// </summary>
+        /// </remarks>
         public virtual bool IsReleaseForbidden() {
             return CheckState(FORBID_RELEASE);
         }
@@ -377,98 +376,98 @@ namespace iText.Kernel.Pdf {
             }
         }
 
-        //TODO log reasonless call of method
+        // TODO DEVSIX-4020. Log reasonless call of method
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfNull</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfNull</c>.
         /// </summary>
-        /// <returns><CODE>true</CODE> or <CODE>false</CODE></returns>
+        /// <returns><c>true</c> or <c>false</c></returns>
         public virtual bool IsNull() {
             return GetObjectType() == NULL;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfBoolean</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfBoolean</c>.
         /// </summary>
-        /// <returns><CODE>true</CODE> or <CODE>false</CODE></returns>
+        /// <returns><c>true</c> or <c>false</c></returns>
         public virtual bool IsBoolean() {
             return GetObjectType() == BOOLEAN;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfNumber</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfNumber</c>.
         /// </summary>
-        /// <returns><CODE>true</CODE> or <CODE>false</CODE></returns>
+        /// <returns><c>true</c> or <c>false</c></returns>
         public virtual bool IsNumber() {
             return GetObjectType() == NUMBER;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfString</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfString</c>.
         /// </summary>
-        /// <returns><CODE>true</CODE> or <CODE>false</CODE></returns>
+        /// <returns><c>true</c> or <c>false</c></returns>
         public virtual bool IsString() {
             return GetObjectType() == STRING;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfName</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfName</c>.
         /// </summary>
-        /// <returns><CODE>true</CODE> or <CODE>false</CODE></returns>
+        /// <returns><c>true</c> or <c>false</c></returns>
         public virtual bool IsName() {
             return GetObjectType() == NAME;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfArray</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfArray</c>.
         /// </summary>
-        /// <returns><CODE>true</CODE> or <CODE>false</CODE></returns>
+        /// <returns><c>true</c> or <c>false</c></returns>
         public virtual bool IsArray() {
             return GetObjectType() == ARRAY;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfDictionary</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfDictionary</c>.
         /// </summary>
-        /// <returns><CODE>true</CODE> or <CODE>false</CODE></returns>
+        /// <returns><c>true</c> or <c>false</c></returns>
         public virtual bool IsDictionary() {
             return GetObjectType() == DICTIONARY;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfStream</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfStream</c>.
         /// </summary>
-        /// <returns><CODE>true</CODE> or <CODE>false</CODE></returns>
+        /// <returns><c>true</c> or <c>false</c></returns>
         public virtual bool IsStream() {
             return GetObjectType() == STREAM;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfIndirectReference</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfIndirectReference</c>.
         /// </summary>
         /// <returns>
-        /// <CODE>true</CODE> if this is an indirect reference,
-        /// otherwise <CODE>false</CODE>
+        /// <c>true</c> if this is an indirect reference,
+        /// otherwise <c>false</c>
         /// </returns>
         public virtual bool IsIndirectReference() {
             return GetObjectType() == INDIRECT_REFERENCE;
         }
 
         /// <summary>
-        /// Checks if this <CODE>PdfObject</CODE> is of the type
-        /// <CODE>PdfLiteral</CODE>.
+        /// Checks if this <c>PdfObject</c> is of the type
+        /// <c>PdfLiteral</c>.
         /// </summary>
         /// <returns>
-        /// <CODE>true</CODE> if this is a literal,
-        /// otherwise <CODE>false</CODE>
+        /// <c>true</c> if this is a literal,
+        /// otherwise <c>false</c>
         /// </returns>
         public virtual bool IsLiteral() {
             return GetObjectType() == LITERAL;
@@ -515,14 +514,30 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Processes two cases of object copying:
-        /// <ol>
-        /// <li>copying to the other document</li>
-        /// <li>cloning inside of the current document</li>
-        /// </ol>
-        /// <p>
-        /// This two cases are distinguished by the state of <code>document</code> parameter:
-        /// the second case is processed if <code>document</code> is <code>null</code>.
+        /// <list type="number">
+        /// <item><description>copying to the other document
+        /// </description></item>
+        /// <item><description>cloning inside of the current document
+        /// </description></item>
+        /// </list>
         /// </summary>
+        /// <remarks>
+        /// Processes two cases of object copying:
+        /// <list type="number">
+        /// <item><description>copying to the other document
+        /// </description></item>
+        /// <item><description>cloning inside of the current document
+        /// </description></item>
+        /// </list>
+        /// <para />
+        /// This two cases are distinguished by the state of
+        /// <c>document</c>
+        /// parameter:
+        /// the second case is processed if
+        /// <c>document</c>
+        /// is
+        /// <see langword="null"/>.
+        /// </remarks>
         /// <param name="documentTo">if not null: document to copy object to; otherwise indicates that object is to be cloned.
         ///     </param>
         /// <param name="allowDuplicating">

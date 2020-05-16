@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -69,10 +69,6 @@ namespace iText.Signatures.Sign {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="Org.BouncyCastle.Tsp.TSPException"/>
-        /// <exception cref="Org.BouncyCastle.Operator.OperatorCreationException"/>
         [NUnit.Framework.Test]
         public virtual void TimestampTest01() {
             String tsaCertFileName = certsSrc + "tsCertRsa.p12";

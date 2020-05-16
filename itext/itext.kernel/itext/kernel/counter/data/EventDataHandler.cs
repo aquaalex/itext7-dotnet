@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -77,8 +77,8 @@ namespace iText.Kernel.Counter.Data {
     /// custom cache) and the processing is started asynchronously
     /// This class can be considered thread-safe if the cache and factory instances aren't used anywhere else in the code.
     /// </remarks>
-    /// 
-    /// 
+    /// <typeparam name="T">data signature type</typeparam>
+    /// <typeparam name="V">data type</typeparam>
     public abstract class EventDataHandler<T, V>
         where V : EventData<T> {
         private readonly Object processLock = new Object();
@@ -227,7 +227,24 @@ namespace iText.Kernel.Counter.Data {
         }
 
         ~EventDataHandler() {
-            TryProcessRest();
-        }
+            try {
+                TryProcessRest();
+            }
+            catch (Exception ignore) {
+                // In finalization everything can go wrong.
+                // 
+                // From Microsoft Docs:
+                // > An object's Finalize method shouldn't call a method on any objects other than that of its base class.
+                // > This is because the other objects being called could be collected at the same time as the calling object,
+                // > such as in the case of a common language runtime shutdown.
+                // 
+                // It's vital to ignore exceptions here, because uncaught exception will terminate the runtime completely.
+                // however in fact if anything goes wrong in TryProcessRest() it's nothing critical.
+                // From Microsoft Docs:
+                // > If Finalize or an override of Finalize throws an exception, and the runtime is not hosted
+                // > by an application that overrides the default policy, the runtime terminates the process
+                // > and no active try/finally blocks or finalizers are executed. This behavior ensures process
+                // > integrity if the finalizer cannot free or destroy resources.
+            }        }
     }
 }

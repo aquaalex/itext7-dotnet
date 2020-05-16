@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,7 +52,7 @@ namespace iText.Kernel.Pdf {
 
         private PdfCatalog catalog;
 
-        private IDictionary<String, PdfObject> items = new Dictionary<String, PdfObject>();
+        private IDictionary<String, PdfObject> items = new LinkedDictionary<String, PdfObject>();
 
         private PdfName treeType;
 
@@ -78,9 +78,8 @@ namespace iText.Kernel.Pdf {
                 dictionary = dictionary.GetAsDictionary(treeType);
                 if (dictionary != null) {
                     items = ReadTree(dictionary);
-                    //@TODO It's done for auto porting to itextsharp, cuz u cannot change collection which you iterate
-                    // in for loop (even if you change only value of a Map entry) in .NET. Java doesn't have such a problem.
-                    // We should find a better solution in the future.
+                    // A separate collection for keys is used for auto porting to C#, because in C#
+                    // it is impossible to change the collection which you iterate in for loop
                     ICollection<String> keys = new HashSet<String>();
                     keys.AddAll(items.Keys);
                     foreach (String key in keys) {
@@ -140,6 +139,12 @@ namespace iText.Kernel.Pdf {
         /// <returns>True if the object has been modified, false otherwise.</returns>
         public virtual bool IsModified() {
             return modified;
+        }
+
+        /// <summary>Sets the modified flag to true.</summary>
+        /// <remarks>Sets the modified flag to true. It means that the object has been modified.</remarks>
+        public virtual void SetModified() {
+            modified = true;
         }
 
         /// <summary>Build a PdfDictionary containing the name tree</summary>
@@ -210,7 +215,7 @@ namespace iText.Kernel.Pdf {
         }
 
         private IDictionary<String, PdfObject> ReadTree(PdfDictionary dictionary) {
-            IDictionary<String, PdfObject> items = new Dictionary<String, PdfObject>();
+            IDictionary<String, PdfObject> items = new LinkedDictionary<String, PdfObject>();
             if (dictionary != null) {
                 IterateItems(dictionary, items, null);
             }

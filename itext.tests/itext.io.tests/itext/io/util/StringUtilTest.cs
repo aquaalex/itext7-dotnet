@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -42,10 +42,11 @@ address: sales@itextpdf.com
 */
 using System;
 using System.Text.RegularExpressions;
+using iText.Test;
 
 namespace iText.IO.Util {
     /// <summary>At the moment there is no StringUtil class in Java, but there is one in C# and we are testing</summary>
-    public class StringUtilTest {
+    public class StringUtilTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void PatternSplitTest01() {
             // Pattern.split in Java works differently compared to Regex.Split in C#

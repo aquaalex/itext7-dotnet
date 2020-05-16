@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -70,6 +70,14 @@ namespace iText.Kernel.Crypto {
         /// starting at offset
         /// <paramref name="off"/>
         /// to this output stream.
+        /// </summary>
+        /// <remarks>
+        /// Writes
+        /// <paramref name="len"/>
+        /// bytes from the specified byte array
+        /// starting at offset
+        /// <paramref name="off"/>
+        /// to this output stream.
         /// The general contract for
         /// <c>write(b, off, len)</c>
         /// is that
@@ -83,7 +91,7 @@ namespace iText.Kernel.Crypto {
         /// <c>b[off+len-1]</c>
         /// is the last byte written
         /// by this operation.
-        /// <p>
+        /// <para />
         /// The
         /// <c>write</c>
         /// method of
@@ -92,7 +100,7 @@ namespace iText.Kernel.Crypto {
         /// the write method of one argument on each of the bytes to be
         /// written out. Subclasses are encouraged to override this method and
         /// provide a more efficient implementation.
-        /// <p>
+        /// <para />
         /// If
         /// <paramref name="b"/>
         /// is
@@ -100,7 +108,7 @@ namespace iText.Kernel.Crypto {
         /// , a
         /// <c>NullPointerException</c>
         /// is thrown.
-        /// <p>
+        /// <para />
         /// If
         /// <paramref name="off"/>
         /// is negative, or
@@ -110,17 +118,10 @@ namespace iText.Kernel.Crypto {
         /// is greater than the length of the array
         /// <paramref name="b"/>
         /// , then an <tt>IndexOutOfBoundsException</tt> is thrown.
-        /// </summary>
+        /// </remarks>
         /// <param name="b">the data.</param>
         /// <param name="off">the start offset in the data.</param>
         /// <param name="len">the number of bytes to write.</param>
-        /// <exception cref="System.IO.IOException">
-        /// if an I/O error occurs. In particular,
-        /// an
-        /// <c>IOException</c>
-        /// is thrown if the output
-        /// stream is closed.
-        /// </exception>
         public override void Write(byte[] b, int off, int len) {
             byte[] b2 = new byte[Math.Min(len, 4192)];
             while (len > 0) {

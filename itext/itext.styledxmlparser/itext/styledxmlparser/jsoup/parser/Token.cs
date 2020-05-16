@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -113,22 +113,22 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
 
             private String pendingAttributeName;
 
+            // attribute names are generally caught in one hop, not accumulated
             private StringBuilder pendingAttributeValue = new StringBuilder();
 
+            // but values are accumulated, from e.g. & in hrefs
             private String pendingAttributeValueS;
 
+            // try to get attr vals in one shot, vs Builder
             private bool hasEmptyAttributeValue = false;
 
+            // distinguish boolean attribute from empty string value
             private bool hasPendingAttributeValue = false;
 
             internal bool selfClosing = false;
 
             internal Attributes attributes;
 
-            // attribute names are generally caught in one hop, not accumulated
-            // but values are accumulated, from e.g. & in hrefs
-            // try to get attr vals in one shot, vs Builder
-            // distinguish boolean attribute from empty string value
             // start tags get attributes on construction. End tags get attributes on first new attribute (but only for parser convenience, not used).
             internal override Token Reset() {
                 tagName = null;

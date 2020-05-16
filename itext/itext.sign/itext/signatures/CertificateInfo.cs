@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -56,6 +56,7 @@ namespace iText.Signatures {
     /// an X509 Certificate: the issuer and the subject.
     /// </summary>
     public class CertificateInfo {
+        // Inner classes
         /// <summary>Class that holds an X509 name.</summary>
         public class X500Name {
             /// <summary>Country code - StringType(SIZE(2)).</summary>
@@ -100,7 +101,8 @@ namespace iText.Signatures {
             /// <summary>Email address (RSA PKCS#9 extension) - IA5String.</summary>
             /// <remarks>
             /// Email address (RSA PKCS#9 extension) - IA5String.
-            /// <p>Note: if you're trying to be ultra orthodox, don't use this! It shouldn't be in here.</p>
+            /// <para />
+            /// Note: if you're trying to be ultra orthodox, don't use this! It shouldn't be in here.
             /// </remarks>
             public static readonly DerObjectIdentifier EmailAddress = new DerObjectIdentifier("1.2.840.113549.1.9.1");
 
@@ -118,7 +120,6 @@ namespace iText.Signatures {
                 , String>();
 
             static X500Name() {
-                // Inner classes
                 DefaultSymbols.Put(C, "C");
                 DefaultSymbols.Put(O, "O");
                 DefaultSymbols.Put(T, "T");
@@ -209,10 +210,13 @@ namespace iText.Signatures {
             }
         }
 
-        /// <summary>Class for breaking up an X500 Name into it's component tokens, similar to java.util.StringTokenizer.
-        ///     </summary>
+        /// <summary>
+        /// Class for breaking up an X500 Name into it's component tokens, similar to
+        /// <see cref="iText.IO.Util.StringTokenizer"/>.
+        /// </summary>
         /// <remarks>
-        /// Class for breaking up an X500 Name into it's component tokens, similar to java.util.StringTokenizer.
+        /// Class for breaking up an X500 Name into it's component tokens, similar to
+        /// <see cref="iText.IO.Util.StringTokenizer"/>.
         /// We need this class as some of the lightweight Java environments don't support classes such as StringTokenizer.
         /// </remarks>
         public class X509NameTokenizer {

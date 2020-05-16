@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -50,7 +50,6 @@ using iText.IO.Util;
 namespace iText.IO.Font.Cmap {
     /// <author>psoares</author>
     public class CMapLocationResource : ICMapLocation {
-        /// <exception cref="System.IO.IOException"/>
         public virtual PdfTokenizer GetLocation(String location) {
             String fullName = FontResources.CMAPS + location;
             Stream inp = ResourceUtil.GetResourceStream(fullName);

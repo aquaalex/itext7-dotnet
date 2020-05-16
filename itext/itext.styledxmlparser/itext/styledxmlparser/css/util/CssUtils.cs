@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -53,13 +53,25 @@ using iText.StyledXmlParser.Exceptions;
 namespace iText.StyledXmlParser.Css.Util {
     /// <summary>Utilities class for CSS operations.</summary>
     public class CssUtils {
-        private static readonly String[] METRIC_MEASUREMENTS = new String[] { CommonCssConstants.PX, CommonCssConstants
-            .IN, CommonCssConstants.CM, CommonCssConstants.MM, CommonCssConstants.PC, CommonCssConstants.PT };
+        // TODO (DEVSIX-3595) The list of the angle measurements is not full. Required to
+        //  add 'turn' units to array and move this array to the CommonCssConstants
+        private static readonly String[] ANGLE_MEASUREMENTS_VALUES = new String[] { CommonCssConstants.DEG, CommonCssConstants
+            .GRAD, CommonCssConstants.RAD };
 
-        private static readonly String[] RELATIVE_MEASUREMENTS = new String[] { CommonCssConstants.PERCENTAGE, CommonCssConstants
-            .EM, CommonCssConstants.EX, CommonCssConstants.REM };
+        // TODO (DEVSIX-3596) The list of the relative measurements is not full.
+        //  Add new relative units to array and move this array to the CommonCssConstants
+        private static readonly String[] RELATIVE_MEASUREMENTS_VALUES = new String[] { CommonCssConstants.PERCENTAGE
+            , CommonCssConstants.EM, CommonCssConstants.EX, CommonCssConstants.REM };
+
+        // TODO (DEVSIX-3596) The list of the font-relative measurements is not full.
+        //  Add 'ch' units to array and move this array to the CommonCssConstants
+        private static readonly String[] FONT_RELATIVE_MEASUREMENTS_VALUES = new String[] { CommonCssConstants.EM, 
+            CommonCssConstants.EX, CommonCssConstants.REM };
 
         private const float EPSILON = 1e-6f;
+
+        private static readonly ILog logger = LogManager.GetLogger(typeof(iText.StyledXmlParser.Css.Util.CssUtils)
+            );
 
         /// <summary>
         /// Creates a new
@@ -123,6 +135,74 @@ namespace iText.StyledXmlParser.Css.Util {
             }
         }
 
+        /// <summary>Parses a double without throwing an exception if something goes wrong.</summary>
+        /// <param name="str">a string that might be a double value</param>
+        /// <returns>the double value, or null if something went wrong</returns>
+        public static double? ParseDouble(String str) {
+            if (str == null) {
+                return null;
+            }
+            try {
+                return Double.Parse(str, System.Globalization.CultureInfo.InvariantCulture);
+            }
+            catch (FormatException) {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Parses an angle with an allowed metric unit (deg, grad, rad) or numeric value (e.g. 123, 1.23,
+        /// .123) to rad.
+        /// </summary>
+        /// <param name="angle">String containing the angle to parse</param>
+        /// <param name="defaultMetric">default metric to use in case the input string does not specify a metric</param>
+        /// <returns>the angle in radians</returns>
+        public static float ParseAngle(String angle, String defaultMetric) {
+            int pos = DeterminePositionBetweenValueAndUnit(angle);
+            if (pos == 0) {
+                if (angle == null) {
+                    angle = "null";
+                }
+                throw new StyledXMLParserException(MessageFormatUtil.Format(iText.StyledXmlParser.LogMessageConstant.NAN, 
+                    angle));
+            }
+            float floatValue = float.Parse(angle.JSubstring(0, pos), System.Globalization.CultureInfo.InvariantCulture
+                );
+            String unit = angle.Substring(pos);
+            // Degrees
+            if (unit.StartsWith(CommonCssConstants.DEG) || unit.Equals("") && CommonCssConstants.DEG.Equals(defaultMetric
+                )) {
+                return (float)Math.PI * floatValue / 180f;
+            }
+            // Grads
+            if (unit.StartsWith(CommonCssConstants.GRAD) || unit.Equals("") && CommonCssConstants.GRAD.Equals(defaultMetric
+                )) {
+                return (float)Math.PI * floatValue / 200f;
+            }
+            // Radians
+            if (unit.StartsWith(CommonCssConstants.RAD) || unit.Equals("") && CommonCssConstants.RAD.Equals(defaultMetric
+                )) {
+                return floatValue;
+            }
+            logger.Error(MessageFormatUtil.Format(iText.StyledXmlParser.LogMessageConstant.UNKNOWN_METRIC_ANGLE_PARSED
+                , unit.Equals("") ? defaultMetric : unit));
+            return floatValue;
+        }
+
+        /// <summary>
+        /// Parses a angle with an allowed metric unit (deg, grad, rad) or numeric value (e.g. 123, 1.23,
+        /// .123) to rad.
+        /// </summary>
+        /// <remarks>
+        /// Parses a angle with an allowed metric unit (deg, grad, rad) or numeric value (e.g. 123, 1.23,
+        /// .123) to rad. Default metric is degrees
+        /// </remarks>
+        /// <param name="angle">String containing the angle to parse</param>
+        /// <returns>the angle in radians</returns>
+        public static float ParseAngle(String angle) {
+            return ParseAngle(angle, CommonCssConstants.DEG);
+        }
+
         /// <summary>Parses an aspect ratio into an array with two integers.</summary>
         /// <param name="str">a string that might contain two integer values</param>
         /// <returns>the aspect ratio as an array of two integer values</returns>
@@ -138,13 +218,12 @@ namespace iText.StyledXmlParser.Css.Util {
             }
         }
 
-        /// <summary>Parses a length with an allowed metric unit (px, pt, in, cm, mm, pc, q) or numeric value (e.g.</summary>
-        /// <remarks>
+        /// <summary>
         /// Parses a length with an allowed metric unit (px, pt, in, cm, mm, pc, q) or numeric value (e.g. 123, 1.23,
         /// .123) to pt.<br />
         /// A numeric value (without px, pt, etc in the given length string) is considered to be in the default metric that
         /// was given.
-        /// </remarks>
+        /// </summary>
         /// <param name="length">the string containing the length.</param>
         /// <param name="defaultMetric">
         /// the string containing the metric if it is possible that the length string does not contain
@@ -160,57 +239,57 @@ namespace iText.StyledXmlParser.Css.Util {
                 throw new StyledXMLParserException(MessageFormatUtil.Format(iText.StyledXmlParser.LogMessageConstant.NAN, 
                     length));
             }
-            float f = float.Parse(length.JSubstring(0, pos), System.Globalization.CultureInfo.InvariantCulture);
+            // Use double type locally to have better precision of the result after applying arithmetic operations
+            double f = Double.Parse(length.JSubstring(0, pos), System.Globalization.CultureInfo.InvariantCulture);
             String unit = length.Substring(pos);
             //points
             if (unit.StartsWith(CommonCssConstants.PT) || unit.Equals("") && defaultMetric.Equals(CommonCssConstants.PT
                 )) {
-                return f;
+                return (float)f;
             }
             // inches
             if (unit.StartsWith(CommonCssConstants.IN) || (unit.Equals("") && defaultMetric.Equals(CommonCssConstants.
                 IN))) {
-                return f * 72f;
+                return (float)(f * 72);
             }
             else {
                 // centimeters
                 if (unit.StartsWith(CommonCssConstants.CM) || (unit.Equals("") && defaultMetric.Equals(CommonCssConstants.
                     CM))) {
-                    return (f / 2.54f) * 72f;
+                    return (float)((f / 2.54) * 72);
                 }
                 else {
                     // quarter of a millimeter (1/40th of a centimeter).
                     if (unit.StartsWith(CommonCssConstants.Q) || (unit.Equals("") && defaultMetric.Equals(CommonCssConstants.Q
                         ))) {
-                        return (f / 2.54f) * 72f / 40;
+                        return (float)((f / 2.54) * 72 / 40);
                     }
                     else {
                         // millimeters
                         if (unit.StartsWith(CommonCssConstants.MM) || (unit.Equals("") && defaultMetric.Equals(CommonCssConstants.
                             MM))) {
-                            return (f / 25.4f) * 72f;
+                            return (float)((f / 25.4) * 72);
                         }
                         else {
                             // picas
                             if (unit.StartsWith(CommonCssConstants.PC) || (unit.Equals("") && defaultMetric.Equals(CommonCssConstants.
                                 PC))) {
-                                return f * 12f;
+                                return (float)(f * 12);
                             }
                             else {
                                 // pixels (1px = 0.75pt).
                                 if (unit.StartsWith(CommonCssConstants.PX) || (unit.Equals("") && defaultMetric.Equals(CommonCssConstants.
                                     PX))) {
-                                    return f * 0.75f;
+                                    return (float)(f * 0.75);
                                 }
                             }
                         }
                     }
                 }
             }
-            ILog logger = LogManager.GetLogger(typeof(iText.StyledXmlParser.Css.Util.CssUtils));
             logger.Error(MessageFormatUtil.Format(iText.StyledXmlParser.LogMessageConstant.UNKNOWN_ABSOLUTE_METRIC_LENGTH_PARSED
                 , unit.Equals("") ? defaultMetric : unit));
-            return f;
+            return (float)f;
         }
 
         /// <summary>Parses the absolute length.</summary>
@@ -222,12 +301,8 @@ namespace iText.StyledXmlParser.Css.Util {
 
         /// <summary>
         /// Parses an relative value based on the base value that was given, in the metric unit of the base value.<br />
-        /// (e.g.
-        /// </summary>
-        /// <remarks>
-        /// Parses an relative value based on the base value that was given, in the metric unit of the base value.<br />
         /// (e.g. margin=10% should be based on the page width, so if an A4 is used, the margin = 0.10*595.0 = 59.5f)
-        /// </remarks>
+        /// </summary>
         /// <param name="relativeValue">in %, em or ex.</param>
         /// <param name="baseValue">the value the returned float is based on.</param>
         /// <returns>the parsed float in the metric unit of the base value.</returns>
@@ -236,6 +311,7 @@ namespace iText.StyledXmlParser.Css.Util {
             if (pos == 0) {
                 return 0f;
             }
+            // Use double type locally to have better precision of the result after applying arithmetic operations
             double f = Double.Parse(relativeValue.JSubstring(0, pos), System.Globalization.CultureInfo.InvariantCulture
                 );
             String unit = relativeValue.Substring(pos);
@@ -257,11 +333,14 @@ namespace iText.StyledXmlParser.Css.Util {
 
         /// <summary>Convenience method for parsing a value to pt.</summary>
         /// <remarks>
-        /// Convenience method for parsing a value to pt. Possible values are: <ul>
-        /// <li>a numeric value in pixels (e.g. 123, 1.23, .123),</li>
-        /// <li>a value with a metric unit (px, in, cm, mm, pc or pt) attached to it,</li>
-        /// <li>or a value with a relative value (%, em, ex).</li>
-        /// </ul>
+        /// Convenience method for parsing a value to pt. Possible values are: <list type="bullet">
+        /// <item><description>a numeric value in pixels (e.g. 123, 1.23, .123),
+        /// </description></item>
+        /// <item><description>a value with a metric unit (px, in, cm, mm, pc or pt) attached to it,
+        /// </description></item>
+        /// <item><description>or a value with a relative value (%, em, ex).
+        /// </description></item>
+        /// </list>
         /// </remarks>
         /// <param name="value">the value</param>
         /// <param name="emValue">the em value</param>
@@ -293,7 +372,7 @@ namespace iText.StyledXmlParser.Css.Util {
         /// <summary>Parses the absolute font size.</summary>
         /// <remarks>
         /// Parses the absolute font size.
-        /// <p>
+        /// <para />
         /// A numeric value (without px, pt, etc in the given length string) is considered to be in the default metric that
         /// was given.
         /// </remarks>
@@ -328,7 +407,7 @@ namespace iText.StyledXmlParser.Css.Util {
         /// <summary>Parses the absolute font size.</summary>
         /// <remarks>
         /// Parses the absolute font size.
-        /// <p>
+        /// <para />
         /// A numeric value (without px, pt, etc in the given length string) is considered to be in the px.
         /// </remarks>
         /// <param name="fontSizeValue">
@@ -395,29 +474,32 @@ namespace iText.StyledXmlParser.Css.Util {
             if (pos == 0) {
                 return 0f;
             }
-            float f = float.Parse(resolutionStr.JSubstring(0, pos), System.Globalization.CultureInfo.InvariantCulture);
+            double f = Double.Parse(resolutionStr.JSubstring(0, pos), System.Globalization.CultureInfo.InvariantCulture
+                );
             String unit = resolutionStr.Substring(pos);
             if (unit.StartsWith(CommonCssConstants.DPCM)) {
-                f *= 2.54f;
+                f *= 2.54;
             }
             else {
                 if (unit.StartsWith(CommonCssConstants.DPPX)) {
                     f *= 96;
                 }
             }
-            return f;
+            return (float)f;
         }
 
-        /// <summary>Method used in preparation of splitting a string containing a numeric value with a metric unit (e.g.
-        ///     </summary>
-        /// <remarks>
-        /// Method used in preparation of splitting a string containing a numeric value with a metric unit (e.g. 18px, 9pt, 6cm, etc).<br /><br />
-        /// Determines the position between digits and affiliated characters ('+','-','0-9' and '.') and all other characters.<br />
+        /// <summary>
+        /// Method used in preparation of splitting a string containing a numeric value with a metric unit (e.g. 18px, 9pt,
+        /// 6cm, etc).<br /><br />
+        /// Determines the position between digits and affiliated characters ('+','-','0-9' and '.') and all other
+        /// characters.<br />
         /// e.g. string "16px" will return 2, string "0.5em" will return 3 and string '-8.5mm' will return 4.
-        /// </remarks>
+        /// </summary>
         /// <param name="string">containing a numeric value with a metric unit</param>
-        /// <returns>int position between the numeric value and unit or 0 if string is null or string started with a non-numeric value.
-        ///     </returns>
+        /// <returns>
+        /// int position between the numeric value and unit or 0 if string is null or string started with a
+        /// non-numeric value.
+        /// </returns>
         private static int DeterminePositionBetweenValueAndUnit(String @string) {
             if (@string == null) {
                 return 0;
@@ -435,17 +517,31 @@ namespace iText.StyledXmlParser.Css.Util {
             return pos;
         }
 
-        /// <summary>
-        /// /
-        /// Checks whether a string contains an allowed metric unit in HTML/CSS; px, in, cm, mm, pc or pt.
-        /// </summary>
+        /// <summary>Checks whether a string contains an allowed metric unit in HTML/CSS; px, in, cm, mm, pc, Q or pt.
+        ///     </summary>
         /// <param name="value">the string that needs to be checked.</param>
         /// <returns>boolean true if value contains an allowed metric value.</returns>
         public static bool IsMetricValue(String value) {
             if (value == null) {
                 return false;
             }
-            foreach (String metricPostfix in METRIC_MEASUREMENTS) {
+            foreach (String metricPostfix in CommonCssConstants.METRIC_MEASUREMENTS_VALUES) {
+                if (value.EndsWith(metricPostfix) && IsNumericValue(value.JSubstring(0, value.Length - metricPostfix.Length
+                    ).Trim())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>Checks whether a string contains an allowed metric unit in HTML/CSS; rad, deg and grad.</summary>
+        /// <param name="value">the string that needs to be checked.</param>
+        /// <returns>boolean true if value contains an allowed angle value.</returns>
+        public static bool IsAngleValue(String value) {
+            if (value == null) {
+                return false;
+            }
+            foreach (String metricPostfix in ANGLE_MEASUREMENTS_VALUES) {
                 if (value.EndsWith(metricPostfix) && IsNumericValue(value.JSubstring(0, value.Length - metricPostfix.Length
                     ).Trim())) {
                     return true;
@@ -461,7 +557,7 @@ namespace iText.StyledXmlParser.Css.Util {
             if (value == null) {
                 return false;
             }
-            foreach (String relativePostfix in RELATIVE_MEASUREMENTS) {
+            foreach (String relativePostfix in RELATIVE_MEASUREMENTS_VALUES) {
                 if (value.EndsWith(relativePostfix) && IsNumericValue(value.JSubstring(0, value.Length - relativePostfix.Length
                     ).Trim())) {
                     return true;
@@ -470,17 +566,59 @@ namespace iText.StyledXmlParser.Css.Util {
             return false;
         }
 
+        /// <summary>Checks whether a string contains an allowed value relative to font.</summary>
+        /// <param name="value">the string that needs to be checked.</param>
+        /// <returns>boolean true if value contains an allowed font relative value.</returns>
+        public static bool IsFontRelativeValue(String value) {
+            if (value == null) {
+                return false;
+            }
+            foreach (String relativePostfix in FONT_RELATIVE_MEASUREMENTS_VALUES) {
+                if (value.EndsWith(relativePostfix) && IsNumericValue(value.JSubstring(0, value.Length - relativePostfix.Length
+                    ).Trim())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>Checks whether a string contains a percentage value</summary>
+        /// <param name="value">the string that needs to be checked</param>
+        /// <returns>boolean true if value contains an allowed percentage value</returns>
+        public static bool IsPercentageValue(String value) {
+            return value != null && value.EndsWith(CommonCssConstants.PERCENTAGE) && IsNumericValue(value.JSubstring(0
+                , value.Length - CommonCssConstants.PERCENTAGE.Length).Trim());
+        }
+
         /// <summary>Checks whether a string contains an allowed value relative to previously set root value.</summary>
         /// <param name="value">the string that needs to be checked.</param>
-        /// <returns>boolean true if value contains an allowed metric value.</returns>
+        /// <returns>boolean true if value contains a rem value.</returns>
         public static bool IsRemValue(String value) {
             return value != null && value.EndsWith(CommonCssConstants.REM) && IsNumericValue(value.JSubstring(0, value
                 .Length - CommonCssConstants.REM.Length).Trim());
         }
 
-        /// <summary>Checks whether a string matches a numeric value (e.g.</summary>
-        /// <remarks>Checks whether a string matches a numeric value (e.g. 123, 1.23, .123). All these metric values are allowed in HTML/CSS.
-        ///     </remarks>
+        /// <summary>Checks whether a string contains an allowed value relative to parent value.</summary>
+        /// <param name="value">the string that needs to be checked.</param>
+        /// <returns>boolean true if value contains a em value.</returns>
+        public static bool IsEmValue(String value) {
+            return value != null && value.EndsWith(CommonCssConstants.EM) && IsNumericValue(value.JSubstring(0, value.
+                Length - CommonCssConstants.EM.Length).Trim());
+        }
+
+        /// <summary>Checks whether a string contains an allowed value relative to element font height.</summary>
+        /// <param name="value">the string that needs to be checked.</param>
+        /// <returns>boolean true if value contains a ex value.</returns>
+        public static bool IsExValue(String value) {
+            return value != null && value.EndsWith(CommonCssConstants.EX) && IsNumericValue(value.JSubstring(0, value.
+                Length - CommonCssConstants.EX.Length).Trim());
+        }
+
+        /// <summary>Checks whether a string matches a numeric value (e.g. 123, 1.23, .123).</summary>
+        /// <remarks>
+        /// Checks whether a string matches a numeric value (e.g. 123, 1.23, .123). All these metric values are allowed in
+        /// HTML/CSS.
+        /// </remarks>
         /// <param name="value">the string that needs to be checked.</param>
         /// <returns>boolean true if value contains an allowed metric value.</returns>
         public static bool IsNumericValue(String value) {
@@ -492,8 +630,7 @@ namespace iText.StyledXmlParser.Css.Util {
         /// Parses
         /// <c>url("file.jpg")</c>
         /// to
-        /// <c>file.jpg</c>
-        /// .
+        /// <c>file.jpg</c>.
         /// </summary>
         /// <param name="url">the url attribute to parse</param>
         /// <returns>the parsed url. Or original url if not wrappend in url()</returns>
@@ -576,7 +713,6 @@ namespace iText.StyledXmlParser.Css.Util {
         public static float[] ParseRgbaColor(String colorValue) {
             float[] rgbaColor = WebColors.GetRGBAColor(colorValue);
             if (rgbaColor == null) {
-                ILog logger = LogManager.GetLogger(typeof(iText.StyledXmlParser.Css.Util.CssUtils));
                 logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.COLOR_NOT_PARSED, colorValue));
                 rgbaColor = new float[] { 0, 0, 0, 1 };
             }
@@ -636,10 +772,11 @@ namespace iText.StyledXmlParser.Css.Util {
         }
 
         private static bool IsExponentNotation(String s, int index) {
-            return index < s.Length && s[index] == 'e' && (index + 1 < s.Length && IsDigit(s[index + 1]) || index + 2 
-                < s.Length && (s[index + 1] == '-' || s[index + 1] == '+') && IsDigit(s[index + 2]));
+            return index < s.Length && s[index] == 'e' && 
+                        // e.g. 12e5
+                        (index + 1 < s.Length && IsDigit(s[index + 1]) || 
+                        // e.g. 12e-5, 12e+5
+                        index + 2 < s.Length && (s[index + 1] == '-' || s[index + 1] == '+') && IsDigit(s[index + 2]));
         }
-        // e.g. 12e5
-        // e.g. 12e-5, 12e+5
     }
 }

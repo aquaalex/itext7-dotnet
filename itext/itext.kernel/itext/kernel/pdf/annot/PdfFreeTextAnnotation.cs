@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -197,10 +197,15 @@ namespace iText.Kernel.Pdf.Annot {
         /// Sets border style dictionary that has more settings than the array specified for the Border entry (
         /// <see cref="PdfAnnotation.GetBorder()"/>
         /// ).
+        /// </summary>
+        /// <remarks>
+        /// Sets border style dictionary that has more settings than the array specified for the Border entry (
+        /// <see cref="PdfAnnotation.GetBorder()"/>
+        /// ).
         /// See ISO-320001, Table 166 and
         /// <see cref="GetBorderStyle()"/>
         /// for more info.
-        /// </summary>
+        /// </remarks>
         /// <param name="borderStyle">
         /// a border style dictionary specifying the line width and dash pattern that shall be used
         /// in drawing the annotation’s border.
@@ -217,23 +222,28 @@ namespace iText.Kernel.Pdf.Annot {
         /// <summary>Setter for the annotation's preset border style.</summary>
         /// <remarks>
         /// Setter for the annotation's preset border style. Possible values are
-        /// <ul>
-        /// <li>
+        /// <list type="bullet">
+        /// <item><description>
         /// <see cref="PdfAnnotation.STYLE_SOLID"/>
-        /// - A solid rectangle surrounding the annotation.</li>
-        /// <li>
+        /// - A solid rectangle surrounding the annotation.
+        /// </description></item>
+        /// <item><description>
         /// <see cref="PdfAnnotation.STYLE_DASHED"/>
-        /// - A dashed rectangle surrounding the annotation.</li>
-        /// <li>
+        /// - A dashed rectangle surrounding the annotation.
+        /// </description></item>
+        /// <item><description>
         /// <see cref="PdfAnnotation.STYLE_BEVELED"/>
-        /// - A simulated embossed rectangle that appears to be raised above the surface of the page.</li>
-        /// <li>
+        /// - A simulated embossed rectangle that appears to be raised above the surface of the page.
+        /// </description></item>
+        /// <item><description>
         /// <see cref="PdfAnnotation.STYLE_INSET"/>
-        /// - A simulated engraved rectangle that appears to be recessed below the surface of the page.</li>
-        /// <li>
+        /// - A simulated engraved rectangle that appears to be recessed below the surface of the page.
+        /// </description></item>
+        /// <item><description>
         /// <see cref="PdfAnnotation.STYLE_UNDERLINE"/>
-        /// - A single line along the bottom of the annotation rectangle.</li>
-        /// </ul>
+        /// - A single line along the bottom of the annotation rectangle.
+        /// </description></item>
+        /// </list>
         /// See also ISO-320001, Table 166.
         /// </remarks>
         /// <param name="style">The new value for the annotation's border style.</param>
@@ -252,8 +262,7 @@ namespace iText.Kernel.Pdf.Annot {
         /// Setter for the annotation's preset dashed border style. This property has affect only if
         /// <see cref="PdfAnnotation.STYLE_DASHED"/>
         /// style was used for the annotation border style (see
-        /// <see cref="SetBorderStyle(iText.Kernel.Pdf.PdfName)"/>
-        /// .
+        /// <see cref="SetBorderStyle(iText.Kernel.Pdf.PdfName)"/>.
         /// See ISO-320001 8.4.3.6, "Line Dash Pattern" for the format in which dash pattern shall be specified.
         /// </remarks>
         /// <param name="dashPattern">

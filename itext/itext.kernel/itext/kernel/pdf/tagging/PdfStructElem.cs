@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -54,7 +54,7 @@ namespace iText.Kernel.Pdf.Tagging {
     /// <summary>A wrapper for structure element dictionaries (ISO-32000 14.7.2 "Structure Hierarchy").</summary>
     /// <remarks>
     /// A wrapper for structure element dictionaries (ISO-32000 14.7.2 "Structure Hierarchy").
-    /// <p>
+    /// <para />
     /// The logical structure of a document shall be described by a hierarchy of objects called
     /// the structure hierarchy or structure tree. At the root of the hierarchy shall be a dictionary object
     /// called the structure tree root (see
@@ -92,11 +92,11 @@ namespace iText.Kernel.Pdf.Tagging {
         /// <summary>Method to to distinguish struct elements from other elements of the logical tree (like mcr or struct tree root).
         ///     </summary>
         public static bool IsStructElem(PdfDictionary dictionary) {
+            // S is required key of the struct elem
             return (PdfName.StructElem.Equals(dictionary.GetAsName(PdfName.Type)) || dictionary.ContainsKey(PdfName.S)
                 );
         }
 
-        // required key of the struct elem
         /// <summary>Gets attributes object.</summary>
         /// <param name="createNewIfNull">
         /// sometimes attributes object may not exist.
@@ -319,8 +319,15 @@ namespace iText.Kernel.Pdf.Tagging {
         /// <see cref="iText.Kernel.Pdf.PdfName.Ref"/>
         /// identifies the structure element to which the item of content, contained
         /// within this structure element, refers (e.g. footnotes, endnotes, sidebars, etc.).
-        /// <p>This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.</p>
         /// </summary>
+        /// <remarks>
+        /// A
+        /// <see cref="iText.Kernel.Pdf.PdfName.Ref"/>
+        /// identifies the structure element to which the item of content, contained
+        /// within this structure element, refers (e.g. footnotes, endnotes, sidebars, etc.).
+        /// <para />
+        /// This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.
+        /// </remarks>
         /// <param name="ref">
         /// a
         /// <see cref="PdfStructElem"/>
@@ -359,7 +366,8 @@ namespace iText.Kernel.Pdf.Tagging {
         /// <summary>A namespace this element belongs to (see ISO 32000-2 14.7.4, "Namespaces").</summary>
         /// <remarks>
         /// A namespace this element belongs to (see ISO 32000-2 14.7.4, "Namespaces").
-        /// <p>This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.</p>
+        /// <para />
+        /// This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.
         /// </remarks>
         /// <param name="namespace">
         /// a
@@ -383,7 +391,8 @@ namespace iText.Kernel.Pdf.Tagging {
         /// <remarks>
         /// Attribute for a structure element that may be used as pronunciation hint. It is an exact replacement for content
         /// enclosed by the structure element and its children.
-        /// <p>This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.</p>
+        /// <para />
+        /// This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.
         /// </remarks>
         /// <param name="elementPhoneme">
         /// a
@@ -416,29 +425,39 @@ namespace iText.Kernel.Pdf.Tagging {
         /// Attribute for a structure element that indicates the phonetic alphabet used by a
         /// <see cref="iText.Kernel.Pdf.PdfName.Phoneme"/>
         /// attribute.
-        /// Applies to the structure element and its children, except where overridden by a child structure element.
-        /// <p>This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.</p>
         /// </summary>
+        /// <remarks>
+        /// Attribute for a structure element that indicates the phonetic alphabet used by a
+        /// <see cref="iText.Kernel.Pdf.PdfName.Phoneme"/>
+        /// attribute.
+        /// Applies to the structure element and its children, except where overridden by a child structure element.
+        /// <para />
+        /// This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.
+        /// </remarks>
         /// <param name="phoneticAlphabet">
         /// the
         /// <see cref="iText.Kernel.Pdf.PdfName"/>
         /// which defines phonetic alphabet used by a
         /// <see cref="iText.Kernel.Pdf.PdfName.Phoneme"/>
         /// attribute. Possible values are:
-        /// <ul>
-        /// <li>
+        /// <list type="bullet">
+        /// <item><description>
         /// <see cref="iText.Kernel.Pdf.PdfName.ipa"/>
-        /// for the International Phonetic Alphabet by the International Phonetic Association;</li>
-        /// <li>
+        /// for the International Phonetic Alphabet by the International Phonetic Association;
+        /// </description></item>
+        /// <item><description>
         /// <see cref="iText.Kernel.Pdf.PdfName.x_sampa"/>
-        /// for Extended Speech Assessment Methods Phonetic Alphabet (X-SAMPA);</li>
-        /// <li>
+        /// for Extended Speech Assessment Methods Phonetic Alphabet (X-SAMPA);
+        /// </description></item>
+        /// <item><description>
         /// <see cref="iText.Kernel.Pdf.PdfName.zh_Latn_pinyin"/>
-        /// for Pinyin Latin romanization (Mandarin);</li>
-        /// <li>
+        /// for Pinyin Latin romanization (Mandarin);
+        /// </description></item>
+        /// <item><description>
         /// <see cref="iText.Kernel.Pdf.PdfName.zh_Latn_wadegile"/>
-        /// for Wade-Giles romanization (Mandarin).</li>
-        /// </ul>
+        /// for Wade-Giles romanization (Mandarin).
+        /// </description></item>
+        /// </list>
         /// Other values may be used.
         /// </param>
         public virtual void SetPhoneticAlphabet(PdfName phoneticAlphabet) {
@@ -451,8 +470,13 @@ namespace iText.Kernel.Pdf.Tagging {
         /// Attribute for a structure element that indicates the phonetic alphabet used by a
         /// <see cref="iText.Kernel.Pdf.PdfName.Phoneme"/>
         /// attribute.
-        /// Applies to the structure element and its children, except where overridden by a child structure element.
         /// </summary>
+        /// <remarks>
+        /// Attribute for a structure element that indicates the phonetic alphabet used by a
+        /// <see cref="iText.Kernel.Pdf.PdfName.Phoneme"/>
+        /// attribute.
+        /// Applies to the structure element and its children, except where overridden by a child structure element.
+        /// </remarks>
         /// <returns>
         /// the
         /// <see cref="iText.Kernel.Pdf.PdfName"/>
@@ -469,22 +493,15 @@ namespace iText.Kernel.Pdf.Tagging {
             return GetPdfObject().GetAsName(PdfName.PhoneticAlphabet);
         }
 
-        /// <summary>
-        /// <p>
-        /// Adds file associated with structure element and identifies the relationship between them.
-        /// </summary>
+        /// <summary>Adds file associated with structure element and identifies the relationship between them.</summary>
         /// <remarks>
-        /// <p>
         /// Adds file associated with structure element and identifies the relationship between them.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Associated files may be used in Pdf/A-3 and Pdf 2.0 documents.
         /// The method adds file to array value of the AF key in the structure element dictionary.
         /// If description is provided, it also will add file description to catalog Names tree.
-        /// </p>
-        /// <p>
+        /// <para />
         /// For associated files their associated file specification dictionaries shall include the AFRelationship key
-        /// </p>
         /// </remarks>
         /// <param name="description">the file description</param>
         /// <param name="fs">file specification dictionary of associated file</param>
@@ -505,20 +522,17 @@ namespace iText.Kernel.Pdf.Tagging {
         }
 
         /// <summary>
-        /// <p>
+        /// <para />
         /// Adds file associated with structure element and identifies the relationship between them.
         /// </summary>
         /// <remarks>
-        /// <p>
+        /// <para />
         /// Adds file associated with structure element and identifies the relationship between them.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Associated files may be used in Pdf/A-3 and Pdf 2.0 documents.
         /// The method adds file to array value of the AF key in the structure element dictionary.
-        /// </p>
-        /// <p>
+        /// <para />
         /// For associated files their associated file specification dictionaries shall include the AFRelationship key
-        /// </p>
         /// </remarks>
         /// <param name="fs">file specification dictionary of associated file</param>
         public virtual void AddAssociatedFile(PdfFileSpec fs) {

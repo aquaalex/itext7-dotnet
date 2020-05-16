@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -151,8 +151,7 @@ namespace iText.Kernel.Font {
             return 1;
         }
 
-        /// <summary>Checks whether the glyph is appendable, i.e.</summary>
-        /// <remarks>Checks whether the glyph is appendable, i.e. has valid unicode and code values</remarks>
+        /// <summary>Checks whether the glyph is appendable, i.e. has valid unicode and code values</summary>
         /// <param name="glyph">
         /// not-null
         /// <see cref="iText.IO.Font.Otf.Glyph"/>
@@ -402,7 +401,7 @@ namespace iText.Kernel.Font {
                         //prevent lost of widths info
                         int uni = fontEncoding.GetUnicode(k);
                         Glyph glyph = uni > -1 ? GetGlyph(uni) : fontProgram.GetGlyphByCode(k);
-                        wd.Add(new PdfNumber(glyph != null ? glyph.GetWidth() : 0));
+                        wd.Add(new PdfNumber(GetGlyphWidth(glyph)));
                     }
                 }
                 GetPdfObject().Put(PdfName.Widths, wd);
@@ -427,8 +426,7 @@ namespace iText.Kernel.Font {
         /// </summary>
         /// <returns>
         /// the PdfDictionary containing the font descriptor or
-        /// <see langword="null"/>
-        /// .
+        /// <see langword="null"/>.
         /// </returns>
         protected internal override PdfDictionary GetFontDescriptor(String fontName) {
             System.Diagnostics.Debug.Assert(fontName != null && fontName.Length > 0);
@@ -460,10 +458,10 @@ namespace iText.Kernel.Font {
             //add font stream and flush it immediately
             AddFontStream(fontDescriptor);
             int flags = fontProgram.GetPdfFontFlags();
-            flags &= ~(FontDescriptorFlags.Symbolic | FontDescriptorFlags.Nonsymbolic);
             // reset both flags
+            flags &= ~(FontDescriptorFlags.Symbolic | FontDescriptorFlags.Nonsymbolic);
+            // set fontSpecific based on font encoding
             flags |= fontEncoding.IsFontSpecific() ? FontDescriptorFlags.Symbolic : FontDescriptorFlags.Nonsymbolic;
-            // set based on font encoding
             fontDescriptor.Put(PdfName.Flags, new PdfNumber(flags));
             return fontDescriptor;
         }
@@ -472,6 +470,10 @@ namespace iText.Kernel.Font {
 
         protected internal virtual void SetFontProgram(T fontProgram) {
             this.fontProgram = fontProgram;
+        }
+
+        protected internal virtual double GetGlyphWidth(Glyph glyph) {
+            return glyph != null ? glyph.GetWidth() : 0;
         }
     }
 }

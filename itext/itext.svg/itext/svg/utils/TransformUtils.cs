@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,7 @@ namespace iText.Svg.Utils {
     /// <remarks>
     /// Utility class responsible for converting Strings containing transformation declarations
     /// into AffineTransform objects.
-    /// <p>
+    /// <para />
     /// This class only supports the transformations as described in the SVG specification:
     /// - matrix
     /// - rotate
@@ -68,7 +68,7 @@ namespace iText.Svg.Utils {
         /// <summary>Keyword for matrix transformations.</summary>
         /// <remarks>
         /// Keyword for matrix transformations. Accepts 6 values.
-        /// <p>
+        /// <para />
         /// matrix(0 1 2 3 4 5)
         /// </remarks>
         private const String MATRIX = "MATRIX";
@@ -77,7 +77,7 @@ namespace iText.Svg.Utils {
         /// <remarks>
         /// Keyword for rotation transformation. Accepts either 1 or 3 values.
         /// In the case of 1 value, x and y are assumed to be the origin of the user space.
-        /// <p>
+        /// <para />
         /// rotate(angle x y)
         /// rotate(angle)
         /// </remarks>
@@ -87,7 +87,7 @@ namespace iText.Svg.Utils {
         /// <remarks>
         /// Keyword for scale transformation. Accepts either 1 or 2 values.
         /// In the case of 1 value, the second value is assumed to be the same as the first one.
-        /// <p>
+        /// <para />
         /// scale(x y)
         /// scale(x)
         /// </remarks>
@@ -96,7 +96,7 @@ namespace iText.Svg.Utils {
         /// <summary>Keyword for skewX transformation.</summary>
         /// <remarks>
         /// Keyword for skewX transformation. Accepts 1 value.
-        /// <p>
+        /// <para />
         /// skewX(angle)
         /// </remarks>
         private const String SKEWX = "SKEWX";
@@ -104,7 +104,7 @@ namespace iText.Svg.Utils {
         /// <summary>Keyword for skewY transformation.</summary>
         /// <remarks>
         /// Keyword for skewY transformation. Accepts 1 value.
-        /// <p>
+        /// <para />
         /// skewY(angle)
         /// </remarks>
         private const String SKEWY = "SKEWY";
@@ -113,7 +113,7 @@ namespace iText.Svg.Utils {
         /// <remarks>
         /// Keyword for translate transformation. Accepts either 1 or 2 values.
         /// In the case of 1 value, the y value is assumed to be 0.
-        /// <p>
+        /// <para />
         /// translate(x y)
         /// translate(x)
         /// </remarks>
@@ -153,7 +153,8 @@ namespace iText.Svg.Utils {
             return matrix;
         }
 
-        /// <summary>A transformation attribute can encompass multiple transformation operation (e.g.</summary>
+        /// <summary>A transformation attribute can encompass multiple transformation operation (e.g. "translate(10,20) scale(30,40)".
+        ///     </summary>
         /// <remarks>
         /// A transformation attribute can encompass multiple transformation operation (e.g. "translate(10,20) scale(30,40)".
         /// This method splits the original transformation string into multiple strings so that they can be handled separately.

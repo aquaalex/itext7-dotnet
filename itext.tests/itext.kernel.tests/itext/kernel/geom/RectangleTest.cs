@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -40,7 +40,10 @@ source product.
 For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
+using System;
 using System.Collections.Generic;
+using System.IO;
+using iText.IO.Util;
 using iText.Kernel;
 using iText.Kernel.Pdf;
 using iText.Test;
@@ -405,6 +408,208 @@ namespace iText.Kernel.Geom {
                 exception = true;
             }
             NUnit.Framework.Assert.IsTrue(exception);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void TranslateOnRotatedPageTest01() {
+            // we need a page with set rotation and page size to test Rectangle#getRectangleOnRotatedPage
+            PdfDocument pdfDocument = new PdfDocument(new PdfWriter(new MemoryStream()));
+            PdfPage page = pdfDocument.AddNewPage();
+            NUnit.Framework.Assert.IsTrue(PageSize.A4.EqualsWithEpsilon(page.GetPageSize()));
+            // Test rectangle
+            Rectangle testRectangle = new Rectangle(200, 200, 100, 200);
+            NUnit.Framework.Assert.AreEqual(0, page.GetRotation());
+            NUnit.Framework.Assert.IsTrue(new Rectangle(200, 200, 100, 200).EqualsWithEpsilon(Rectangle.GetRectangleOnRotatedPage
+                (testRectangle, page)));
+            page.SetRotation(90);
+            NUnit.Framework.Assert.AreEqual(90, page.GetRotation());
+            NUnit.Framework.Assert.IsTrue(new Rectangle(195, 200, 200, 100).EqualsWithEpsilon(Rectangle.GetRectangleOnRotatedPage
+                (testRectangle, page)));
+            page.SetRotation(180);
+            NUnit.Framework.Assert.AreEqual(180, page.GetRotation());
+            NUnit.Framework.Assert.IsTrue(new Rectangle(295, 442, 100, 200).EqualsWithEpsilon(Rectangle.GetRectangleOnRotatedPage
+                (testRectangle, page)));
+            page.SetRotation(270);
+            NUnit.Framework.Assert.AreEqual(270, page.GetRotation());
+            NUnit.Framework.Assert.IsTrue(new Rectangle(200, 542, 200, 100).EqualsWithEpsilon(Rectangle.GetRectangleOnRotatedPage
+                (testRectangle, page)));
+            page.SetRotation(360);
+            NUnit.Framework.Assert.AreEqual(0, page.GetRotation());
+            NUnit.Framework.Assert.IsTrue(new Rectangle(200, 200, 100, 200).EqualsWithEpsilon(Rectangle.GetRectangleOnRotatedPage
+                (testRectangle, page)));
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void CalculateBBoxTest() {
+            Point a = new Point(100, 100);
+            Point b = new Point(200, 100);
+            Point c = new Point(200, 200);
+            Point d = new Point(100, 200);
+            // Zero rotation
+            Rectangle.CalculateBBox(JavaUtil.ArraysAsList(a, b, c, d));
+            NUnit.Framework.Assert.IsTrue(new Rectangle(100, 100, 100, 100).EqualsWithEpsilon(Rectangle.CalculateBBox(
+                JavaUtil.ArraysAsList(a, b, c, d))));
+            // 270 degree rotation
+            a = new Point(200, 100);
+            b = new Point(200, 200);
+            c = new Point(100, 200);
+            d = new Point(100, 100);
+            NUnit.Framework.Assert.IsTrue(new Rectangle(100, 100, 100, 100).EqualsWithEpsilon(Rectangle.CalculateBBox(
+                JavaUtil.ArraysAsList(a, b, c, d))));
+            // it looks as follows:
+            // dxxxxxx
+            // xxxxxxx
+            // cxxxxxa
+            // xxxxxxx
+            // xxxxxxb
+            a = new Point(200, 100);
+            b = new Point(200, 0);
+            c = new Point(0, 100);
+            d = new Point(0, 200);
+            NUnit.Framework.Assert.IsTrue(new Rectangle(0, 0, 200, 200).EqualsWithEpsilon(Rectangle.CalculateBBox(JavaUtil.ArraysAsList
+                (a, b, c, d))));
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SetBBoxWithoutNormalizationTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(100, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(200, rectangle.GetHeight(), 1e-5);
+            //set bBox without any normalization needed
+            rectangle.SetBbox(10, 10, 90, 190);
+            NUnit.Framework.Assert.AreEqual(10, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(10, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(80, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(180, rectangle.GetHeight(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SetBBoxNormalizeXTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(100, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(200, rectangle.GetHeight(), 1e-5);
+            //set bBox where llx > urx
+            rectangle.SetBbox(90, 10, 10, 190);
+            NUnit.Framework.Assert.AreEqual(10, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(10, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(80, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(180, rectangle.GetHeight(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SetBBoxNormalizeYTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(100, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(200, rectangle.GetHeight(), 1e-5);
+            //set bBox where lly > ury
+            rectangle.SetBbox(10, 190, 90, 10);
+            NUnit.Framework.Assert.AreEqual(10, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(10, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(80, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(180, rectangle.GetHeight(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SetXTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetX(), 1e-5);
+            rectangle.SetX(50);
+            NUnit.Framework.Assert.AreEqual(50, rectangle.GetX(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SetYTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetY(), 1e-5);
+            rectangle.SetY(50);
+            NUnit.Framework.Assert.AreEqual(50, rectangle.GetY(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SetWidthTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(100, rectangle.GetWidth(), 1e-5);
+            rectangle.SetWidth(50);
+            NUnit.Framework.Assert.AreEqual(50, rectangle.GetWidth(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SetHeightTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(200, rectangle.GetHeight(), 1e-5);
+            rectangle.SetHeight(50);
+            NUnit.Framework.Assert.AreEqual(50, rectangle.GetHeight(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void IncreaseHeightTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(200, rectangle.GetHeight(), 1e-5);
+            rectangle.IncreaseHeight(50);
+            NUnit.Framework.Assert.AreEqual(250, rectangle.GetHeight(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void DecreaseHeightTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(200, rectangle.GetHeight(), 1e-5);
+            rectangle.DecreaseHeight(50);
+            NUnit.Framework.Assert.AreEqual(150, rectangle.GetHeight(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ApplyMarginsShrinkTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100, 200);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(0, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(100, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(200, rectangle.GetHeight(), 1e-5);
+            //shrink the rectangle
+            rectangle.ApplyMargins(20, 20, 20, 20, false);
+            NUnit.Framework.Assert.AreEqual(20, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(20, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(60, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(160, rectangle.GetHeight(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ApplyMarginsExpandTest() {
+            Rectangle rectangle = new Rectangle(20, 20, 100, 200);
+            NUnit.Framework.Assert.AreEqual(20, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(20, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(100, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(200, rectangle.GetHeight(), 1e-5);
+            //expand the rectangle
+            rectangle.ApplyMargins(10, 10, 10, 10, true);
+            NUnit.Framework.Assert.AreEqual(10, rectangle.GetX(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(10, rectangle.GetY(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(120, rectangle.GetWidth(), 1e-5);
+            NUnit.Framework.Assert.AreEqual(220, rectangle.GetHeight(), 1e-5);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ToStringTest() {
+            Rectangle rectangle = new Rectangle(0, 0, 100f, 200f);
+            String rectangleString = rectangle.ToString();
+            //Using contains() to check for value instead of equals() on the whole string due to the
+            //differences between decimal numbers formatting in java and .NET.
+            NUnit.Framework.Assert.IsTrue(rectangleString.Contains("100"));
+            NUnit.Framework.Assert.IsTrue(rectangleString.Contains("200"));
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void CloneTest() {
+            PageSize originalPageSize = new PageSize(15, 20);
+            PageSize copyAsPageSize = (PageSize)originalPageSize.Clone();
+            Rectangle copyAsRectangle = ((Rectangle)originalPageSize).Clone();
+            NUnit.Framework.Assert.AreEqual(typeof(PageSize), copyAsPageSize.GetType());
+            NUnit.Framework.Assert.AreEqual(typeof(PageSize), copyAsRectangle.GetType());
         }
     }
 }

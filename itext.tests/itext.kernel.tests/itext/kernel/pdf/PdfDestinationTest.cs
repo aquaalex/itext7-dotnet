@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -65,8 +65,6 @@ namespace iText.Kernel.Pdf {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DestTest01() {
             String srcFile = sourceFolder + "simpleNoLinks.pdf";
@@ -88,8 +86,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DestCopyingTest01() {
             String srcFile = sourceFolder + "simpleWithLinks.pdf";
@@ -104,8 +100,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DestCopyingTest02() {
             String srcFile = sourceFolder + "simpleWithLinks.pdf";
@@ -120,8 +114,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DestCopyingTest03() {
             String srcFile = sourceFolder + "simpleWithLinks.pdf";
@@ -136,8 +128,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DestCopyingTest04() {
             String srcFile = sourceFolder + "simpleWithLinks.pdf";
@@ -152,8 +142,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DestCopyingTest05() {
             String srcFile = sourceFolder + "simpleWithLinks.pdf";
@@ -168,8 +156,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DestCopyingTest06() {
             String srcFile = sourceFolder + "sourceWithNamedDestination.pdf";
@@ -184,8 +170,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DestCopyingTest07() {
             String srcFile = sourceFolder + "sourceStringDestWithPageNumber.pdf";
@@ -200,8 +184,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void StructureDestination01Test() {
             String srcFile = sourceFolder + "customRolesMappingPdf2.pdf";
@@ -219,8 +201,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void StructureDestination02Test() {
             String srcFile = sourceFolder + "customRolesMappingPdf2.pdf";
@@ -241,7 +221,6 @@ namespace iText.Kernel.Pdf {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void MakeDestination01Test() {
             String srcFile = sourceFolder + "cmp_structureDestination01Test.pdf";
@@ -252,8 +231,6 @@ namespace iText.Kernel.Pdf {
             NUnit.Framework.Assert.AreEqual(typeof(PdfStructureDestination), destWrapper.GetType());
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void RemoteGoToDestinationTest() {
             String cmpFile = sourceFolder + "cmp_remoteGoToDestinationTest.pdf";

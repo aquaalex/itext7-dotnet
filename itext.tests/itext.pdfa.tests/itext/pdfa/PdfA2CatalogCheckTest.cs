@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -62,7 +62,6 @@ namespace iText.Pdfa {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck01() {
             NUnit.Framework.Assert.That(() =>  {
@@ -87,7 +86,6 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck02() {
             NUnit.Framework.Assert.That(() =>  {
@@ -115,8 +113,6 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck03() {
             String outPdf = destinationFolder + "pdfA2b_catalogCheck03.pdf";
@@ -143,7 +139,6 @@ namespace iText.Pdfa {
             CompareResult(outPdf, cmpPdf);
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck04() {
             NUnit.Framework.Assert.That(() =>  {
@@ -170,8 +165,6 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck05() {
             String outPdf = destinationFolder + "pdfA2b_catalogCheck05.pdf";
@@ -207,7 +200,6 @@ namespace iText.Pdfa {
             CompareResult(outPdf, cmpPdf);
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck06() {
             NUnit.Framework.Assert.That(() =>  {
@@ -243,7 +235,6 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck07() {
             NUnit.Framework.Assert.That(() =>  {
@@ -279,7 +270,6 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck08() {
             NUnit.Framework.Assert.That(() =>  {
@@ -320,7 +310,6 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck09() {
             NUnit.Framework.Assert.That(() =>  {
@@ -338,7 +327,6 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         [NUnit.Framework.Test]
         public virtual void CatalogCheck10() {
             NUnit.Framework.Assert.That(() =>  {
@@ -354,8 +342,61 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
+        [NUnit.Framework.Test]
+        public virtual void CheckAbsenceOfOptionalConfigEntry() {
+            NUnit.Framework.Assert.That(() =>  {
+                //TODO Remove expected exception when DEVSIX-3206 will be fixed
+                PdfWriter writer = new PdfWriter(new ByteArrayOutputStream());
+                Stream @is = new FileStream(sourceFolder + "sRGB Color Space Profile.icm", FileMode.Open, FileAccess.Read);
+                PdfADocument doc = new PdfADocument(writer, PdfAConformanceLevel.PDF_A_2B, new PdfOutputIntent("Custom", ""
+                    , "http://www.color.org", "sRGB IEC61966-2.1", @is));
+                doc.AddNewPage();
+                PdfDictionary ocProperties = new PdfDictionary();
+                PdfDictionary d = new PdfDictionary();
+                d.Put(PdfName.Name, new PdfString("CustomName"));
+                PdfDictionary orderItem = new PdfDictionary();
+                orderItem.Put(PdfName.Name, new PdfString("CustomName2"));
+                PdfArray ocgs = new PdfArray();
+                ocgs.Add(orderItem);
+                ocProperties.Put(PdfName.OCGs, ocgs);
+                ocProperties.Put(PdfName.D, d);
+                doc.GetCatalog().Put(PdfName.OCProperties, ocProperties);
+                doc.Close();
+            }
+            , NUnit.Framework.Throws.InstanceOf<PdfAConformanceException>().With.Message.EqualTo(PdfAConformanceException.ORDER_ARRAY_SHALL_CONTAIN_REFERENCES_TO_ALL_OCGS))
+;
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void CheckAbsenceOfOptionalOrderEntry() {
+            NUnit.Framework.Assert.That(() =>  {
+                //TODO Remove expected exception when DEVSIX-3206 will be fixed
+                PdfWriter writer = new PdfWriter(new ByteArrayOutputStream());
+                Stream @is = new FileStream(sourceFolder + "sRGB Color Space Profile.icm", FileMode.Open, FileAccess.Read);
+                PdfADocument doc = new PdfADocument(writer, PdfAConformanceLevel.PDF_A_2B, new PdfOutputIntent("Custom", ""
+                    , "http://www.color.org", "sRGB IEC61966-2.1", @is));
+                doc.AddNewPage();
+                PdfDictionary ocProperties = new PdfDictionary();
+                PdfDictionary d = new PdfDictionary();
+                d.Put(PdfName.Name, new PdfString("CustomName"));
+                PdfDictionary orderItem = new PdfDictionary();
+                orderItem.Put(PdfName.Name, new PdfString("CustomName2"));
+                PdfArray ocgs = new PdfArray();
+                ocgs.Add(orderItem);
+                PdfArray configs = new PdfArray();
+                PdfDictionary config = new PdfDictionary();
+                config.Put(PdfName.Name, new PdfString("CustomName1"));
+                configs.Add(config);
+                ocProperties.Put(PdfName.OCGs, ocgs);
+                ocProperties.Put(PdfName.D, d);
+                ocProperties.Put(PdfName.Configs, configs);
+                doc.GetCatalog().Put(PdfName.OCProperties, ocProperties);
+                doc.Close();
+            }
+            , NUnit.Framework.Throws.InstanceOf<PdfAConformanceException>().With.Message.EqualTo(PdfAConformanceException.ORDER_ARRAY_SHALL_CONTAIN_REFERENCES_TO_ALL_OCGS))
+;
+        }
+
         private void CompareResult(String outPdf, String cmpPdf) {
             String result = new CompareTool().CompareByContent(outPdf, cmpPdf, destinationFolder, "diff_");
             if (result != null) {

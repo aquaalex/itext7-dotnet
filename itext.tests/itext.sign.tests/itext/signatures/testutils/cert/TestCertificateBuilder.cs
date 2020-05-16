@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -88,9 +88,6 @@ namespace iText.Signatures.Testutils.Cert {
         }
 
         // TODO generalize
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="CertificateException"/>
-        /// <exception cref="Org.BouncyCastle.Operator.OperatorCreationException"/>
         public virtual X509Certificate BuildAuthorizedOCSPResponderCert() {        
             X509Name subjectDnName = new X509Name(subjectDN);
             BigInteger certSerialNumber = new BigInteger(Convert.ToString(SystemUtil.GetTimeBasedSeed())); // Using the current timestamp as the certificate serial number
@@ -129,7 +126,6 @@ namespace iText.Signatures.Testutils.Cert {
             return certBuilder.Generate(contentSigner);
         }
 
-        /// <exception cref="Org.BouncyCastle.Cert.CertIOException"/>
         private static void AddExtension(DerObjectIdentifier extensionOID, bool critical, Asn1Encodable extensionValue, 
             X509V3CertificateGenerator certBuilder) {
             certBuilder.AddExtension(extensionOID, critical, extensionValue);

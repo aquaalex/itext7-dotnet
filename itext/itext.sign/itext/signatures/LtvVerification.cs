@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -77,15 +77,21 @@ namespace iText.Signatures {
 
         /// <summary>What type of verification to include.</summary>
         public enum Level {
+            /// <summary>Include only OCSP.</summary>
             OCSP,
+            /// <summary>Include only CRL.</summary>
             CRL,
+            /// <summary>Include both OCSP and CRL.</summary>
             OCSP_CRL,
+            /// <summary>Include CRL only if OCSP can't be read.</summary>
             OCSP_OPTIONAL_CRL
         }
 
         /// <summary>Options for how many certificates to include.</summary>
         public enum CertificateOption {
+            /// <summary>Include verification just for the signing certificate.</summary>
             SIGNING_CERTIFICATE,
+            /// <summary>Include verification for the whole chain of certificates.</summary>
             WHOLE_CHAIN
         }
 
@@ -94,7 +100,9 @@ namespace iText.Signatures {
         /// keys.
         /// </summary>
         public enum CertificateInclusion {
+            /// <summary>Include certificates in the DSS and VRI dictionaries.</summary>
             YES,
+            /// <summary>Do not include certificates in the DSS and VRI dictionaries.</summary>
             NO
         }
 
@@ -123,8 +131,6 @@ namespace iText.Signatures {
         /// <param name="level">the validation options to include</param>
         /// <param name="certInclude">certificate inclusion options</param>
         /// <returns>true if a validation was generated, false otherwise</returns>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
         public virtual bool AddVerification(String signatureName, IOcspClient ocsp, ICrlClient crl, LtvVerification.CertificateOption
              certOption, LtvVerification.Level level, LtvVerification.CertificateInclusion certInclude) {
             if (used) {
@@ -208,8 +214,6 @@ namespace iText.Signatures {
         /// <param name="crls">collection of crls</param>
         /// <param name="certs">collection of certificates</param>
         /// <returns>boolean</returns>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public virtual bool AddVerification(String signatureName, ICollection<byte[]> ocsps, ICollection<byte[]> crls
             , ICollection<byte[]> certs) {
             if (used) {
@@ -235,7 +239,6 @@ namespace iText.Signatures {
             return true;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private static byte[] BuildOCSPResponse(byte[] basicOcspResponse) {
             DerOctetString doctet = new DerOctetString(basicOcspResponse);
             OcspResponseStatus respStatus = new OcspResponseStatus(Org.BouncyCastle.Asn1.Ocsp.OcspResponseStatus.Successful
@@ -245,8 +248,6 @@ namespace iText.Signatures {
             return new OcspResp(ocspResponse).GetEncoded();
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.SecurityUtilityException"/>
-        /// <exception cref="System.IO.IOException"/>
         private PdfName GetSignatureHashKey(String signatureName) {
             PdfSignature sig = sgnUtil.GetSignature(signatureName);
             PdfString contents = sig.GetContents();
@@ -261,14 +262,12 @@ namespace iText.Signatures {
             return new PdfName(ConvertToHex(bt));
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.SecurityUtilityException"/>
         private static byte[] HashBytesSha1(byte[] b) {
             IDigest sh = DigestUtilities.GetDigest("SHA1");
             return sh.Digest(b);
         }
 
         /// <summary>Merges the validation with any validation already in the document or creates a new one.</summary>
-        /// <exception cref="System.IO.IOException"/>
         public virtual void Merge() {
             if (used || validated.Count == 0) {
                 return;
@@ -284,7 +283,6 @@ namespace iText.Signatures {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private void UpdateDss() {
             PdfDictionary catalog = document.GetCatalog().GetPdfObject();
             catalog.SetModified();
@@ -346,12 +344,10 @@ namespace iText.Signatures {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private void CreateDss() {
             OutputDss(new PdfDictionary(), new PdfDictionary(), new PdfArray(), new PdfArray(), new PdfArray());
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private void OutputDss(PdfDictionary dss, PdfDictionary vrim, PdfArray ocsps, PdfArray crls, PdfArray certs
             ) {
             PdfCatalog catalog = document.GetCatalog();

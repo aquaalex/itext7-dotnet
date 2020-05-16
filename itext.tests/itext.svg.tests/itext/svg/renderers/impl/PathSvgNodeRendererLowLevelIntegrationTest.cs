@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -45,11 +45,12 @@ using System.Collections.Generic;
 using iText.Kernel.Geom;
 using iText.Svg;
 using iText.Svg.Exceptions;
+using iText.Svg.Renderers;
 using iText.Svg.Renderers.Path;
 using iText.Svg.Renderers.Path.Impl;
 
 namespace iText.Svg.Renderers.Impl {
-    public class PathSvgNodeRendererLowLevelIntegrationTest {
+    public class PathSvgNodeRendererLowLevelIntegrationTest : SvgIntegrationTest {
         [NUnit.Framework.Test]
         public virtual void TestRelativeArcOperatorShapes() {
             PathSvgNodeRenderer path = new PathSvgNodeRenderer();

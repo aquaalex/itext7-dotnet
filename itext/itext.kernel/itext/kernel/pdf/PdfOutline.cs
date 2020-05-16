@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -160,8 +160,7 @@ namespace iText.Kernel.Pdf {
         /// or
         /// <see cref="FLAG_ITALIC"/>
         /// . Default value is
-        /// <c>0</c>
-        /// .
+        /// <c>0</c>.
         /// </param>
         public virtual void SetStyle(int style) {
             if (style == FLAG_BOLD || style == FLAG_ITALIC) {
@@ -172,8 +171,7 @@ namespace iText.Kernel.Pdf {
         /// <summary>Gets content dictionary.</summary>
         /// <returns>
         /// 
-        /// <see cref="PdfDictionary"/>
-        /// .
+        /// <see cref="PdfDictionary"/>.
         /// </returns>
         public virtual PdfDictionary GetContent() {
             return content;
@@ -182,8 +180,7 @@ namespace iText.Kernel.Pdf {
         /// <summary>Gets list of children outlines.</summary>
         /// <returns>
         /// List of
-        /// <see cref="PdfOutline"/>
-        /// .
+        /// <see cref="PdfOutline"/>.
         /// </returns>
         public virtual IList<iText.Kernel.Pdf.PdfOutline> GetAllChildren() {
             return children;
@@ -192,8 +189,7 @@ namespace iText.Kernel.Pdf {
         /// <summary>Gets parent outline.</summary>
         /// <returns>
         /// 
-        /// <see cref="PdfOutline"/>
-        /// .
+        /// <see cref="PdfOutline"/>.
         /// </returns>
         public virtual iText.Kernel.Pdf.PdfOutline GetParent() {
             return parent;
@@ -201,13 +197,11 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Gets
-        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>
-        /// .
+        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>.
         /// </summary>
         /// <returns>
         /// 
-        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>
-        /// .
+        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>.
         /// </returns>
         public virtual PdfDestination GetDestination() {
             return destination;
@@ -222,8 +216,7 @@ namespace iText.Kernel.Pdf {
         /// </summary>
         /// <param name="destination">
         /// instance of
-        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>
-        /// .
+        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>.
         /// </param>
         public virtual void AddDestination(PdfDestination destination) {
             SetDestination(destination);
@@ -239,8 +232,7 @@ namespace iText.Kernel.Pdf {
         /// </summary>
         /// <param name="action">
         /// instance of
-        /// <see cref="iText.Kernel.Pdf.Action.PdfAction"/>
-        /// .
+        /// <see cref="iText.Kernel.Pdf.Action.PdfAction"/>.
         /// </param>
         public virtual void AddAction(PdfAction action) {
             content.Put(PdfName.A, action.GetPdfObject());
@@ -351,27 +343,10 @@ namespace iText.Kernel.Pdf {
             return newOutline;
         }
 
-        /// <summary>Clear list of children.</summary>
-        internal virtual void Clear() {
-            children.Clear();
-        }
-
-        /// <summary>
-        /// Sets
-        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>
-        /// .
-        /// </summary>
-        /// <param name="destination">
-        /// instance of
-        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>
-        /// .
-        /// </param>
-        internal virtual void SetDestination(PdfDestination destination) {
-            this.destination = destination;
-        }
-
         /// <summary>Remove this outline from the document.</summary>
-        internal virtual void RemoveOutline() {
+        /// <remarks>Remove this outline from the document. Outlines that are children of this outline are removed recursively
+        ///     </remarks>
+        public virtual void RemoveOutline() {
             if (!pdfDoc.HasOutlines() || IsOutlineRoot()) {
                 pdfDoc.GetCatalog().Remove(PdfName.Outlines);
                 return;
@@ -404,6 +379,23 @@ namespace iText.Kernel.Pdf {
                     next.Remove(PdfName.Prev);
                 }
             }
+        }
+
+        /// <summary>Clear list of children.</summary>
+        internal virtual void Clear() {
+            children.Clear();
+        }
+
+        /// <summary>
+        /// Sets
+        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>.
+        /// </summary>
+        /// <param name="destination">
+        /// instance of
+        /// <see cref="iText.Kernel.Pdf.Navigation.PdfDestination"/>.
+        /// </param>
+        internal virtual void SetDestination(PdfDestination destination) {
+            this.destination = destination;
         }
 
         /// <summary>

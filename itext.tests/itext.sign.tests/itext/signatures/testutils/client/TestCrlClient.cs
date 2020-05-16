@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -55,13 +55,11 @@ namespace iText.Signatures.Testutils.Client {
 
         private readonly ICipherParameters caPrivateKey;
 
-        /// <exception cref="Org.BouncyCastle.Security.Certificates.CertificateEncodingException"/>
         public TestCrlClient(TestCrlBuilder crlBuilder, ICipherParameters caPrivateKey) {
             this.crlBuilder = crlBuilder;
             this.caPrivateKey = caPrivateKey;
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.Certificates.CertificateEncodingException"/>
         public TestCrlClient(X509Certificate caCert, ICipherParameters caPrivateKey) {
             this.crlBuilder = new TestCrlBuilder(caCert, DateTimeUtil.GetCurrentUtcTime().AddDays(-1));
             this.caPrivateKey = caPrivateKey;

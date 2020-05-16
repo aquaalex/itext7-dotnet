@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -84,7 +84,7 @@ namespace iText.Layout.Renderer {
         }
 
         protected internal override LayoutArea UpdateCurrentArea(LayoutResult overflowResult) {
-            FlushWaitingDrawingElements();
+            FlushWaitingDrawingElements(false);
             LayoutTaggingHelper taggingHelper = this.GetProperty<LayoutTaggingHelper>(Property.TAGGING_HELPER);
             if (taggingHelper != null) {
                 taggingHelper.ReleaseFinishedHints();
@@ -119,8 +119,8 @@ namespace iText.Layout.Renderer {
                     return;
                 }
             }
+            // TODO Remove checking occupied area to be not null when DEVSIX-1655 is resolved.
             if (!resultRenderer.IsFlushed() && null != resultRenderer.GetOccupiedArea()) {
-                // TODO Remove checking occupied area to be not null when DEVSIX-1001 is resolved.
                 int pageNum = resultRenderer.GetOccupiedArea().GetPageNumber();
                 PdfDocument pdfDocument = document.GetPdfDocument();
                 EnsureDocumentHasNPages(pageNum, null);

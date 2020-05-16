@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -51,7 +51,6 @@ namespace iText.Kernel.Counter.Data {
     public class DataHandlerTest : ExtendedITextTest {
         private const int SUCCESS_LIMIT = 3;
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage("Process event with signature: type1, and count: 1")]
         [LogMessage("Process event with signature: type1, and count: 2", Count = 2)]
@@ -61,17 +60,17 @@ namespace iText.Kernel.Counter.Data {
         public virtual void RunTest() {
             DataHandlerTest.TestDataHandler dataHandler = new DataHandlerTest.TestDataHandler();
             dataHandler.Register(new DataHandlerTest.TestEvent("type1"), null);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             dataHandler.Register(new DataHandlerTest.TestEvent("type1"), null);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             dataHandler.Register(new DataHandlerTest.TestEvent("type2"), null);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             dataHandler.Register(new DataHandlerTest.TestEvent("type1"), null);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             dataHandler.Register(new DataHandlerTest.TestEvent("type1"), null);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             dataHandler.Register(new DataHandlerTest.TestEvent("type2"), null);
-            Thread.Sleep(100);
+            Thread.Sleep(200);
             dataHandler.TryProcessRest();
         }
 

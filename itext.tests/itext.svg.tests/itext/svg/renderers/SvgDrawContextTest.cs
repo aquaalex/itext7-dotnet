@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -48,9 +48,10 @@ using iText.Kernel.Pdf.Canvas;
 using iText.Svg.Dummy.Renderers.Impl;
 using iText.Svg.Exceptions;
 using iText.Svg.Renderers.Impl;
+using iText.Test;
 
 namespace iText.Svg.Renderers {
-    public class SvgDrawContextTest {
+    public class SvgDrawContextTest : ExtendedITextTest {
         private PdfDocument tokenDoc;
 
         private PdfCanvas page1;
@@ -74,20 +75,20 @@ namespace iText.Svg.Renderers {
         }
 
         [NUnit.Framework.Test]
-        public virtual void DrawContextEmptyStackPeekTest() {
+        public virtual void DrawContextEmptyDequeGetFirstTest() {
             NUnit.Framework.Assert.That(() =>  {
                 context.GetCurrentCanvas();
             }
-            , NUnit.Framework.Throws.InstanceOf<InvalidOperationException>())
+            , NUnit.Framework.Throws.InstanceOf<NullReferenceException>())
 ;
         }
 
         [NUnit.Framework.Test]
-        public virtual void DrawContextEmptyStackPopTest() {
+        public virtual void DrawContextEmptyDequePopTest() {
             NUnit.Framework.Assert.That(() =>  {
                 context.PopCanvas();
             }
-            , NUnit.Framework.Throws.InstanceOf<InvalidOperationException>())
+            , NUnit.Framework.Throws.InstanceOf<NullReferenceException>())
 ;
         }
 

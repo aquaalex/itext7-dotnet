@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,9 +41,10 @@ For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
 using System;
+using iText.Test;
 
 namespace iText.StyledXmlParser.Css.Util {
-    public class CssPropertyNormalizerTest {
+    public class CssPropertyNormalizerTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void TestUrlNormalizationSimple() {
             Test("url('data:image/png;base64,iVBORw0K')", "url('data:image/png;base64,iVBORw0K')");

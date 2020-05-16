@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -42,13 +42,13 @@ address: sales@itextpdf.com
 */
 using System;
 using iText.Signatures;
+using iText.Test;
 
 namespace iText.Signatures.Sign {
-    public class CrlClientOnlineTest {
+    public class CrlClientOnlineTest : ExtendedITextTest {
         private static readonly String destinationFolder = NUnit.Framework.TestContext.CurrentContext.TestDirectory
              + "/test/itext/signatures/sign/";
 
-        /// <exception cref="System.UriFormatException"/>
         [NUnit.Framework.Test]
         public virtual void CrlClientOnlineURLConstructorTest() {
             String PROTOCOL = "file://";

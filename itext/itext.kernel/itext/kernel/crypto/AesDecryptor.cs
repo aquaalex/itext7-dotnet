@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -55,10 +55,13 @@ namespace iText.Kernel.Crypto {
 
         private int ivptr;
 
-        /// <summary>Creates a new instance of AesDecryption</summary>
-        /// <param name="key"/>
-        /// <param name="off"/>
-        /// <param name="len"/>
+        /// <summary>
+        /// Creates a new instance of
+        /// <see cref="AesDecryptor"/>
+        /// </summary>
+        /// <param name="key">the byte array containing the key for decryption</param>
+        /// <param name="off">offset of the key in the byte array</param>
+        /// <param name="len">the length of the key in the byte array</param>
         public AesDecryptor(byte[] key, int off, int len) {
             this.key = new byte[len];
             Array.Copy(key, off, this.key, 0, len);

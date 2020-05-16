@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -70,8 +70,7 @@ namespace iText.Kernel.Pdf {
         /// <param name="os">the output destination</param>
         /// <param name="properties">
         /// encryption properties. See
-        /// <see cref="EncryptionProperties"/>
-        /// .
+        /// <see cref="EncryptionProperties"/>.
         /// </param>
         /// <param name="newInfo">
         /// an optional
@@ -91,8 +90,7 @@ namespace iText.Kernel.Pdf {
         /// <param name="os">the output destination</param>
         /// <param name="properties">
         /// encryption properties. See
-        /// <see cref="EncryptionProperties"/>
-        /// .
+        /// <see cref="EncryptionProperties"/>.
         /// </param>
         public static void Encrypt(PdfReader reader, Stream os, EncryptionProperties properties) {
             Encrypt(reader, os, properties, null);

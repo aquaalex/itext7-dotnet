@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -65,8 +65,6 @@ namespace iText.Layout {
             CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PageBreakTest1() {
             String outFileName = destinationFolder + "pageBreak1.pdf";
@@ -79,8 +77,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PageBreakTest2() {
             String outFileName = destinationFolder + "pageBreak2.pdf";
@@ -93,8 +89,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PageBreakTest03() {
             String outFileName = destinationFolder + "pageBreak3.pdf";
@@ -111,8 +105,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void LastPageAreaBreakTest01() {
             String inputFileName = sourceFolder + "input.pdf";
@@ -127,8 +119,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void LastPageAreaBreakTest02() {
             String cmpFileName = sourceFolder + "cmp_lastPageAreaBreakTest02.pdf";
@@ -143,8 +133,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void LastPageAreaBreakTest03() {
             String cmpFileName = sourceFolder + "cmp_lastPageAreaBreakTest03.pdf";
@@ -160,8 +148,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void LastPageAreaBreakTest04() {
             String inputFileName = sourceFolder + "input.pdf";
@@ -176,8 +162,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AreaBreakInsideDiv01Test() {
             String outFileName = destinationFolder + "areaBreakInsideDiv01.pdf";
@@ -191,8 +175,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AreaBreakInsideDiv02Test() {
             String outFileName = destinationFolder + "areaBreakInsideDiv02.pdf";
@@ -207,8 +189,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AreaBreakInsideDiv03Test() {
             String outFileName = destinationFolder + "areaBreakInsideDiv03.pdf";
@@ -224,8 +204,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AreaBreakInsideDiv04Test() {
             String outFileName = destinationFolder + "areaBreakInsideDiv04.pdf";

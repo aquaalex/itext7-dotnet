@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -194,13 +194,12 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
             return -1;
         }
 
-        /// <summary>Gets the baseline for the text (i.e.</summary>
-        /// <remarks>
+        /// <summary>
         /// Gets the baseline for the text (i.e. the line that the text 'sits' on)
         /// This value includes the Rise of the draw operation - see
         /// <see cref="GetRise()"/>
         /// for the amount added by Rise
-        /// </remarks>
+        /// </summary>
         /// <returns>the baseline line segment</returns>
         public virtual LineSegment GetBaseline() {
             CheckGraphicsState();
@@ -212,28 +211,30 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
             return GetUnscaledBaselineWithOffset(0 + gs.GetTextRise());
         }
 
-        /// <summary>Gets the ascentline for the text (i.e.</summary>
+        /// <summary>Gets the ascent line for the text (i.e. the line that represents the topmost extent that a string of the current font could have).
+        ///     </summary>
         /// <remarks>
-        /// Gets the ascentline for the text (i.e. the line that represents the topmost extent that a string of the current font could have)
+        /// Gets the ascent line for the text (i.e. the line that represents the topmost extent that a string of the current font could have).
         /// This value includes the Rise of the draw operation - see
         /// <see cref="GetRise()"/>
-        /// for the amount added by Rise
+        /// for the amount added by Rise.
         /// </remarks>
-        /// <returns>the ascentline line segment</returns>
+        /// <returns>a LineSegment instance</returns>
         public virtual LineSegment GetAscentLine() {
             CheckGraphicsState();
             return GetUnscaledBaselineWithOffset(GetAscentDescent()[0] + gs.GetTextRise()).TransformBy(textToUserSpaceTransformMatrix
                 );
         }
 
-        /// <summary>Gets the descentline for the text (i.e.</summary>
+        /// <summary>Gets the descent line for the text (i.e. the line that represents the bottom most extent that a string of the current font could have).
+        ///     </summary>
         /// <remarks>
-        /// Gets the descentline for the text (i.e. the line that represents the bottom most extent that a string of the current font could have).
+        /// Gets the descent line for the text (i.e. the line that represents the bottom most extent that a string of the current font could have).
         /// This value includes the Rise of the draw operation - see
         /// <see cref="GetRise()"/>
-        /// for the amount added by Rise
+        /// for the amount added by Rise.
         /// </remarks>
-        /// <returns>the descentline line segment</returns>
+        /// <returns>a LineSegment instance</returns>
         public virtual LineSegment GetDescentLine() {
             CheckGraphicsState();
             return GetUnscaledBaselineWithOffset(GetAscentDescent()[1] + gs.GetTextRise()).TransformBy(textToUserSpaceTransformMatrix
@@ -261,10 +262,10 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
         /// <returns>The Rise for the text draw operation, in user space units (Ts value, scaled to user space)</returns>
         public virtual float GetRise() {
             CheckGraphicsState();
+            // optimize the common case
             if (gs.GetTextRise() == 0) {
                 return 0;
             }
-            // optimize the common case
             return ConvertHeightFromTextSpaceToUserSpace(gs.GetTextRise());
         }
 
@@ -303,16 +304,24 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
         /// <returns>
         /// the text render mode that should be used for the text.  From the
         /// PDF specification, this means:
-        /// <ul>
-        /// <li>0 = Fill text</li>
-        /// <li>1 = Stroke text</li>
-        /// <li>2 = Fill, then stroke text</li>
-        /// <li>3 = Invisible</li>
-        /// <li>4 = Fill text and add to path for clipping</li>
-        /// <li>5 = Stroke text and add to path for clipping</li>
-        /// <li>6 = Fill, then stroke text and add to path for clipping</li>
-        /// <li>7 = Add text to padd for clipping</li>
-        /// </ul>
+        /// <list type="bullet">
+        /// <item><description>0 = Fill text
+        /// </description></item>
+        /// <item><description>1 = Stroke text
+        /// </description></item>
+        /// <item><description>2 = Fill, then stroke text
+        /// </description></item>
+        /// <item><description>3 = Invisible
+        /// </description></item>
+        /// <item><description>4 = Fill text and add to path for clipping
+        /// </description></item>
+        /// <item><description>5 = Stroke text and add to path for clipping
+        /// </description></item>
+        /// <item><description>6 = Fill, then stroke text and add to path for clipping
+        /// </description></item>
+        /// <item><description>7 = Add text to padd for clipping
+        /// </description></item>
+        /// </list>
         /// </returns>
         public virtual int GetTextRenderMode() {
             CheckGraphicsState();
@@ -357,7 +366,7 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
         }
 
         /// <summary>Gets /ActualText tag entry value if this text chunk is marked content.</summary>
-        /// <returns>/ActualText value or <code>null</code> if none found</returns>
+        /// <returns>/ActualText value or <c>null</c> if none found</returns>
         public virtual String GetActualText() {
             String lastActualText = null;
             foreach (CanvasTag tag in canvasTagHierarchy) {
@@ -370,7 +379,7 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
         }
 
         /// <summary>Gets /E tag (expansion text) entry value if this text chunk is marked content.</summary>
-        /// <returns>/E value or <code>null</code> if none found</returns>
+        /// <returns>/E value or <c>null</c> if none found</returns>
         public virtual String GetExpansionText() {
             String expansionText = null;
             foreach (CanvasTag tag in canvasTagHierarchy) {
@@ -388,8 +397,7 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
         /// instance is written in a text showing operator
         /// wrapped by /ReversedChars marked content sequence
         /// </summary>
-        /// <returns><code>true</code> if this text block lies within /ReversedChars block, <code>false</code> otherwise
-        ///     </returns>
+        /// <returns><c>true</c> if this text block lies within /ReversedChars block, <c>false</c> otherwise</returns>
         public virtual bool IsReversedChars() {
             foreach (CanvasTag tag in canvasTagHierarchy) {
                 if (tag != null) {
@@ -441,37 +449,17 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
             return userSpace.GetLength();
         }
 
-        /// <summary>Calculates the width of a space character.</summary>
-        /// <remarks>
-        /// Calculates the width of a space character.  If the font does not define
-        /// a width for a standard space character \u0020, we also attempt to use
-        /// the width of \u00A0 (a non-breaking space in many fonts)
-        /// </remarks>
+        /// <summary>Calculates the width of a space character in text space units.</summary>
         /// <returns>the width of a single space character in text space units</returns>
         private float GetUnscaledFontSpaceWidth() {
             CheckGraphicsState();
-            char charToUse = ' ';
-            if (gs.GetFont().GetWidth(charToUse) == 0) {
-                return gs.GetFont().GetFontProgram().GetAvgWidth() / 1000f;
+            char spaceChar = ' ';
+            int charWidth = gs.GetFont().GetWidth(spaceChar);
+            if (charWidth == 0) {
+                charWidth = gs.GetFont().GetFontProgram().GetAvgWidth();
             }
-            else {
-                return GetStringWidth(charToUse.ToString());
-            }
-        }
-
-        /// <summary>Gets the width of a String in text space units</summary>
-        /// <param name="string">the string that needs measuring</param>
-        /// <returns>the width of a String in text space units</returns>
-        private float GetStringWidth(String @string) {
-            CheckGraphicsState();
-            float totalWidth = 0;
-            for (int i = 0; i < @string.Length; i++) {
-                char c = @string[i];
-                float w = (float)(gs.GetFont().GetWidth(c) * fontMatrix[0]);
-                float wordSpacing = c == 32 ? gs.GetWordSpacing() : 0f;
-                totalWidth += (w * gs.GetFontSize() + gs.GetCharSpacing() + wordSpacing) * gs.GetHorizontalScaling() / 100f;
-            }
-            return totalWidth;
+            float w = (float)(charWidth * fontMatrix[0]);
+            return (w * gs.GetFontSize() + gs.GetCharSpacing() + gs.GetWordSpacing()) * gs.GetHorizontalScaling() / 100f;
         }
 
         /// <summary>Gets the width of a PDF string in text space units</summary>

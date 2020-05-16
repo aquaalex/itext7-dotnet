@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -43,11 +43,12 @@ address: sales@itextpdf.com
 using System;
 using System.Collections.Generic;
 using iText.StyledXmlParser.Jsoup.Helper;
+using iText.Test;
 
 namespace iText.StyledXmlParser.Jsoup.Nodes {
     /// <summary>Tests for FormElement</summary>
     /// <author>Jonathan Hedley</author>
-    public class FormElementTest {
+    public class FormElementTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void HasAssociatedControls() {
             //"button", "fieldset", "input", "keygen", "object", "output", "select", "textarea"

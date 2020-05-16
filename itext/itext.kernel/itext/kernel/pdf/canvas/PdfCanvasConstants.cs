@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -74,8 +74,7 @@ namespace iText.Kernel.Pdf.Canvas {
             /// <summary>Fill and stroke text</summary>
             public const int FILL_STROKE = 2;
 
-            /// <summary>Neither fill nor stroke, i.e.</summary>
-            /// <remarks>Neither fill nor stroke, i.e. render invisibly</remarks>
+            /// <summary>Neither fill nor stroke, i.e. render invisibly</summary>
             public const int INVISIBLE = 3;
 
             /// <summary>Fill text and add to path for clipping</summary>

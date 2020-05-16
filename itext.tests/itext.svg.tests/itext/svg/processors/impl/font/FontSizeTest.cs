@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -43,6 +43,7 @@ address: sales@itextpdf.com
 using System;
 using iText.Svg.Renderers;
 using iText.Test;
+using iText.Test.Attributes;
 
 namespace iText.Svg.Processors.Impl.Font {
     public class FontSizeTest : SvgIntegrationTest {
@@ -57,36 +58,42 @@ namespace iText.Svg.Processors.Impl.Font {
             ITextTest.CreateDestinationFolder(DESTINATION_FOLDER);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void FontSize01Test() {
             String name = "fontSizeTest01";
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, name);
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, name);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
+        [LogMessage(iText.StyledXmlParser.LogMessageConstant.UNKNOWN_ABSOLUTE_METRIC_LENGTH_PARSED)]
         public virtual void FontSize02Test() {
             String name = "fontSizeTest02";
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, name);
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, name);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
+        [NUnit.Framework.Test]
+        public virtual void FontSize03Test() {
+            String name = "fontSizeTest03";
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, name);
+        }
+
         [NUnit.Framework.Test]
         public virtual void FontAbsoluteKeywords() {
             String name = "fontAbsoluteKeywords";
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, name);
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, name);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void FontRelativeKeywords() {
             String name = "fontRelativeKeywords";
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, name);
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, name);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void DiffUnitsOfMeasure() {
+            //TODO: update cmp-file after DEVSIX-2785 and DEVSIX-2884
+            String name = "diff_units_of_measure";
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, name);
         }
     }
 }

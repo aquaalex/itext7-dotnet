@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -60,7 +60,18 @@ namespace iText.StyledXmlParser.Css.Page {
         /// instance.
         /// </summary>
         /// <param name="ruleName">the rule name</param>
+        public CssMarginRule(String ruleName)
+            : this(ruleName, "") {
+        }
+
+        /// <summary>
+        /// Creates a new
+        /// <see cref="CssMarginRule"/>
+        /// instance.
+        /// </summary>
+        /// <param name="ruleName">the rule name</param>
         /// <param name="ruleParameters">the rule parameters</param>
+        [System.ObsoleteAttribute(@"Will be removed in 7.2. Use CssMarginRule(System.String) instead")]
         public CssMarginRule(String ruleName, String ruleParameters)
             : base(ruleName, ruleParameters) {
         }

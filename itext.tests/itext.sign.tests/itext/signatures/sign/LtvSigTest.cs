@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -69,8 +69,6 @@ namespace iText.Signatures.Sign {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         [NUnit.Framework.Test]
         public virtual void LtvEnabledTest01() {
             String tsaCertFileName = certsSrc + "tsCertRsa.p12";
@@ -98,8 +96,6 @@ namespace iText.Signatures.Sign {
             BasicCheckLtvDoc("ltvEnabledTsTest01.pdf", "timestampSig1");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         [NUnit.Framework.Test]
         public virtual void LtvEnabledSingleSignatureTest01() {
             String signCertFileName = certsSrc + "signCertRsaWithChain.p12";
@@ -129,8 +125,6 @@ namespace iText.Signatures.Sign {
             PadesSigTest.BasicCheckSignedDoc(destinationFolder + "ltvEnabledSingleSignatureTest01.pdf", "Signature1");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         [NUnit.Framework.Test]
         public virtual void SecondLtvOriginalHasNoVri01() {
             String tsaCertFileName = certsSrc + "tsCertRsa.p12";
@@ -158,8 +152,6 @@ namespace iText.Signatures.Sign {
             BasicCheckLtvDoc("secondLtvOriginalHasNoVriTs01.pdf", "timestampSig2");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         private void BasicCheckLtvDoc(String outFileName, String tsSigName) {
             PdfDocument outDocument = new PdfDocument(new PdfReader(destinationFolder + outFileName));
             PdfDictionary dssDict = outDocument.GetCatalog().GetPdfObject().GetAsDictionary(PdfName.DSS);

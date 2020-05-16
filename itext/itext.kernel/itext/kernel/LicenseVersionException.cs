@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -144,7 +144,12 @@ namespace iText.Kernel {
             return this;
         }
 
-        /// <summary>Gets additional params for Exception message.</summary>
+        /// <summary>Gets parameters that are to be inserted in exception message placeholders.</summary>
+        /// <remarks>
+        /// Gets parameters that are to be inserted in exception message placeholders.
+        /// Placeholder format is defined similar to the following: "{0}".
+        /// </remarks>
+        /// <returns>params for exception message.</returns>
         protected internal virtual Object[] GetMessageParams() {
             Object[] parameters = new Object[messageParams.Count];
             for (int i = 0; i < messageParams.Count; i++) {

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -80,10 +80,10 @@ namespace iText.Kernel.Geom {
         /// <summary>the values inside the matrix (the identity matrix by default).</summary>
         /// <remarks>
         /// the values inside the matrix (the identity matrix by default).
-        /// <p>For reference, the indeces are as follows:<p>
-        /// I11 I12 I13<p>
-        /// I21 I22 I23<p>
-        /// I31 I32 I33<p>
+        /// <para />For reference, the indeces are as follows:<para />
+        /// I11 I12 I13<para />
+        /// I21 I22 I23<para />
+        /// I31 I32 I33<para />
         /// </remarks>
         private readonly float[] vals = new float[] { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
 
@@ -148,10 +148,10 @@ namespace iText.Kernel.Geom {
         /// <summary>Gets a specific value inside the matrix.</summary>
         /// <remarks>
         /// Gets a specific value inside the matrix.
-        /// <p>For reference, the indeces are as follows:<p>
-        /// I11 I12 I13<p>
-        /// I21 I22 I23<p>
-        /// I31 I32 I33<p>
+        /// <para />For reference, the indeces are as follows:<para />
+        /// I11 I12 I13<para />
+        /// I21 I22 I23<para />
+        /// I31 I32 I33<para />
         /// </remarks>
         /// <param name="index">an array index corresponding with a value inside the matrix</param>
         /// <returns>the value at that specific position.</returns>
@@ -248,12 +248,7 @@ namespace iText.Kernel.Geom {
         /// <returns>the hash code of this object</returns>
         /// <seealso cref="System.Object.GetHashCode()"/>
         public override int GetHashCode() {
-            //return Arrays.hashCode(vals); // JDK 5 code, replaced with the following
-            int result = 1;
-            for (int i = 0; i < vals.Length; i++) {
-                result = 31 * result + JavaUtil.FloatToIntBits(vals[i]);
-            }
-            return result;
+            return JavaUtil.ArraysHashCode(vals);
         }
 
         /// <summary>Generates a String representation of the matrix.</summary>

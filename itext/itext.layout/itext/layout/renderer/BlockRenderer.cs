@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -124,8 +124,8 @@ namespace iText.Layout.Renderer {
             ShrinkOccupiedAreaForAbsolutePosition();
             int currentAreaPos = 0;
             Rectangle layoutBox = areas[0].Clone();
-            ICollection<Rectangle> nonChildFloatingRendererAreas = new HashSet<Rectangle>(floatRendererAreas);
             // rectangles are compared by instances
+            ICollection<Rectangle> nonChildFloatingRendererAreas = new HashSet<Rectangle>(floatRendererAreas);
             // the first renderer (one of childRenderers or their children) to produce LayoutResult.NOTHING
             IRenderer causeOfNothing = null;
             bool anythingPlaced = false;
@@ -175,6 +175,7 @@ namespace iText.Layout.Renderer {
                                 .GetAreaBreak());
                         }
                         else {
+                            floatRendererAreas.RetainAll(nonChildFloatingRendererAreas);
                             return new LayoutResult(layoutResult, null, null, overflowRenderer, result.GetCauseOfNothing()).SetAreaBreak
                                 (result.GetAreaBreak());
                         }
@@ -314,6 +315,7 @@ namespace iText.Layout.Renderer {
                                             .GetAreaBreak());
                                     }
                                     else {
+                                        floatRendererAreas.RetainAll(nonChildFloatingRendererAreas);
                                         return new LayoutResult(layoutResult, null, null, overflowRenderer, result.GetCauseOfNothing()).SetAreaBreak
                                             (result.GetAreaBreak());
                                     }
@@ -323,13 +325,12 @@ namespace iText.Layout.Renderer {
                     }
                 }
                 anythingPlaced = anythingPlaced || result.GetStatus() != LayoutResult.NOTHING;
-                if (result.GetOccupiedArea() != null) {
-                    if (!FloatingHelper.IsRendererFloating(childRenderer) || includeFloatsInOccupiedArea) {
-                        // this check is needed only if margins collapsing is enabled
-                        occupiedArea.SetBBox(Rectangle.GetCommonRectangle(occupiedArea.GetBBox(), result.GetOccupiedArea().GetBBox
-                            ()));
-                        FixOccupiedAreaIfOverflowedX(overflowX, layoutBox);
-                    }
+                // The second condition check (after &&) is needed only if margins collapsing is enabled
+                if (result.GetOccupiedArea() != null && (!FloatingHelper.IsRendererFloating(childRenderer) || includeFloatsInOccupiedArea
+                    )) {
+                    occupiedArea.SetBBox(Rectangle.GetCommonRectangle(occupiedArea.GetBBox(), result.GetOccupiedArea().GetBBox
+                        ()));
+                    FixOccupiedAreaIfOverflowedX(overflowX, layoutBox);
                 }
                 if (marginsCollapsingEnabled) {
                     marginsCollapseHandler.EndChildMarginsHandling(layoutBox);
@@ -370,10 +371,11 @@ namespace iText.Layout.Renderer {
             }
             bool minHeightOverflow = overflowRenderer_1 != null;
             if (minHeightOverflow && IsKeepTogether()) {
+                floatRendererAreas.RetainAll(nonChildFloatingRendererAreas);
                 return new LayoutResult(LayoutResult.NOTHING, null, null, this, this);
             }
+            // in this case layout result need to be changed
             if (overflowRenderer_1 != null || processOverflowedFloats) {
-                // in this case layout result need to be changed
                 layoutResult_1 = !anythingPlaced && !waitingOverflowFloatRenderers.IsEmpty() ? LayoutResult.NOTHING : LayoutResult
                     .PARTIAL;
             }
@@ -434,6 +436,7 @@ namespace iText.Layout.Renderer {
                     }
                     else {
                         if (!true.Equals(GetPropertyAsBoolean(Property.FORCED_PLACEMENT))) {
+                            floatRendererAreas.RetainAll(nonChildFloatingRendererAreas);
                             return new MinMaxWidthLayoutResult(LayoutResult.NOTHING, null, null, this, this);
                         }
                     }
@@ -450,6 +453,7 @@ namespace iText.Layout.Renderer {
                 if (positionedRenderers.Count > 0) {
                     overflowRenderer_1.positionedRenderers = new List<IRenderer>(positionedRenderers);
                 }
+                floatRendererAreas.RetainAll(nonChildFloatingRendererAreas);
                 return new LayoutResult(LayoutResult.NOTHING, null, null, overflowRenderer_1, causeOfNothing);
             }
         }
@@ -631,12 +635,12 @@ namespace iText.Layout.Renderer {
                     rotationPointY = y;
                 }
                 // transforms apply from bottom to top
-                rotationTransform.Translate((float)rotationPointX, (float)rotationPointY);
                 // move point back at place
-                rotationTransform.Rotate(angle);
+                rotationTransform.Translate((float)rotationPointX, (float)rotationPointY);
                 // rotate
-                rotationTransform.Translate((float)-rotationPointX, (float)-rotationPointY);
+                rotationTransform.Rotate(angle);
                 // move rotation point to origin
+                rotationTransform.Translate((float)-rotationPointX, (float)-rotationPointY);
                 IList<Point> rotatedPoints = TransformPoints(RectangleToPointsList(occupiedArea.GetBBox()), rotationTransform
                     );
                 Rectangle newBBox = CalculateBBox(rotatedPoints);
@@ -667,9 +671,15 @@ namespace iText.Layout.Renderer {
         /// This method creates
         /// <see cref="iText.Kernel.Geom.AffineTransform"/>
         /// instance that could be used
+        /// to rotate content inside the occupied area.
+        /// </summary>
+        /// <remarks>
+        /// This method creates
+        /// <see cref="iText.Kernel.Geom.AffineTransform"/>
+        /// instance that could be used
         /// to rotate content inside the occupied area. Be aware that it should be used only after
         /// layout rendering is finished and correct occupied area for the rotated element is calculated.
-        /// </summary>
+        /// </remarks>
         /// <returns>
         /// 
         /// <see cref="iText.Kernel.Geom.AffineTransform"/>
@@ -764,7 +774,10 @@ namespace iText.Layout.Renderer {
                     occupiedArea.GetBBox().SetY(blockBottom).SetHeight((float)blockMinHeight);
                 }
                 else {
-                    if (IsOverflowFit(overflowY) && blockBottom < layoutBox.GetBottom()) {
+                    // Because of float precision inaccuracy, iText can incorrectly calculate that the block of fixed height
+                    // needs to be split. As a result, an empty block with a height equal to sum of paddings
+                    // may appear on the next area. To prevent such situations epsilon is used.
+                    if (IsOverflowFit(overflowY) && blockBottom + EPS < layoutBox.GetBottom()) {
                         float hDelta = occupiedArea.GetBBox().GetBottom() - layoutBox.GetBottom();
                         occupiedArea.GetBBox().IncreaseHeight(hDelta).SetY(layoutBox.GetBottom());
                         if (occupiedArea.GetBBox().GetHeight() < 0) {

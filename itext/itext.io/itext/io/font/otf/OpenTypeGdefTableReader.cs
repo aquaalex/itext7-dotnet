@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -64,17 +64,16 @@ namespace iText.IO.Font.Otf {
             this.tableLocation = tableLocation;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         public virtual void ReadTable() {
             if (tableLocation > 0) {
                 rf.Seek(tableLocation);
+                // version, we only support 0x00010000
                 rf.ReadUnsignedInt();
-                //version, we only support 0x00010000
                 int glyphClassDefOffset = rf.ReadUnsignedShort();
+                // skip Attachment Point List Table
                 rf.ReadUnsignedShort();
-                //skip Attachment Point List Table
+                // skip Ligature Caret List Table
                 rf.ReadUnsignedShort();
-                //skip Ligature Caret List Table
                 int markAttachClassDefOffset = rf.ReadUnsignedShort();
                 if (glyphClassDefOffset > 0) {
                     glyphClass = OtfClass.Create(rf, glyphClassDefOffset + tableLocation);

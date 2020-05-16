@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,27 +52,30 @@ namespace iText.Kernel.Pdf.Canvas {
     /// <summary>This class is designed for internal usage.</summary>
     /// <remarks>
     /// This class is designed for internal usage. <br />
-    /// Use <code>PdfExtGState</code> class and <code>PdfCanvas#setExtGState()</code> method for setting extended graphics properties.
+    /// Use <c>PdfExtGState</c> class and <c>PdfCanvas#setExtGState()</c> method for setting extended graphics properties.
     /// </remarks>
     public class CanvasGraphicsState {
         /// <summary>The current transformation matrix, which maps positions from user coordinates to device coordinates.
         ///     </summary>
         /// <remarks>
         /// The current transformation matrix, which maps positions from user coordinates to device coordinates.
-        /// <p>
+        /// <para />
         /// We use an identity matrix as a default value, but in spec a default value is:
         /// "a matrix that transforms default user coordinates to device coordinates".
         /// </remarks>
         private Matrix ctm = new Matrix();
 
+        // color
         private Color strokeColor = DeviceGray.BLACK;
 
         private Color fillColor = DeviceGray.BLACK;
 
+        // text state
         private float charSpacing = 0f;
 
         private float wordSpacing = 0f;
 
+        // horizontal scaling
         private float scale = 100f;
 
         private float leading = 0f;
@@ -98,10 +101,10 @@ namespace iText.Kernel.Pdf.Canvas {
         /// <summary>A description of the dash pattern to be used when paths are stroked.</summary>
         /// <remarks>
         /// A description of the dash pattern to be used when paths are stroked. Default value is solid line.
-        /// <p>
+        /// <para />
         /// The line dash pattern is expressed as an array of the form [ dashArray dashPhase ],
         /// where dashArray is itself an array and dashPhase is an integer.
-        /// <p>
+        /// <para />
         /// An empty dash array (first element in the array) and zero phase (second element in the array)
         /// can be used to restore the dash pattern to a solid line.
         /// </remarks>
@@ -116,10 +119,12 @@ namespace iText.Kernel.Pdf.Canvas {
 
         private PdfObject softMask = PdfName.None;
 
+        // alpha constant
         private float strokeAlpha = 1f;
 
         private float fillAlpha = 1f;
 
+        // alpha source
         private bool alphaIsShape = false;
 
         private bool strokeOverprint = false;
@@ -155,11 +160,6 @@ namespace iText.Kernel.Pdf.Canvas {
         /// <summary>Copy constructor.</summary>
         /// <param name="source">the Graphics State to copy from</param>
         public CanvasGraphicsState(iText.Kernel.Pdf.Canvas.CanvasGraphicsState source) {
-            // color
-            // text state
-            // horizontal scaling
-            // alpha constant
-            // alpha source
             CopyFrom(source);
         }
 

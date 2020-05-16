@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -51,6 +51,7 @@ using iText.Kernel.Pdf.Xobject;
 namespace iText.StyledXmlParser.Resolver.Resource {
     /// <summary>Utilities class to resolve resources.</summary>
     public class ResourceResolver {
+        // TODO handle <base href=".."> tag?
         /// <summary>Identifier string used when loading in base64 images</summary>
         public const String BASE64IDENTIFIER = "base64";
 
@@ -73,7 +74,13 @@ namespace iText.StyledXmlParser.Resolver.Resource {
         /// </summary>
         private SimpleImageCache imageCache;
 
+        // TODO provide a way to configure capacity, manually reset or disable the image cache?
         /// <summary>
+        /// Creates
+        /// <see cref="ResourceResolver"/>
+        /// instance.
+        /// </summary>
+        /// <remarks>
         /// Creates
         /// <see cref="ResourceResolver"/>
         /// instance. If
@@ -81,15 +88,12 @@ namespace iText.StyledXmlParser.Resolver.Resource {
         /// is a string that represents an absolute URI with any schema
         /// except "file" - resources url values will be resolved exactly as "new URL(baseUrl, uriString)". Otherwise base URI
         /// will be handled as path in local file system.
-        /// <p>
+        /// <para />
         /// If empty string or relative URI string is passed as base URI, then it will be resolved against current working
         /// directory of this application instance.
-        /// </p>
-        /// </summary>
+        /// </remarks>
         /// <param name="baseUri">base URI against which all relative resource URIs will be resolved.</param>
         public ResourceResolver(String baseUri) {
-            // TODO handle <base href=".."> tag?
-            // TODO provide a way to configure capacity, manually reset or disable the image cache?
             if (baseUri == null) {
                 baseUri = "";
             }
@@ -99,8 +103,7 @@ namespace iText.StyledXmlParser.Resolver.Resource {
 
         /// <summary>
         /// Retrieve
-        /// <see cref="iText.Kernel.Pdf.Xobject.PdfImageXObject"/>
-        /// .
+        /// <see cref="iText.Kernel.Pdf.Xobject.PdfImageXObject"/>.
         /// </summary>
         /// <param name="src">either link to file or base64 encoded stream.</param>
         /// <returns>PdfImageXObject on success, otherwise null.</returns>
@@ -119,8 +122,7 @@ namespace iText.StyledXmlParser.Resolver.Resource {
         /// Retrieve image as either
         /// <see cref="iText.Kernel.Pdf.Xobject.PdfImageXObject"/>
         /// , or
-        /// <see cref="iText.Kernel.Pdf.Xobject.PdfFormXObject"/>
-        /// .
+        /// <see cref="iText.Kernel.Pdf.Xobject.PdfFormXObject"/>.
         /// </summary>
         /// <param name="src">either link to file or base64 encoded stream.</param>
         /// <returns>PdfImageXObject on success, otherwise null.</returns>
@@ -152,7 +154,6 @@ namespace iText.StyledXmlParser.Resolver.Resource {
         /// the
         /// <see cref="System.IO.Stream"/>
         /// </returns>
-        /// <exception cref="System.IO.IOException">Signals that an I/O exception has occurred.</exception>
         public virtual Stream RetrieveStyleSheet(String uri) {
             return UrlUtil.OpenStream(uriResolver.ResolveAgainstBaseUri(uri));
         }
@@ -164,11 +165,10 @@ namespace iText.StyledXmlParser.Resolver.Resource {
         /// <remarks>
         /// Deprecated: use retrieveBytesFromResource instead
         /// Replaced by retrieveBytesFromResource for the sake of method name clarity.
-        /// <p>
+        /// <para />
         /// Retrieve a resource as a byte array from a source that
         /// can either be a link to a file, or a base64 encoded
-        /// <see cref="System.String"/>
-        /// .
+        /// <see cref="System.String"/>.
         /// </remarks>
         /// <param name="src">either link to file or base64 encoded stream.</param>
         /// <returns>byte[] on success, otherwise null.</returns>
@@ -194,8 +194,7 @@ namespace iText.StyledXmlParser.Resolver.Resource {
         /// <summary>
         /// Retrieve a resource as a byte array from a source that
         /// can either be a link to a file, or a base64 encoded
-        /// <see cref="System.String"/>
-        /// .
+        /// <see cref="System.String"/>.
         /// </summary>
         /// <param name="src">either link to file or base64 encoded stream.</param>
         /// <returns>byte[] on success, otherwise null.</returns>
@@ -249,7 +248,6 @@ namespace iText.StyledXmlParser.Resolver.Resource {
         /// <summary>Resolves a given URI against the base URI.</summary>
         /// <param name="uri">the uri</param>
         /// <returns>the url</returns>
-        /// <exception cref="System.UriFormatException">the malformed URL exception</exception>
         public virtual Uri ResolveAgainstBaseUri(String uri) {
             return uriResolver.ResolveAgainstBaseUri(uri);
         }
@@ -316,13 +314,12 @@ namespace iText.StyledXmlParser.Resolver.Resource {
         /// <see cref="iText.Kernel.Pdf.Xobject.PdfXObject"/>
         /// containing the Image loaded in
         /// </returns>
-        /// <exception cref="System.Exception">thrown if error occurred during fetching or constructing the image</exception>
         protected internal virtual PdfXObject CreateImageByUrl(Uri url) {
             return new PdfImageXObject(ImageDataFactory.Create(url));
         }
 
         /// <summary>Checks if source is under data URI scheme.</summary>
-        /// <remarks>Checks if source is under data URI scheme. (eg data:[<media type>][;base64],<data>)</remarks>
+        /// <remarks>Checks if source is under data URI scheme. (eg data:[&lt;media type&gt;][;base64],&lt;data&gt;)</remarks>
         /// <param name="src">String to test</param>
         /// <returns/>
         public virtual bool IsDataSrc(String src) {

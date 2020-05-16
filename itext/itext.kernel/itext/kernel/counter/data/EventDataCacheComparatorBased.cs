@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -46,14 +46,17 @@ using System.Collections.Generic;
 namespace iText.Kernel.Counter.Data {
     /// <summary>
     /// Comparator-based implementation of
-    /// <see cref="IEventDataCache{T, V}"/>
-    /// .
+    /// <see cref="IEventDataCache{T, V}"/>.
+    /// </summary>
+    /// <remarks>
+    /// Comparator-based implementation of
+    /// <see cref="IEventDataCache{T, V}"/>.
     /// Merges data with the same signature by increasing its count.
     /// Retrieve the smallest element based on comparator.
     /// Not thread safe.
-    /// </summary>
-    /// 
-    /// 
+    /// </remarks>
+    /// <typeparam name="T">the data signature type</typeparam>
+    /// <typeparam name="V">the data type</typeparam>
     public class EventDataCacheComparatorBased<T, V> : IEventDataCache<T, V>
         where V : EventData<T> {
         private IDictionary<T, V> map = new Dictionary<T, V>();

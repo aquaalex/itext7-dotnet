@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -107,8 +107,6 @@ namespace iText.Svg.Renderers.Factories {
                 result = (ISvgNodeRenderer)System.Activator.CreateInstance(rendererMap.Get(tag.Name()));
             }
             catch (MissingMethodException ex) {
-                LogManager.GetLogger(typeof(iText.Svg.Renderers.Factories.DefaultSvgNodeRendererFactory)).Error(typeof(iText.Svg.Renderers.Factories.DefaultSvgNodeRendererFactory
-                    ).FullName, ex);
                 throw new SvgProcessingException(SvgLogMessageConstant.COULDNOTINSTANTIATE, ex).SetMessageParams(tag.Name(
                     ));
             }

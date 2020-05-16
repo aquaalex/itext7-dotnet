@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -46,83 +46,88 @@ using iText.StyledXmlParser.Jsoup.Helper;
 using iText.StyledXmlParser.Jsoup.Nodes;
 
 namespace iText.StyledXmlParser.Jsoup.Safety {
+    /*
+    Thank you to Ryan Grove (wonko.com) for the Ruby HTML cleaner http://github.com/rgrove/sanitize/, which inspired
+    this whitelist configuration, and the initial defaults.
+    */
     /// <summary>Whitelists define what HTML (elements and attributes) to allow through the cleaner.</summary>
     /// <remarks>
     /// Whitelists define what HTML (elements and attributes) to allow through the cleaner. Everything else is removed.
-    /// <p>
+    /// <para />
     /// Start with one of the defaults:
-    /// </p>
-    /// <ul>
-    /// <li>
+    /// <list type="bullet">
+    /// <item><description>
     /// <see cref="None()"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="SimpleText()"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="Basic()"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="BasicWithImages()"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="Relaxed()"/>
-    /// </ul>
-    /// <p>
+    /// </description></item>
+    /// </list>
     /// If you need to allow more through (please be careful!), tweak a base whitelist with:
-    /// </p>
-    /// <ul>
-    /// <li>
+    /// <list type="bullet">
+    /// <item><description>
     /// <see cref="AddTags(System.String[])"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="AddAttributes(System.String, System.String[])"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="AddEnforcedAttribute(System.String, System.String, System.String)"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="AddProtocols(System.String, System.String, System.String[])"/>
-    /// </ul>
-    /// <p>
+    /// </description></item>
+    /// </list>
     /// You can remove any setting from an existing whitelist with:
-    /// </p>
-    /// <ul>
-    /// <li>
+    /// <list type="bullet">
+    /// <item><description>
     /// <see cref="RemoveTags(System.String[])"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="RemoveAttributes(System.String, System.String[])"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="RemoveEnforcedAttribute(System.String, System.String)"/>
-    /// <li>
+    /// </description></item>
+    /// <item><description>
     /// <see cref="RemoveProtocols(System.String, System.String, System.String[])"/>
-    /// </ul>
-    /// <p>
-    /// The cleaner and these whitelists assume that you want to clean a <code>body</code> fragment of HTML (to add user
+    /// </description></item>
+    /// </list>
+    /// The cleaner and these whitelists assume that you want to clean a <c>body</c> fragment of HTML (to add user
     /// supplied HTML into a templated page), and not to clean a full HTML document. If the latter is the case, either wrap the
-    /// document HTML around the cleaned body HTML, or create a whitelist that allows <code>html</code> and <code>head</code>
+    /// document HTML around the cleaned body HTML, or create a whitelist that allows <c>html</c> and <c>head</c>
     /// elements as appropriate.
-    /// </p>
-    /// <p>
+    /// <para />
     /// If you are going to extend a whitelist, please be very careful. Make sure you understand what attributes may lead to
     /// XSS attack vectors. URL attributes are particularly vulnerable and require careful validation. See
     /// http://ha.ckers.org/xss.html for some XSS attack examples.
-    /// </p>
     /// </remarks>
     /// <author>Jonathan Hedley</author>
     public class Whitelist {
         private ICollection<Whitelist.TagName> tagNames;
 
+        // tags allowed, lower case. e.g. [p, br, span]
         private IDictionary<Whitelist.TagName, ICollection<Whitelist.AttributeKey>> attributes;
 
+        // tag -> attribute[]. allowed attributes [href] for a tag.
         private IDictionary<Whitelist.TagName, IDictionary<Whitelist.AttributeKey, Whitelist.AttributeValue>> enforcedAttributes;
 
+        // always set these attribute values
         private IDictionary<Whitelist.TagName, IDictionary<Whitelist.AttributeKey, ICollection<Whitelist.Protocol>
             >> protocols;
 
+        // allowed URL protocols for attributes
         private bool preserveRelativeLinks;
 
-        /*
-        Thank you to Ryan Grove (wonko.com) for the Ruby HTML cleaner http://github.com/rgrove/sanitize/, which inspired
-        this whitelist configuration, and the initial defaults.
-        */
-        // tags allowed, lower case. e.g. [p, br, span]
-        // tag -> attribute[]. allowed attributes [href] for a tag.
-        // always set these attribute values
-        // allowed URL protocols for attributes
         // option to preserve relative links
         /// <summary>This whitelist allows only text nodes: all HTML will be stripped.</summary>
         /// <returns>whitelist</returns>
@@ -130,9 +135,9 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
             return new iText.StyledXmlParser.Jsoup.Safety.Whitelist();
         }
 
-        /// <summary>This whitelist allows only simple text formatting: <code>b, em, i, strong, u</code>.</summary>
+        /// <summary>This whitelist allows only simple text formatting: <c>b, em, i, strong, u</c>.</summary>
         /// <remarks>
-        /// This whitelist allows only simple text formatting: <code>b, em, i, strong, u</code>. All other HTML (tags and
+        /// This whitelist allows only simple text formatting: <c>b, em, i, strong, u</c>. All other HTML (tags and
         /// attributes) will be removed.
         /// </remarks>
         /// <returns>whitelist</returns>
@@ -141,22 +146,17 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         }
 
         /// <summary>
-        /// <p>
-        /// This whitelist allows a fuller range of text nodes: <code>a, b, blockquote, br, cite, code, dd, dl, dt, em, i, li,
-        /// ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</code>, and appropriate attributes.
+        /// This whitelist allows a fuller range of text nodes: <c>a, b, blockquote, br, cite, code, dd, dl, dt, em, i, li,
+        /// ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</c>, and appropriate attributes.
         /// </summary>
         /// <remarks>
-        /// <p>
-        /// This whitelist allows a fuller range of text nodes: <code>a, b, blockquote, br, cite, code, dd, dl, dt, em, i, li,
-        /// ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</code>, and appropriate attributes.
-        /// </p>
-        /// <p>
-        /// Links (<code>a</code> elements) can point to <code>http, https, ftp, mailto</code>, and have an enforced
-        /// <code>rel=nofollow</code> attribute.
-        /// </p>
-        /// <p>
+        /// This whitelist allows a fuller range of text nodes: <c>a, b, blockquote, br, cite, code, dd, dl, dt, em, i, li,
+        /// ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</c>, and appropriate attributes.
+        /// <para />
+        /// Links (<c>a</c> elements) can point to <c>http, https, ftp, mailto</c>, and have an enforced
+        /// <c>rel=nofollow</c> attribute.
+        /// <para />
         /// Does not allow images.
-        /// </p>
         /// </remarks>
         /// <returns>whitelist</returns>
         public static iText.StyledXmlParser.Jsoup.Safety.Whitelist Basic() {
@@ -171,8 +171,8 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// <summary>
         /// This whitelist allows the same text tags as
         /// <see cref="Basic()"/>
-        /// , and also allows <code>img</code> tags, with appropriate
-        /// attributes, with <code>src</code> pointing to <code>http</code> or <code>https</code>.
+        /// , and also allows <c>img</c> tags, with appropriate
+        /// attributes, with <c>src</c> pointing to <c>http</c> or <c>https</c>.
         /// </summary>
         /// <returns>whitelist</returns>
         public static iText.StyledXmlParser.Jsoup.Safety.Whitelist BasicWithImages() {
@@ -181,19 +181,16 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         }
 
         /// <summary>
-        /// This whitelist allows a full range of text and structural body HTML: <code>a, b, blockquote, br, caption, cite,
+        /// This whitelist allows a full range of text and structural body HTML: <c>a, b, blockquote, br, caption, cite,
         /// code, col, colgroup, dd, div, dl, dt, em, h1, h2, h3, h4, h5, h6, i, img, li, ol, p, pre, q, small, span, strike, strong, sub,
-        /// sup, table, tbody, td, tfoot, th, thead, tr, u, ul</code>
-        /// <p>
-        /// Links do not have an enforced <code>rel=nofollow</code> attribute, but you can add that if desired.
+        /// sup, table, tbody, td, tfoot, th, thead, tr, u, ul</c>
         /// </summary>
         /// <remarks>
-        /// This whitelist allows a full range of text and structural body HTML: <code>a, b, blockquote, br, caption, cite,
+        /// This whitelist allows a full range of text and structural body HTML: <c>a, b, blockquote, br, caption, cite,
         /// code, col, colgroup, dd, div, dl, dt, em, h1, h2, h3, h4, h5, h6, i, img, li, ol, p, pre, q, small, span, strike, strong, sub,
-        /// sup, table, tbody, td, tfoot, th, thead, tr, u, ul</code>
-        /// <p>
-        /// Links do not have an enforced <code>rel=nofollow</code> attribute, but you can add that if desired.
-        /// </p>
+        /// sup, table, tbody, td, tfoot, th, thead, tr, u, ul</c>
+        /// <para />
+        /// Links do not have an enforced <c>rel=nofollow</c> attribute, but you can add that if desired.
         /// </remarks>
         /// <returns>whitelist</returns>
         public static iText.StyledXmlParser.Jsoup.Safety.Whitelist Relaxed() {
@@ -264,14 +261,12 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// <summary>Add a list of allowed attributes to a tag.</summary>
         /// <remarks>
         /// Add a list of allowed attributes to a tag. (If an attribute is not allowed on an element, it will be removed.)
-        /// <p>
-        /// E.g.: <code>addAttributes("a", "href", "class")</code> allows <code>href</code> and <code>class</code> attributes
-        /// on <code>a</code> tags.
-        /// </p>
-        /// <p>
-        /// To make an attribute valid for <b>all tags</b>, use the pseudo tag <code>:all</code>, e.g.
-        /// <code>addAttributes(":all", "class")</code>.
-        /// </p>
+        /// <para />
+        /// E.g.: <c>addAttributes("a", "href", "class")</c> allows <c>href</c> and <c>class</c> attributes
+        /// on <c>a</c> tags.
+        /// <para />
+        /// To make an attribute valid for <b>all tags</b>, use the pseudo tag <c>:all</c>, e.g.
+        /// <c>addAttributes(":all", "class")</c>.
         /// </remarks>
         /// <param name="tag">The tag the attributes are for. The tag will be added to the allowed tag list if necessary.
         ///     </param>
@@ -304,14 +299,12 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// <summary>Remove a list of allowed attributes from a tag.</summary>
         /// <remarks>
         /// Remove a list of allowed attributes from a tag. (If an attribute is not allowed on an element, it will be removed.)
-        /// <p>
-        /// E.g.: <code>removeAttributes("a", "href", "class")</code> disallows <code>href</code> and <code>class</code>
-        /// attributes on <code>a</code> tags.
-        /// </p>
-        /// <p>
-        /// To make an attribute invalid for <b>all tags</b>, use the pseudo tag <code>:all</code>, e.g.
-        /// <code>removeAttributes(":all", "class")</code>.
-        /// </p>
+        /// <para />
+        /// E.g.: <c>removeAttributes("a", "href", "class")</c> disallows <c>href</c> and <c>class</c>
+        /// attributes on <c>a</c> tags.
+        /// <para />
+        /// To make an attribute invalid for <b>all tags</b>, use the pseudo tag <c>:all</c>, e.g.
+        /// <c>removeAttributes(":all", "class")</c>.
         /// </remarks>
         /// <param name="tag">The tag the attributes are for.</param>
         /// <param name="keys">List of invalid attributes for the tag</param>
@@ -354,10 +347,9 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// <remarks>
         /// Add an enforced attribute to a tag. An enforced attribute will always be added to the element. If the element
         /// already has the attribute set, it will be overridden.
-        /// <p>
-        /// E.g.: <code>addEnforcedAttribute("a", "rel", "nofollow")</code> will make all <code>a</code> tags output as
-        /// <code>&lt;a href="..." rel="nofollow"&gt;</code>
-        /// </p>
+        /// <para />
+        /// E.g.: <c>addEnforcedAttribute("a", "rel", "nofollow")</c> will make all <c>a</c> tags output as
+        /// <c>&lt;a href="..." rel="nofollow"&gt;</c>
         /// </remarks>
         /// <param name="tag">The tag the enforced attribute is for. The tag will be added to the allowed tag list if necessary.
         ///     </param>
@@ -416,9 +408,8 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// Configure this Whitelist to preserve relative links in an element's URL attribute, or convert them to absolute
         /// links. By default, this is <b>false</b>: URLs will be  made absolute (e.g. start with an allowed protocol, like
         /// e.g.
-        /// <c>http://</c>
-        /// .
-        /// <p>
+        /// <c>http://</c>.
+        /// <para />
         /// Note that when handling relative links, the input document must have an appropriate
         /// <c>base URI</c>
         /// set when
@@ -429,7 +420,6 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// </c>
         /// option, the link must be resolvable against the base URI to an allowed protocol; otherwise the attribute
         /// will be removed.
-        /// </p>
         /// </remarks>
         /// <param name="preserve">
         /// 
@@ -449,13 +439,11 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// <remarks>
         /// Add allowed URL protocols for an element's URL attribute. This restricts the possible values of the attribute to
         /// URLs with the defined protocol.
-        /// <p>
-        /// E.g.: <code>addProtocols("a", "href", "ftp", "http", "https")</code>
-        /// </p>
-        /// <p>
-        /// To allow a link to an in-page URL anchor (i.e. <code>&lt;a href="#anchor"&gt;</code>, add a <code>#</code>:<br />
-        /// E.g.: <code>addProtocols("a", "href", "#")</code>
-        /// </p>
+        /// <para />
+        /// E.g.: <c>addProtocols("a", "href", "ftp", "http", "https")</c>
+        /// <para />
+        /// To allow a link to an in-page URL anchor (i.e. <c>&lt;a href="#anchor"&gt;</c>, add a <c>#</c>:<br />
+        /// E.g.: <c>addProtocols("a", "href", "#")</c>
         /// </remarks>
         /// <param name="tag">Tag the URL protocol is for</param>
         /// <param name="key">Attribute key</param>
@@ -495,9 +483,8 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// <summary>Remove allowed URL protocols for an element's URL attribute.</summary>
         /// <remarks>
         /// Remove allowed URL protocols for an element's URL attribute.
-        /// <p>
-        /// E.g.: <code>removeProtocols("a", "href", "ftp")</code>
-        /// </p>
+        /// <para />
+        /// E.g.: <c>removeProtocols("a", "href", "ftp")</c>
         /// </remarks>
         /// <param name="tag">Tag the URL protocol is for</param>
         /// <param name="key">Attribute key</param>
@@ -612,12 +599,12 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
             return attrs;
         }
 
+        // named types for config. All just hold strings, but here for my sanity.
         internal class TagName : Whitelist.TypedValue {
             internal TagName(String value)
                 : base(value) {
             }
 
-            // named types for config. All just hold strings, but here for my sanity.
             internal static Whitelist.TagName ValueOf(String value) {
                 return new Whitelist.TagName(value);
             }

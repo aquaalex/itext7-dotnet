@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -51,11 +51,18 @@ namespace iText.Svg.Renderers.Factories {
     /// <see cref="ISvgNodeRendererMapper"/>
     /// that will be used by
     /// default in the
+    /// <see cref="DefaultSvgNodeRendererFactory"/>.
+    /// </summary>
+    /// <remarks>
+    /// The implementation of
+    /// <see cref="ISvgNodeRendererMapper"/>
+    /// that will be used by
+    /// default in the
     /// <see cref="DefaultSvgNodeRendererFactory"/>
     /// . It contains the mapping
     /// of the default implementations, provided by this project for the standard SVG
     /// tags as defined in the SVG Specification.
-    /// </summary>
+    /// </remarks>
     public class DefaultSvgNodeRendererMapper : ISvgNodeRendererMapper {
         public virtual IDictionary<String, Type> GetMapping() {
             IDictionary<String, Type> result = new Dictionary<String, Type>();
@@ -66,6 +73,7 @@ namespace iText.Svg.Renderers.Factories {
             result.Put(SvgConstants.Tags.G, typeof(GroupSvgNodeRenderer));
             result.Put(SvgConstants.Tags.IMAGE, typeof(ImageSvgNodeRenderer));
             result.Put(SvgConstants.Tags.LINE, typeof(LineSvgNodeRenderer));
+            result.Put(SvgConstants.Tags.MARKER, typeof(MarkerSvgNodeRenderer));
             result.Put(SvgConstants.Tags.PATH, typeof(PathSvgNodeRenderer));
             result.Put(SvgConstants.Tags.POLYGON, typeof(PolygonSvgNodeRenderer));
             result.Put(SvgConstants.Tags.POLYLINE, typeof(PolylineSvgNodeRenderer));
@@ -122,7 +130,6 @@ namespace iText.Svg.Renderers.Factories {
             ignored.Add(SvgConstants.Tags.GLYPH_REF);
             ignored.Add(SvgConstants.Tags.HKERN);
             ignored.Add(SvgConstants.Tags.LINEAR_GRADIENT);
-            ignored.Add(SvgConstants.Tags.MARKER);
             ignored.Add(SvgConstants.Tags.MASK);
             ignored.Add(SvgConstants.Tags.METADATA);
             ignored.Add(SvgConstants.Tags.MISSING_GLYPH);

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -57,8 +57,6 @@ namespace iText.Kernel.Pdf {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DocumentInfoCreatePdf20() {
             String outFile = destinationFolder + "test01.pdf";
@@ -74,8 +72,6 @@ namespace iText.Kernel.Pdf {
             NUnit.Framework.Assert.IsNull(ct.CompareXmp(outFile, cmpFile, true));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DocumentInfoTransformPdf17ToPdf20() {
             String inputFile = sourceFolder + "metadata_pdf.pdf";
@@ -90,8 +86,6 @@ namespace iText.Kernel.Pdf {
             NUnit.Framework.Assert.IsNull(ct.CompareXmp(outFile, cmpFile, true));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ChangeDocumentVersionAndInfoInAppendMode() {
             String inputFile = sourceFolder + "metadata_pdf.pdf";
@@ -107,7 +101,6 @@ namespace iText.Kernel.Pdf {
             NUnit.Framework.Assert.IsNull(ct.CompareXmp(outFile, cmpFile, true));
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ReadInfoFromMetadata() {
             String inputFile = sourceFolder + "cmp_metadata_pdf_20.pdf";
@@ -121,8 +114,6 @@ namespace iText.Kernel.Pdf {
             NUnit.Framework.Assert.AreEqual("This example shows how to add metadata", subject, "Subject");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ChangeMetadataInAppendMode() {
             String inputFile = sourceFolder + "cmp_metadata_pdf_20.pdf";
@@ -138,8 +129,6 @@ namespace iText.Kernel.Pdf {
             NUnit.Framework.Assert.IsNull(ct.CompareXmp(outFile, cmpFile, true));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleStampingMetadataLeaveUnchanged() {
             String inputFile = sourceFolder + "cmp_metadata_pdf_20_changed_append.pdf";

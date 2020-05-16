@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,6 +52,8 @@ namespace iText.IO.Font {
 
         public const int UNITS_NORMALIZATION = 1000;
 
+        // In case Type1: char code to glyph.
+        // In case TrueType: glyph index to glyph.
         protected internal IDictionary<int, Glyph> codeToGlyph = new Dictionary<int, Glyph>();
 
         protected internal IDictionary<int, Glyph> unicodeToGlyph = new Dictionary<int, Glyph>();
@@ -75,8 +77,6 @@ namespace iText.IO.Font {
 
         protected internal String registry;
 
-        // In case Type1: char code to glyph.
-        // In case TrueType: glyph index to glyph.
         public virtual int CountOfGlyphs() {
             return Math.Max(codeToGlyph.Count, unicodeToGlyph.Count);
         }
@@ -154,8 +154,13 @@ namespace iText.IO.Font {
         /// Checks whether the
         /// <see cref="FontProgram"/>
         /// was built with corresponding fontName.
-        /// Default value is false unless overridden.
         /// </summary>
+        /// <remarks>
+        /// Checks whether the
+        /// <see cref="FontProgram"/>
+        /// was built with corresponding fontName.
+        /// Default value is false unless overridden.
+        /// </remarks>
         /// <param name="fontName">a font name or path to a font program</param>
         /// <returns>true, if the FontProgram was built with the fontProgram. Otherwise false.</returns>
         public virtual bool IsBuiltWith(String fontName) {
@@ -210,7 +215,7 @@ namespace iText.IO.Font {
         /// <summary>Sets the PostScript italic angel.</summary>
         /// <remarks>
         /// Sets the PostScript italic angel.
-        /// <p>
+        /// <para />
         /// Italic angle in counter-clockwise degrees from the vertical. Zero for upright text, negative for text that leans to the right (forward).
         /// </remarks>
         /// <param name="italicAngle">in counter-clockwise degrees from the vertical</param>
@@ -229,8 +234,7 @@ namespace iText.IO.Font {
         /// <summary>Sets font weight.</summary>
         /// <param name="fontWeight">
         /// integer form 100 to 900. See
-        /// <see cref="iText.IO.Font.Constants.FontWeights"/>
-        /// .
+        /// <see cref="iText.IO.Font.Constants.FontWeights"/>.
         /// </param>
         protected internal virtual void SetFontWeight(int fontWeight) {
             fontNames.SetFontWeight(fontWeight);
@@ -239,8 +243,7 @@ namespace iText.IO.Font {
         /// <summary>Sets font width in css notation (font-stretch property)</summary>
         /// <param name="fontWidth">
         /// 
-        /// <see cref="iText.IO.Font.Constants.FontStretches"/>
-        /// .
+        /// <see cref="iText.IO.Font.Constants.FontStretches"/>.
         /// </param>
         protected internal virtual void SetFontStretch(String fontWidth) {
             fontNames.SetFontStretch(fontWidth);
@@ -272,7 +275,7 @@ namespace iText.IO.Font {
         /// <summary>Sets the PostScript name of the font.</summary>
         /// <remarks>
         /// Sets the PostScript name of the font.
-        /// <p>
+        /// <para />
         /// If full name is null, it will be set as well.
         /// </remarks>
         /// <param name="fontName">the PostScript name of the font, shall not be null or empty.</param>

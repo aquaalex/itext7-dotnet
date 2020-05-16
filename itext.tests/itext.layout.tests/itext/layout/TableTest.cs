@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,6 +41,7 @@ For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
 using System;
+using System.IO;
 using iText.IO.Image;
 using iText.IO.Util;
 using iText.Kernel.Colors;
@@ -50,6 +51,8 @@ using iText.Kernel.Pdf.Xobject;
 using iText.Kernel.Utils;
 using iText.Layout.Borders;
 using iText.Layout.Element;
+using iText.Layout.Layout;
+using iText.Layout.Minmaxwidth;
 using iText.Layout.Properties;
 using iText.Layout.Renderer;
 using iText.Test;
@@ -63,12 +66,12 @@ namespace iText.Layout {
         public static readonly String destinationFolder = NUnit.Framework.TestContext.CurrentContext.TestDirectory
              + "/test/itext/layout/TableTest/";
 
-        internal const String textContent = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.\n"
+        private const String TEXT_CONTENT = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.\n"
              + "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.\n" + "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.\n";
 
-        internal const String shortTextContent = "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.";
+        private const String SHORT_TEXT_CONTENT = "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.";
 
-        internal const String middleTextContent = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.\n"
+        private const String MIDDLE_TEXT_CONTENT = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.\n"
              + "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.";
 
         [NUnit.Framework.OneTimeSetUp]
@@ -76,8 +79,6 @@ namespace iText.Layout {
             CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest01() {
             String testName = "tableTest01.pdf";
@@ -95,8 +96,6 @@ namespace iText.Layout {
                 );
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest02() {
             String testName = "tableTest02.pdf";
@@ -114,8 +113,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest03() {
             String testName = "tableTest03.pdf";
@@ -137,8 +134,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest04() {
             String testName = "tableTest04.pdf";
@@ -160,8 +155,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest05() {
             String testName = "tableTest05.pdf";
@@ -181,8 +174,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest06() {
             String testName = "tableTest06.pdf";
@@ -202,8 +193,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest07() {
             String testName = "tableTest07.pdf";
@@ -223,8 +212,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest08() {
             String testName = "tableTest08.pdf";
@@ -249,8 +236,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest09() {
             String testName = "tableTest09.pdf";
@@ -277,8 +262,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest10() {
             String testName = "tableTest10.pdf";
@@ -309,8 +292,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest11() {
             String testName = "tableTest11.pdf";
@@ -339,8 +320,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest12() {
             String testName = "tableTest12.pdf";
@@ -374,8 +353,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest13() {
             String testName = "tableTest13.pdf";
@@ -402,8 +379,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest14() {
             String testName = "tableTest14.pdf";
@@ -432,8 +407,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest15() {
             String testName = "tableTest15.pdf";
@@ -464,8 +437,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest16() {
             String testName = "tableTest16.pdf";
@@ -489,8 +460,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         public virtual void SimpleTableTest17() {
@@ -514,8 +483,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         public virtual void SimpleTableTest18() {
@@ -524,7 +491,7 @@ namespace iText.Layout {
             String cmpFileName = sourceFolder + "cmp_" + testName;
             PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outFileName));
             Document doc = new Document(pdfDoc);
-            doc.Add(new Paragraph(textContent));
+            doc.Add(new Paragraph(TEXT_CONTENT));
             Table table = new Table(new float[] { 50, 50, 50 }).AddCell(new Cell().Add(new Paragraph("cell 1, 1"))).AddCell
                 (new Cell().Add(new Paragraph("cell 1, 2"))).AddCell(new Cell().Add(new Paragraph("cell 1, 3")));
             String longText = "Long text, very long text. ";
@@ -540,8 +507,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         public virtual void SimpleTableTest19() {
@@ -551,23 +516,22 @@ namespace iText.Layout {
             PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outFileName));
             Document doc = new Document(pdfDoc);
             Table table = new Table(new float[] { 130, 130, 260 }).AddCell(new Cell(3, 2).Add(new Paragraph("cell 1:2, 1:3\n"
-                 + textContent + textContent))).AddCell(new Cell().Add(new Paragraph("cell 1, 3\n" + textContent))).AddCell
-                (new Cell().Add(new Paragraph("cell 2, 3\n" + textContent))).AddCell(new Cell().Add(new Paragraph("cell 3, 3\n"
-                 + textContent))).AddCell(new Cell().Add(new iText.Layout.Element.Image(ImageDataFactory.Create(sourceFolder
-                 + "red.png")))).AddCell(new Cell().Add(new Paragraph("cell 4, 2\n" + shortTextContent))).AddCell(new 
-                Cell().Add(new Paragraph("cell 4, 3\n" + middleTextContent))).AddCell(new Cell().Add(new Paragraph("cell 5, 1\n"
-                 + shortTextContent))).AddCell(new Cell().Add(new Paragraph("cell 5, 2\n" + shortTextContent))).AddCell
-                (new Cell().Add(new Paragraph("cell 5, 3\n" + middleTextContent))).AddCell(new Cell().Add(new Paragraph
-                ("cell 6, 1\n" + middleTextContent))).AddCell(new Cell().Add(new Paragraph("cell 6, 2\n" + middleTextContent
-                ))).AddCell(new Cell().Add(new Paragraph("cell 6, 3\n" + middleTextContent)));
+                 + TEXT_CONTENT + TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph("cell 1, 3\n" + TEXT_CONTENT)))
+                .AddCell(new Cell().Add(new Paragraph("cell 2, 3\n" + TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph
+                ("cell 3, 3\n" + TEXT_CONTENT))).AddCell(new Cell().Add(new iText.Layout.Element.Image(ImageDataFactory
+                .Create(sourceFolder + "red.png")))).AddCell(new Cell().Add(new Paragraph("cell 4, 2\n" + SHORT_TEXT_CONTENT
+                ))).AddCell(new Cell().Add(new Paragraph("cell 4, 3\n" + MIDDLE_TEXT_CONTENT))).AddCell(new Cell().Add
+                (new Paragraph("cell 5, 1\n" + SHORT_TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph("cell 5, 2\n"
+                 + SHORT_TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph("cell 5, 3\n" + MIDDLE_TEXT_CONTENT))).AddCell
+                (new Cell().Add(new Paragraph("cell 6, 1\n" + MIDDLE_TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph
+                ("cell 6, 2\n" + MIDDLE_TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph("cell 6, 3\n" + MIDDLE_TEXT_CONTENT
+                )));
             doc.Add(table);
             doc.Close();
             NUnit.Framework.Assert.IsNull(new CompareTool().CompareByContent(outFileName, cmpFileName, destinationFolder
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         public virtual void SimpleTableTest20() {
@@ -578,20 +542,18 @@ namespace iText.Layout {
             Document doc = new Document(pdfDoc);
             Table table = new Table(new float[] { 130, 130, 260 }).AddCell(new Cell().Add(new iText.Layout.Element.Image
                 (ImageDataFactory.Create(sourceFolder + "red.png")))).AddCell(new Cell().Add(new Paragraph("cell 4, 2\n"
-                 + shortTextContent))).AddCell(new Cell().Add(new Paragraph("cell 4, 3\n" + middleTextContent))).AddCell
-                (new Cell().Add(new Paragraph("cell 5, 1\n" + shortTextContent))).AddCell(new Cell().Add(new Paragraph
-                ("cell 5, 2\n" + shortTextContent))).AddCell(new Cell().Add(new Paragraph("cell 5, 3\n" + middleTextContent
-                ))).AddCell(new Cell().Add(new Paragraph("cell 6, 1\n" + middleTextContent))).AddCell(new Cell().Add(new 
-                Paragraph("cell 6, 2\n" + middleTextContent))).AddCell(new Cell().Add(new Paragraph("cell 6, 3\n" + middleTextContent
-                )));
+                 + SHORT_TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph("cell 4, 3\n" + MIDDLE_TEXT_CONTENT))).AddCell
+                (new Cell().Add(new Paragraph("cell 5, 1\n" + SHORT_TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph
+                ("cell 5, 2\n" + SHORT_TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph("cell 5, 3\n" + MIDDLE_TEXT_CONTENT
+                ))).AddCell(new Cell().Add(new Paragraph("cell 6, 1\n" + MIDDLE_TEXT_CONTENT))).AddCell(new Cell().Add
+                (new Paragraph("cell 6, 2\n" + MIDDLE_TEXT_CONTENT))).AddCell(new Cell().Add(new Paragraph("cell 6, 3\n"
+                 + MIDDLE_TEXT_CONTENT)));
             doc.Add(table);
             doc.Close();
             NUnit.Framework.Assert.IsNull(new CompareTool().CompareByContent(outFileName, cmpFileName, destinationFolder
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         public virtual void SimpleTableTest21() {
@@ -620,8 +582,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest22() {
             String testName = "tableTest22.pdf";
@@ -639,8 +599,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleTableTest23() {
             String testName = "tableTest23.pdf";
@@ -673,8 +631,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BigRowspanTest01() {
             String testName = "bigRowspanTest01.pdf";
@@ -699,8 +655,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BigRowspanTest02() {
             String testName = "bigRowspanTest02.pdf";
@@ -725,8 +679,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BigRowspanTest03() {
             String testName = "bigRowspanTest03.pdf";
@@ -749,8 +701,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BigRowspanTest04() {
             String testName = "bigRowspanTest04.pdf";
@@ -775,8 +725,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BigRowspanTest05() {
             String testName = "bigRowspanTest05.pdf";
@@ -798,8 +746,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BigRowspanTest06() {
             String testName = "bigRowspanTest06.pdf";
@@ -819,8 +765,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BigRowspanTest07() {
             String testName = "bigRowspanTest07.pdf";
@@ -846,8 +790,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DifferentPageOrientationTest01() {
             String testName = "differentPageOrientationTest01.pdf";
@@ -873,8 +815,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ExtendLastRowTest01() {
             String testName = "extendLastRowTest01.pdf";
@@ -901,8 +841,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         [NUnit.Framework.Test]
         public virtual void ToLargeElementWithKeepTogetherPropertyInTableTest01() {
@@ -929,8 +867,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         [NUnit.Framework.Test]
         public virtual void ToLargeElementInTableTest01() {
@@ -951,8 +887,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void NestedTablesCollapseTest01() {
             String testName = "nestedTablesCollapseTest01.pdf";
@@ -1001,8 +935,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void NestedTableSkipHeaderFooterTest() {
             String testName = "nestedTableSkipHeaderFooter.pdf";
@@ -1026,8 +958,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void NestedTablesWithMarginsTest01() {
             String testName = "nestedTablesWithMarginsTest01.pdf";
@@ -1048,8 +978,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         [NUnit.Framework.Test]
         public virtual void SplitTableOnShortPage() {
@@ -1084,8 +1012,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SplitCellWithStyles() {
             String testName = "splitCellWithStyles.pdf";
@@ -1109,8 +1035,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ImageInTableTest_HA() {
             String testName = "imageInTableTest_HA.pdf";
@@ -1135,8 +1059,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void CellAlignmentAndSplittingTest01() {
             String testName = "cellAlignmentAndSplittingTest01.pdf";
@@ -1155,8 +1077,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void CellAlignmentAndKeepTogetherTest01() {
             String testName = "cellAlignmentAndKeepTogetherTest01.pdf";
@@ -1175,8 +1095,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [LogMessage(iText.IO.LogMessageConstant.CLIP_ELEMENT, Count = 3)]
         [NUnit.Framework.Test]
         public virtual void TableWithSetHeightProperties01() {
@@ -1241,8 +1159,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [LogMessage(iText.IO.LogMessageConstant.CLIP_ELEMENT, Count = 3)]
         [NUnit.Framework.Test]
         public virtual void TableWithSetHeightProperties02() {
@@ -1331,8 +1247,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableWithSetHeightProperties03() {
             String testName = "tableWithSetHeightProperties03.pdf";
@@ -1400,8 +1314,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableWithHeaderInTheBottomOfPageTest() {
             String testName = "tableWithHeaderInTheBottomOfPageTest.pdf";
@@ -1423,8 +1335,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA)]
         public virtual void BigFooterTest01() {
@@ -1443,8 +1353,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA)]
         public virtual void BigFooterTest02() {
@@ -1465,8 +1373,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableWithDocumentRelayoutTest() {
             String testName = "tableWithDocumentRelayoutTest.pdf";
@@ -1484,8 +1390,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableWithKeepTogetherOnCells() {
             String testName = "tableWithKeepTogetherOnCells.pdf";
@@ -1504,8 +1408,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void EmptyTableTest01() {
             String testName = "emptyTableTest01.pdf";
@@ -1536,8 +1438,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void EmptyTableTest02() {
             String testName = "emptyTableTest02.pdf";
@@ -1557,8 +1457,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.LAST_ROW_IS_NOT_COMPLETE, Count = 2)]
         public virtual void TableWithIncompleteFooter() {
@@ -1578,8 +1476,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.LAST_ROW_IS_NOT_COMPLETE, Count = 1)]
         public virtual void TableWithCustomRendererTest01() {
@@ -1600,8 +1496,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SkipLastRowTest() {
             // This test checks that the table occupies exactly one page and does not draw its footer.
@@ -1627,8 +1521,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SkipFooterTest01() {
             String testName = "skipFooterTest01.pdf";
@@ -1650,8 +1542,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SkipHeaderTest01() {
             String testName = "skipHeaderTest01.pdf";
@@ -1677,8 +1567,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableSplitTest01() {
             String testName = "tableSplitTest01.pdf";
@@ -1697,8 +1585,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableSplitTest02() {
             String testName = "tableSplitTest02.pdf";
@@ -1724,8 +1610,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableSplitTest03() {
             String testName = "tableSplitTest03.pdf";
@@ -1747,8 +1631,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableSplitTest04() {
             String testName = "tableSplitTest04.pdf";
@@ -1773,8 +1655,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.LAST_ROW_IS_NOT_COMPLETE)]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA)]
@@ -1797,8 +1677,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AutoLayoutTest01() {
             String testName = "autoLayoutTest01.pdf";
@@ -1825,8 +1703,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AutoLayoutTest02() {
             String testName = "autoLayoutTest02.pdf";
@@ -1845,8 +1721,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AutoLayoutTest03() {
             String testName = "autoLayoutTest03.pdf";
@@ -1865,8 +1739,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void FixedLayoutTest01() {
             String testName = "fixedLayoutTest01.pdf";
@@ -1888,8 +1760,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void FixedLayoutTest02() {
             String testName = "fixedLayoutTest02.pdf";
@@ -1911,8 +1781,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.CLIP_ELEMENT, Count = 2)]
         public virtual void FixedPositionTest01() {
@@ -1943,8 +1811,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA)]
         public virtual void NestedTableLostContent() {
@@ -1970,8 +1836,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA)]
         public virtual void NestedTableMinMaxWidthException() {
@@ -1997,8 +1861,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableMinMaxWidthTest01() {
             String testName = "tableMinMaxWidthTest01.pdf";
@@ -2016,8 +1878,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableMinMaxWidthTest02() {
             String testName = "tableMinMaxWidthTest02.pdf";
@@ -2035,8 +1895,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableMinMaxWidthTest03() {
             String testName = "tableMinMaxWidthTest03.pdf";
@@ -2054,8 +1912,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableMinMaxWidthTest04() {
             String testName = "tableMinMaxWidthTest04.pdf";
@@ -2073,8 +1929,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableMinMaxWidthTest05() {
             String testName = "tableMinMaxWidthTest05.pdf";
@@ -2097,8 +1951,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void CellsWithEdgeCaseLeadingTest01() {
             String testName = "cellsWithEdgeCaseLeadingTest01.pdf";
@@ -2171,8 +2023,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TableMinMaxWidthTest06() {
             String testName = "tableMinMaxWidthTest06.pdf";
@@ -2193,8 +2043,45 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
+        [NUnit.Framework.Test]
+        [LogMessage(iText.IO.LogMessageConstant.TABLE_WIDTH_IS_MORE_THAN_EXPECTED_DUE_TO_MIN_WIDTH)]
+        public virtual void SplitTableMinMaxWidthTest01() {
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(new MemoryStream()));
+            Document doc = new Document(pdfDoc);
+            Table table = new Table(2);
+            for (int i = 0; i < 26; i++) {
+                table.AddCell(new Cell().Add(new Paragraph("abba a")));
+                table.AddCell(new Cell().Add(new Paragraph("ab ab ab")));
+            }
+            // not enough to place even if min-width approach is used
+            float areaWidth = 20;
+            LayoutResult result = table.CreateRendererSubTree().SetParent(doc.GetRenderer()).Layout(new LayoutContext(
+                new LayoutArea(1, new Rectangle(areaWidth, 100))));
+            TableRenderer overflowRenderer = (TableRenderer)result.GetOverflowRenderer();
+            MinMaxWidth minMaxWidth = overflowRenderer.GetMinMaxWidth();
+            NUnit.Framework.Assert.AreEqual(result.GetOccupiedArea().GetBBox().GetWidth(), minMaxWidth.GetMaxWidth(), 
+                0.0001);
+            NUnit.Framework.Assert.AreEqual(minMaxWidth.GetMaxWidth(), minMaxWidth.GetMinWidth(), 0.0001);
+            // not enough to place using max-width approach, but more than required for min-width approach
+            areaWidth = 70;
+            result = table.CreateRendererSubTree().SetParent(doc.GetRenderer()).Layout(new LayoutContext(new LayoutArea
+                (1, new Rectangle(areaWidth, 100))));
+            overflowRenderer = (TableRenderer)result.GetOverflowRenderer();
+            minMaxWidth = overflowRenderer.GetMinMaxWidth();
+            NUnit.Framework.Assert.AreEqual(result.GetOccupiedArea().GetBBox().GetWidth(), minMaxWidth.GetMaxWidth(), 
+                0.0001);
+            NUnit.Framework.Assert.AreEqual(minMaxWidth.GetMaxWidth(), minMaxWidth.GetMinWidth(), 0.0001);
+            // enough to place using max-width approach
+            areaWidth = 400f;
+            result = table.CreateRendererSubTree().SetParent(doc.GetRenderer()).Layout(new LayoutContext(new LayoutArea
+                (1, new Rectangle(areaWidth, 100))));
+            overflowRenderer = (TableRenderer)result.GetOverflowRenderer();
+            minMaxWidth = overflowRenderer.GetMinMaxWidth();
+            NUnit.Framework.Assert.AreEqual(result.GetOccupiedArea().GetBBox().GetWidth(), minMaxWidth.GetMaxWidth(), 
+                0.0001);
+            NUnit.Framework.Assert.AreEqual(minMaxWidth.GetMaxWidth(), minMaxWidth.GetMinWidth(), 0.0001);
+        }
+
         [NUnit.Framework.Test]
         public virtual void MarginPaddingTest01() {
             String testName = "marginPaddingTest01.pdf";
@@ -2221,8 +2108,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SpacingTest01() {
             String testName = "spacingTest01.pdf";
@@ -2251,8 +2136,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TaggedTableWithCaptionTest01() {
             String testName = "taggedTableWithCaptionTest01.pdf";
@@ -2273,8 +2156,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void WideCaptionTest01() {
             String testName = "wideCaptionTest01.pdf";
@@ -2312,8 +2193,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SplitTableWithCaptionTest01() {
             String testName = "splitTableWithCaptionTest01.pdf";
@@ -2339,8 +2218,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void CaptionedTableOfOnePageWithCollapsedBordersTest01() {
             String testName = "captionedTableOfOnePageWithCollapsedBordersTest01.pdf";
@@ -2379,8 +2256,24 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
+        [NUnit.Framework.Test]
+        public virtual void TableWithDifferentStylesOfCollapsedBordersTest() {
+            String testName = "tableWithDifferentStylesOfCollapsedBordersTest.pdf";
+            String outFileName = destinationFolder + testName;
+            String cmpFileName = sourceFolder + "cmp_" + testName;
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outFileName));
+            Document doc = new Document(pdfDoc);
+            Table table = CreateTestTable(2, 10, 2, 2, (UnitValue)null, BorderCollapsePropertyValue.COLLAPSE, new Style
+                ().SetBorder(new DashedBorder(ColorConstants.RED, 10)));
+            table.GetHeader().SetBorder(new DottedBorder(ColorConstants.ORANGE, 5f));
+            table.GetFooter().SetBorder(new RoundDotsBorder(ColorConstants.ORANGE, 5f));
+            // no caption
+            AddTable(table, true, true, doc);
+            doc.Close();
+            NUnit.Framework.Assert.IsNull(new CompareTool().CompareByContent(outFileName, cmpFileName, destinationFolder
+                , testName + "_diff"));
+        }
+
         [NUnit.Framework.Test]
         public virtual void CaptionedTableOfOnePageWithSeparatedBordersTest01() {
             String testName = "captionedTableOfOnePageWithSeparatedBordersTest01.pdf";
@@ -2460,8 +2353,6 @@ namespace iText.Layout {
             return table;
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SkipLastFooterAndProcessBigRowspanTest01() {
             String testName = "skipLastFooterAndProcessBigRowspanTest01.pdf";
@@ -2482,8 +2373,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SkipLastFooterAndProcessBigRowspanTest02() {
             String testName = "skipLastFooterAndProcessBigRowspanTest02.pdf";
@@ -2499,8 +2388,8 @@ namespace iText.Layout {
             for (int rows = 0; rows < 11; rows++) {
                 table.AddCell(new Cell(numRows, 1).Add(new Paragraph("Filled Cell: " + JavaUtil.IntegerToString(rows) + ", 0"
                     )));
-                int numFillerCells = (numRows - 1) * numRows;
                 //Number of cells to complete the table rows filling up to the cell of colSpan
+                int numFillerCells = (numRows - 1) * numRows;
                 for (int cells = 0; cells < numFillerCells; cells++) {
                     table.AddCell(new Cell().Add(new Paragraph("Filled Cell: " + JavaUtil.IntegerToString(rows) + ", " + JavaUtil.IntegerToString
                         (cells))));
@@ -2512,8 +2401,6 @@ namespace iText.Layout {
                 , testName + "_diff"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SkipLastFooterOnShortPageTest01() {
             String testName = "skipLastFooterOnShortPageTest01.pdf";
@@ -2530,6 +2417,99 @@ namespace iText.Layout {
                 }
             }
             doc.Add(table);
+            doc.Close();
+            NUnit.Framework.Assert.IsNull(new CompareTool().CompareByContent(outFileName, cmpFileName, destinationFolder
+                , testName + "_diff"));
+        }
+
+        [NUnit.Framework.Test]
+        [NUnit.Framework.Ignore("Ignored because the test enters an infinite loop when closing a document. Remove ignore after fixing DEVSIX-3356"
+            )]
+        public virtual void InfiniteLoopOnUnfitCellAndBigRowspanTest() {
+            // TODO remove ignore after fixing DEVSIX-3356
+            String testName = "infiniteLoopOnUnfitCellAndBigRowspanTest.pdf";
+            String outFileName = destinationFolder + testName;
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outFileName));
+            Document doc = new Document(pdfDoc, PageSize.A4.Rotate());
+            Table table = new Table(38);
+            table.UseAllAvailableWidth();
+            table.SetFixedLayout();
+            Cell cellNum1 = new Cell(1, 1);
+            table.AddCell(cellNum1);
+            Cell cellNum2 = new Cell(2, 2);
+            iText.Layout.Element.Image img = new iText.Layout.Element.Image(ImageDataFactory.Create(sourceFolder + "itext.png"
+                ));
+            cellNum2.Add(img);
+            table.AddCell(cellNum2);
+            Cell cellNum3 = new Cell(2, 36);
+            cellNum3.Add(new Paragraph("text"));
+            table.AddCell(cellNum3);
+            doc.Add(table);
+            doc.Close();
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void CellWithBigRowspanCompletedRowTooTest() {
+            // TODO DEVSIX-3716
+            String testName = "cellWithBigRowspanCompletedRowTooTest.pdf";
+            String outFileName = destinationFolder + testName;
+            String cmpFileName = sourceFolder + "cmp_" + testName;
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outFileName));
+            Document doc = new Document(pdfDoc);
+            Div div = new Div();
+            div.SetHeight(700);
+            Table table = new Table(2);
+            table.SetBorder(new SolidBorder(1));
+            table.SetHorizontalBorderSpacing(5);
+            table.SetVerticalBorderSpacing(5);
+            table.AddCell(new Cell(7, 1).Add(new Paragraph("Rowspan 7")).SetBackgroundColor(ColorConstants.RED));
+            for (int i = 0; i < 7; i++) {
+                table.AddCell(new Cell().Add(new Paragraph("Rowspan 1")));
+            }
+            // test separated borders when j == 0 and collapsed borders when j == 1
+            table.SetBorderCollapse(BorderCollapsePropertyValue.SEPARATE);
+            for (int j = 0; j < 2; j++) {
+                doc.Add(div);
+                doc.Add(table);
+                if (0 == j) {
+                    doc.Add(new AreaBreak());
+                    table.SetBorderCollapse(BorderCollapsePropertyValue.COLLAPSE);
+                }
+            }
+            doc.Close();
+            NUnit.Framework.Assert.IsNull(new CompareTool().CompareByContent(outFileName, cmpFileName, destinationFolder
+                , testName + "_diff"));
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void CellWithBigRowspanCompletedRowNotTest() {
+            // TODO DEVSIX-3716
+            String testName = "cellWithBigRowspanCompletedRowNotTest.pdf";
+            String outFileName = destinationFolder + testName;
+            String cmpFileName = sourceFolder + "cmp_" + testName;
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outFileName));
+            Document doc = new Document(pdfDoc);
+            Div div = new Div();
+            div.SetHeight(700);
+            Table table = new Table(2);
+            table.SetBorder(new SolidBorder(1));
+            table.SetHorizontalBorderSpacing(5);
+            table.SetVerticalBorderSpacing(5);
+            table.AddCell(new Cell(7, 1).Add(new Paragraph("Rowspan 7")).SetBackgroundColor(ColorConstants.RED));
+            table.AddCell(new Cell().Add(new Paragraph(TEXT_CONTENT)));
+            for (int i = 0; i < 6; i++) {
+                table.AddCell(new Cell().Add(new Paragraph("Rowspan 1")));
+            }
+            // test separated borders when j == 0 and collapsed borders when j == 1
+            table.SetBorderCollapse(BorderCollapsePropertyValue.SEPARATE);
+            for (int j = 0; j < 2; j++) {
+                doc.Add(div);
+                doc.Add(table);
+                if (0 == j) {
+                    doc.Add(new AreaBreak());
+                    table.SetBorderCollapse(BorderCollapsePropertyValue.COLLAPSE);
+                }
+            }
             doc.Close();
             NUnit.Framework.Assert.IsNull(new CompareTool().CompareByContent(outFileName, cmpFileName, destinationFolder
                 , testName + "_diff"));

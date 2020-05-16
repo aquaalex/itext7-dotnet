@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -49,11 +49,12 @@ using iText.StyledXmlParser.Jsoup;
 using iText.StyledXmlParser.Jsoup.Integration;
 using iText.StyledXmlParser.Jsoup.Nodes;
 using iText.StyledXmlParser.Jsoup.Select;
+using iText.Test;
 
 namespace iText.StyledXmlParser.Jsoup.Parser {
     /// <summary>Tests for the Parser</summary>
     /// <author>Jonathan Hedley, jonathan@hedley.net</author>
-    public class HtmlParserTest {
+    public class HtmlParserTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void ParsesSimpleDocument() {
             String html = "<html><head><title>First!</title></head><body><p>First post! <img src=\"foo.png\" /></p></body></html>";
@@ -1001,7 +1002,7 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
             NUnit.Framework.Assert.AreEqual("<!doctype> <html> <head></head> <body> <p>Foo</p> </body> </html>", iText.StyledXmlParser.Jsoup.Helper.StringUtil
                 .NormaliseWhitespace(doc.OuterHtml()));
             doc = iText.StyledXmlParser.Jsoup.Jsoup.Parse("<!DOCTYPE \u0000>");
-            NUnit.Framework.Assert.AreEqual("<!doctype �> <html> <head></head> <body></body> </html>", iText.StyledXmlParser.Jsoup.Helper.StringUtil
+            NUnit.Framework.Assert.AreEqual("<!doctype \ufffd> <html> <head></head> <body></body> </html>", iText.StyledXmlParser.Jsoup.Helper.StringUtil
                 .NormaliseWhitespace(doc.OuterHtml()));
         }
 
@@ -1020,7 +1021,6 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
             NUnit.Framework.Assert.IsTrue(SystemUtil.GetRelativeTimeMillis() - start < 1000);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void TestInvalidTableContents() {
             FileInfo @in = iText.StyledXmlParser.Jsoup.PortTestUtil.GetFile("/htmltests/table-invalid-elements.html");

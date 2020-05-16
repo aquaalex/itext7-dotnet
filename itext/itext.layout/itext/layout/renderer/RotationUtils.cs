@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -56,13 +56,18 @@ namespace iText.Layout.Renderer {
         /// This method tries to calculate min-max-width of rotated element using heuristics
         /// of
         /// <see cref="iText.Layout.Minmaxwidth.RotationMinMaxWidth.Calculate(double, double, iText.Layout.Minmaxwidth.MinMaxWidth)
-        ///     "/>
-        /// .
+        ///     "/>.
+        /// </summary>
+        /// <remarks>
+        /// This method tries to calculate min-max-width of rotated element using heuristics
+        /// of
+        /// <see cref="iText.Layout.Minmaxwidth.RotationMinMaxWidth.Calculate(double, double, iText.Layout.Minmaxwidth.MinMaxWidth)
+        ///     "/>.
         /// This method may call
         /// <see cref="IRenderer.Layout(iText.Layout.Layout.LayoutContext)"/>
         /// once in best case
         /// (if the width is set on element, or if we are really lucky) and three times in worst case.
-        /// </summary>
+        /// </remarks>
         /// <param name="minMaxWidth">the minMaxWidth of NOT rotated renderer</param>
         /// <param name="renderer">the actual renderer</param>
         /// <returns>minMaxWidth of rotated renderer or original value in case rotated value can not be calculated, or renderer isn't rotated.
@@ -118,8 +123,7 @@ namespace iText.Layout.Renderer {
         /// This method tries to calculate width of not rotated renderer, so after rotation it fits availableWidth.
         /// This method uses heuristics of
         /// <see cref="iText.Layout.Minmaxwidth.RotationMinMaxWidth.Calculate(double, double, iText.Layout.Minmaxwidth.MinMaxWidth, double)
-        ///     "/>
-        /// .
+        ///     "/>.
         /// It doesn't take into account any of height properties of renderer or height of layoutArea.
         /// The minMaxWidth calculations and initial layout may take long time, but they won't be called if the renderer have width property.
         /// </remarks>

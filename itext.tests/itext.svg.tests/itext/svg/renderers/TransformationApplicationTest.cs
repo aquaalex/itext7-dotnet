@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -43,18 +43,18 @@ address: sales@itextpdf.com
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
 using iText.Svg;
 using iText.Svg.Renderers.Impl;
+using iText.Test;
 
 namespace iText.Svg.Renderers {
-    public class TransformationApplicationTest {
+    public class TransformationApplicationTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void NormalDrawTest() {
-            byte[] expected = "1 0 0 1 7.5 0 cm\n0 0 0 rg\nf\n".GetBytes(Encoding.UTF8);
-            ISvgNodeRenderer nodeRenderer = new _AbstractSvgNodeRenderer_68();
+            byte[] expected = "1 0 0 1 7.5 0 cm\n0 0 0 rg\nf\n".GetBytes(System.Text.Encoding.UTF8);
+            ISvgNodeRenderer nodeRenderer = new _AbstractSvgNodeRenderer_69();
             // do nothing
             IDictionary<String, String> attributeMap = new Dictionary<String, String>();
             attributeMap.Put(SvgConstants.Attributes.TRANSFORM, "translate(10)");
@@ -68,8 +68,8 @@ namespace iText.Svg.Renderers {
             NUnit.Framework.Assert.AreEqual(expected, actual);
         }
 
-        private sealed class _AbstractSvgNodeRenderer_68 : AbstractSvgNodeRenderer {
-            public _AbstractSvgNodeRenderer_68() {
+        private sealed class _AbstractSvgNodeRenderer_69 : AbstractSvgNodeRenderer {
+            public _AbstractSvgNodeRenderer_69() {
             }
 
             public override ISvgNodeRenderer CreateDeepCopy() {

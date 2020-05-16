@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,7 +52,6 @@ namespace iText.IO.Font.Woff2 {
             return DEBUG;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         protected internal void RunTest(String fileName, String sourceFolder, String targetFolder, bool isFontValid
             ) {
             String inFile = fileName + ".woff2";
@@ -85,7 +84,6 @@ namespace iText.IO.Font.Woff2 {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         protected internal void SaveFile(byte[] content, String fileName) {
             if (content != null) {
                 Stream os = new FileStream(fileName, FileMode.Create);

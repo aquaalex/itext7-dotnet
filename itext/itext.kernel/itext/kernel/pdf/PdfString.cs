@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,15 @@ namespace iText.Kernel.Pdf {
     /// JAVA-
     /// <c>String</c>
     /// -object.
-    /// <p>
+    /// </summary>
+    /// <remarks>
+    /// A
+    /// <c>PdfString</c>
+    /// -class is the PDF-equivalent of a
+    /// JAVA-
+    /// <c>String</c>
+    /// -object.
+    /// <para />
     /// A string is a sequence of characters delimited by parenthesis.
     /// If a string is too long to be conveniently placed on a single line, it may
     /// be split across multiple lines by using the backslash character (\) at the
@@ -66,9 +74,8 @@ namespace iText.Kernel.Pdf {
     /// way to represent characters outside the printable ASCII character set.<br />
     /// This object is described in the 'Portable Document Format Reference Manual
     /// version 1.7' section 3.2.3 (page 53-56).
-    /// <p>
-    /// <see cref="PdfObject"/>
-    /// </summary>
+    /// </remarks>
+    /// <seealso cref="PdfObject"/>
     public class PdfString : PdfPrimitiveObject {
         protected internal String value;
 
@@ -80,11 +87,12 @@ namespace iText.Kernel.Pdf {
 
         private int decryptInfoGen;
 
+        // if it's not null: content shall contain encrypted data; value shall be null
         private PdfEncryption decryption;
 
         public PdfString(String value, String encoding)
             : base() {
-            // if it's not null: content shall contain encrypted data; value shall be null
+            System.Diagnostics.Debug.Assert(value != null);
             this.value = value;
             this.encoding = encoding;
         }
@@ -181,7 +189,7 @@ namespace iText.Kernel.Pdf {
             if (value == null) {
                 GenerateValue();
             }
-            if (encoding != null && encoding.Equals(PdfEncodings.UNICODE_BIG) && PdfEncodings.IsPdfDocEncoding(value)) {
+            if (encoding != null && PdfEncodings.UNICODE_BIG.Equals(encoding) && PdfEncodings.IsPdfDocEncoding(value)) {
                 return PdfEncodings.ConvertToBytes(value, PdfEncodings.PDF_DOC_ENCODING);
             }
             else {
@@ -211,7 +219,7 @@ namespace iText.Kernel.Pdf {
 
         public override String ToString() {
             if (value == null) {
-                return iText.IO.Util.JavaUtil.GetStringForBytes(DecodeContent());
+                return iText.IO.Util.JavaUtil.GetStringForBytes(DecodeContent(), iText.IO.Util.EncodingUtil.ISO_8859_1);
             }
             else {
                 return GetValue();
@@ -228,18 +236,16 @@ namespace iText.Kernel.Pdf {
         /// <summary>Marks this string object as not encrypted in the encrypted document.</summary>
         /// <remarks>
         /// Marks this string object as not encrypted in the encrypted document.
-        /// <p>
+        /// <para />
         /// If it's marked so, it will be considered as already in plaintext and decryption will not be performed for it.
         /// In order to have effect, this method shall be called before
         /// <see cref="GetValue()"/>
         /// and
         /// <see cref="GetValueBytes()"/>
         /// methods.
-        /// </p>
-        /// <p>
+        /// <para />
         /// NOTE: this method is only needed in a very specific cases of encrypted documents. E.g. digital signature dictionary
         /// /Contents entry shall not be encrypted. Also this method isn't meaningful in non-encrypted documents.
-        /// </p>
         /// </remarks>
         public virtual void MarkAsUnencryptedObject() {
             SetState(PdfObject.UNENCRYPTED);
@@ -268,9 +274,14 @@ namespace iText.Kernel.Pdf {
         /// Encrypt content of
         /// <c>value</c>
         /// and set as content.
+        /// </summary>
+        /// <remarks>
+        /// Encrypt content of
+        /// <c>value</c>
+        /// and set as content.
         /// <c>generateContent()</c>
         /// won't be called.
-        /// </summary>
+        /// </remarks>
         /// <param name="encrypt">@see PdfEncryption</param>
         /// <returns>true if value was encrypted, otherwise false.</returns>
         protected internal virtual bool Encrypt(PdfEncryption encrypt) {
@@ -307,8 +318,7 @@ namespace iText.Kernel.Pdf {
         /// or
         /// <c>content</c>
         /// ot the
-        /// <c>PdfString</c>
-        /// .
+        /// <c>PdfString</c>.
         /// </remarks>
         /// <param name="bytes">byte array to manipulate with.</param>
         /// <returns>Hexadecimal string or string with escaped symbols in byte array view.</returns>

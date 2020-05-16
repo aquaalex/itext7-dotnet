@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,8 +52,7 @@ using iText.Layout.Properties;
 namespace iText.Layout.Borders {
     /// <summary>Represents a border.</summary>
     public abstract class Border {
-        /// <summary>The null Border, i.e.</summary>
-        /// <remarks>The null Border, i.e. the presence of such border is equivalent to the absence of the border</remarks>
+        /// <summary>The null Border, i.e. the presence of such border is equivalent to the absence of the border</summary>
         public static readonly iText.Layout.Borders.Border NO_BORDER = null;
 
         /// <summary>Value used by discontinuous borders during the drawing process</summary>
@@ -112,10 +111,15 @@ namespace iText.Layout.Borders {
         /// Creates a
         /// <see cref="Border">border</see>
         /// with the given width.
+        /// </summary>
+        /// <remarks>
+        /// Creates a
+        /// <see cref="Border">border</see>
+        /// with the given width.
         /// The
         /// <see cref="iText.Kernel.Colors.Color">color</see>
         /// to be set by default is black
-        /// </summary>
+        /// </remarks>
         /// <param name="width">the width which the border should have</param>
         protected internal Border(float width)
             : this(ColorConstants.BLACK, width) {
@@ -125,8 +129,7 @@ namespace iText.Layout.Borders {
         /// Creates a
         /// <see cref="Border">border</see>
         /// with given width and
-        /// <see cref="iText.Kernel.Colors.Color">color</see>
-        /// .
+        /// <see cref="iText.Kernel.Colors.Color">color</see>.
         /// </summary>
         /// <param name="color">the color which the border should have</param>
         /// <param name="width">the width which the border should have</param>
@@ -152,26 +155,21 @@ namespace iText.Layout.Borders {
         }
 
         /// <summary>
-        /// <p>
         /// All borders are supposed to be drawn in such way, that inner content of the element is on the right from the
         /// drawing direction.
         /// </summary>
         /// <remarks>
-        /// <p>
         /// All borders are supposed to be drawn in such way, that inner content of the element is on the right from the
         /// drawing direction. Borders are drawn in this order: top, right, bottom, left.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Given points specify the line which lies on the border of the content area,
         /// therefore the border itself should be drawn to the left from the drawing direction.
-        /// </p>
-        /// <p>
-        /// <code>borderWidthBefore</code> and <code>borderWidthAfter</code> parameters are used to
+        /// <para />
+        /// <c>borderWidthBefore</c> and <c>borderWidthAfter</c> parameters are used to
         /// define the widths of the borders that are before and after the current border, e.g. for
-        /// the bottom border, <code>borderWidthBefore</code> specifies width of the right border and
-        /// <code>borderWidthAfter</code> - width of the left border. Those width are used to handle areas
+        /// the bottom border, <c>borderWidthBefore</c> specifies width of the right border and
+        /// <c>borderWidthAfter</c> - width of the left border. Those width are used to handle areas
         /// of border joins.
-        /// </p>
         /// </remarks>
         /// <param name="canvas">PdfCanvas to be written to</param>
         /// <param name="x1">x coordinate of the beginning point of the element side, that should be bordered</param>
@@ -189,29 +187,23 @@ namespace iText.Layout.Borders {
             , float borderWidthBefore, float borderWidthAfter);
 
         /// <summary>
-        /// <p>
         /// All borders are supposed to be drawn in such way, that inner content of the element is on the right from the
         /// drawing direction.
         /// </summary>
         /// <remarks>
-        /// <p>
         /// All borders are supposed to be drawn in such way, that inner content of the element is on the right from the
         /// drawing direction. Borders are drawn in this order: top, right, bottom, left.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Given points specify the line which lies on the border of the content area,
         /// therefore the border itself should be drawn to the left from the drawing direction.
-        /// </p>
-        /// <p>
-        /// <code>borderWidthBefore</code> and <code>borderWidthAfter</code> parameters are used to
+        /// <para />
+        /// <c>borderWidthBefore</c> and <c>borderWidthAfter</c> parameters are used to
         /// define the widths of the borders that are before and after the current border, e.g. for
-        /// the bottom border, <code>borderWidthBefore</code> specifies width of the right border and
-        /// <code>borderWidthAfter</code> - width of the left border. Those width are used to handle areas
+        /// the bottom border, <c>borderWidthBefore</c> specifies width of the right border and
+        /// <c>borderWidthAfter</c> - width of the left border. Those width are used to handle areas
         /// of border joins.
-        /// </p>
-        /// <p>
-        /// <code>borderRadius</code> is used to draw rounded borders.
-        /// </p>
+        /// <para />
+        /// <c>borderRadius</c> is used to draw rounded borders.
         /// </remarks>
         /// <param name="canvas">PdfCanvas to be written to</param>
         /// <param name="x1">x coordinate of the beginning point of the element side, that should be bordered</param>
@@ -233,30 +225,24 @@ namespace iText.Layout.Borders {
         }
 
         /// <summary>
-        /// <p>
         /// All borders are supposed to be drawn in such way, that inner content of the element is on the right from the
         /// drawing direction.
         /// </summary>
         /// <remarks>
-        /// <p>
         /// All borders are supposed to be drawn in such way, that inner content of the element is on the right from the
         /// drawing direction. Borders are drawn in this order: top, right, bottom, left.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Given points specify the line which lies on the border of the content area,
         /// therefore the border itself should be drawn to the left from the drawing direction.
-        /// </p>
-        /// <p>
-        /// <code>borderWidthBefore</code> and <code>borderWidthAfter</code> parameters are used to
+        /// <para />
+        /// <c>borderWidthBefore</c> and <c>borderWidthAfter</c> parameters are used to
         /// define the widths of the borders that are before and after the current border, e.g. for
-        /// the bottom border, <code>borderWidthBefore</code> specifies width of the right border and
-        /// <code>borderWidthAfter</code> - width of the left border. Those width are used to handle areas
+        /// the bottom border, <c>borderWidthBefore</c> specifies width of the right border and
+        /// <c>borderWidthAfter</c> - width of the left border. Those width are used to handle areas
         /// of border joins.
-        /// </p>
-        /// <p>
-        /// <code>horizontalRadius1</code>, <code>verticalRadius1</code>, <code>horizontalRadius2</code>
-        /// and <code>verticalRadius2</code> are used to draw rounded borders.
-        /// </p>
+        /// <para />
+        /// <c>horizontalRadius1</c>, <c>verticalRadius1</c>, <c>horizontalRadius2</c>
+        /// and <c>verticalRadius2</c> are used to draw rounded borders.
         /// </remarks>
         /// <param name="canvas">PdfCanvas to be written to</param>
         /// <param name="x1">x coordinate of the beginning point of the element side, that should be bordered</param>
@@ -396,9 +382,14 @@ namespace iText.Layout.Borders {
         /// Returns the
         /// <see cref="Side">side</see>
         /// corresponded to the line between two points.
+        /// </summary>
+        /// <remarks>
+        /// Returns the
+        /// <see cref="Side">side</see>
+        /// corresponded to the line between two points.
         /// Notice that we consider the rectangle traversal to be clockwise.
         /// In case side couldn't be detected we will fallback to default side
-        /// </summary>
+        /// </remarks>
         /// <param name="x1">the abscissa of the left-bottom point</param>
         /// <param name="y1">the ordinate of the left-bottom point</param>
         /// <param name="x2">the abscissa of the right-top point</param>
@@ -492,8 +483,7 @@ namespace iText.Layout.Borders {
         /// ,
         /// <see cref="DottedBorder"/>
         /// and
-        /// <see cref="RoundDotsBorder"/>
-        /// .
+        /// <see cref="RoundDotsBorder"/>.
         /// </remarks>
         /// <param name="canvas">canvas to draw on</param>
         /// <param name="boundingRectangle">rectangle representing the bounding box of the drawing operations</param>
@@ -672,11 +662,11 @@ namespace iText.Layout.Borders {
             canvas.Stroke().RestoreState();
         }
 
-        /// <summary>Calculate adjusted starting points for non-continuous borders, given two opposing points (A and B) that define the bounding rectangle
+        /// <summary>Calculate adjusted starting points for discontinuous borders, given two opposing points (A and B) that define the bounding rectangle
         ///     </summary>
-        /// <param name="x1">x-ordinate of point A</param>
+        /// <param name="x1">x-coordinate of point A</param>
         /// <param name="y1">y-ordinate of point A</param>
-        /// <param name="x2">x-ordinate of point B</param>
+        /// <param name="x2">x-coordinate of point B</param>
         /// <param name="y2">y-ordinate of point B</param>
         /// <param name="defaultSide">default side of the border used to determine the side given by points A and B</param>
         /// <returns>float[] containing the adjusted starting points in the form {x1,y1,x2,y2}</returns>

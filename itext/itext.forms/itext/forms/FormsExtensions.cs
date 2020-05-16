@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -138,6 +138,15 @@ namespace iText.Forms {
         public static void DeleteCharAt(this StringBuilder builder, int index)
         {
             builder.Remove(index, 1);
+        }
+
+        public static bool EqualsIgnoreCase(this String str, String anotherString)
+        {
+            return String.Equals(str, anotherString, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool IsEmpty<T>(this ICollection<T> c) {
+            return c.Count == 0;
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -45,12 +45,12 @@ using System.Collections.Generic;
 using System.Reflection;
 using iText.IO.Font.Constants;
 using iText.IO.Util;
+using iText.Test;
 
 namespace iText.IO.Font {
-    public class FontProgramTest {
+    public class FontProgramTest : ExtendedITextTest {
         private const String notExistingFont = "some-font.ttf";
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ExceptionMessageTest() {
             NUnit.Framework.Assert.That(() =>  {
@@ -60,7 +60,6 @@ namespace iText.IO.Font {
 ;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void BoldTest() {
             FontProgram fp = FontProgramFactory.CreateFont(StandardFonts.HELVETICA);

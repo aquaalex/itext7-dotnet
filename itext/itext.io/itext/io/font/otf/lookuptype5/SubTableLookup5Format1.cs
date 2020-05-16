@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -64,13 +64,13 @@ namespace iText.IO.Font.Otf.Lookuptype5 {
         }
 
         public class SubstRuleFormat1 : ContextualSubstRule {
+            // inputGlyphIds array omits the first glyph in the sequence,
+            // the first glyph is defined by corresponding coverage glyph
             private int[] inputGlyphIds;
 
             private SubstLookupRecord[] substLookupRecords;
 
             public SubstRuleFormat1(int[] inputGlyphIds, SubstLookupRecord[] substLookupRecords) {
-                // inputGlyphIds array omits the first glyph in the sequence,
-                // the first glyph is defined by corresponding coverage glyph
                 this.inputGlyphIds = inputGlyphIds;
                 this.substLookupRecords = substLookupRecords;
             }

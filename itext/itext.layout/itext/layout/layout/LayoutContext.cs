@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -49,8 +49,7 @@ using iText.Layout.Margincollapse;
 namespace iText.Layout.Layout {
     /// <summary>
     /// Represents the context for content
-    /// <see cref="iText.Layout.Renderer.IRenderer.Layout(LayoutContext)">layouting</see>
-    /// .
+    /// <see cref="iText.Layout.Renderer.IRenderer.Layout(LayoutContext)">layouting</see>.
     /// </summary>
     public class LayoutContext {
         /// <summary>
@@ -123,7 +122,7 @@ namespace iText.Layout.Layout {
         }
 
         /// <summary>Defines whether the layout area's height is clipped or not.</summary>
-        /// <param name="clippedHeight"/>
+        /// <param name="clippedHeight">indicates whether the height is clipped or not.</param>
         public virtual void SetClippedHeight(bool clippedHeight) {
             this.clippedHeight = clippedHeight;
         }

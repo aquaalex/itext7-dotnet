@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -74,6 +74,8 @@ namespace iText.IO.Font.Otf.Lookuptype5 {
         }
 
         public class SubstRuleFormat2 : ContextualSubstRule {
+            // inputClassIds array omits the first class in the sequence,
+            // the first class is defined by corresponding index of subClassSet array
             private int[] inputClassIds;
 
             private SubstLookupRecord[] substLookupRecords;
@@ -82,8 +84,6 @@ namespace iText.IO.Font.Otf.Lookuptype5 {
 
             public SubstRuleFormat2(SubTableLookup5Format2 subTable, int[] inputClassIds, SubstLookupRecord[] substLookupRecords
                 ) {
-                // inputClassIds array omits the first class in the sequence,
-                // the first class is defined by corresponding index of subClassSet array
                 this.inputClassIds = inputClassIds;
                 this.substLookupRecords = substLookupRecords;
                 this.classDefinition = subTable.classDefinition;

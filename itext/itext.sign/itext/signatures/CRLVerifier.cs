@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -78,13 +78,11 @@ namespace iText.Signatures {
         /// <param name="signCert">the certificate that needs to be checked</param>
         /// <param name="issuerCert">its issuer</param>
         /// <returns>
-        /// a list of <code>VerificationOK</code> objects.
+        /// a list of <c>VerificationOK</c> objects.
         /// The list will be empty if the certificate couldn't be verified.
         /// </returns>
         /// <seealso cref="RootStoreVerifier.Verify(Org.BouncyCastle.X509.X509Certificate, Org.BouncyCastle.X509.X509Certificate, System.DateTime)
         ///     "/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
         public override IList<VerificationOK> Verify(X509Certificate signCert, X509Certificate issuerCert, DateTime
              signDate) {
             IList<VerificationOK> result = new List<VerificationOK>();
@@ -124,10 +122,9 @@ namespace iText.Signatures {
         /// <param name="issuerCert">its issuer</param>
         /// <param name="signDate">the sign date</param>
         /// <returns>true if the verification succeeded</returns>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public virtual bool Verify(X509Crl crl, X509Certificate signCert, X509Certificate issuerCert, DateTime signDate
             ) {
-            if (crl == null || signDate == SignUtils.UNDEFINED_TIMESTAMP_DATE) {
+            if (crl == null || signDate == TimestampConstants.UNDEFINED_TIMESTAMP_DATE) {
                 return false;
             }
             // We only check CRLs valid on the signing date for which the issuer matches

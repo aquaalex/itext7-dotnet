@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -73,14 +73,12 @@ namespace iText.IO.Source {
 			this.outputStream = outputStream;
 		}
 
-        /// <exception cref="System.IO.IOException"/>
         public virtual void Write(int b)
         {
             outputStream.WriteByte((byte)b);
             currentPos++;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         public virtual void Write(byte[] b)
         {
             Write(b, 0, b.Length);
@@ -101,7 +99,6 @@ namespace iText.IO.Source {
             throw new NotSupportedException("You cann't read from OutputStream");
         }
 
-        /// <exception cref="System.IO.IOException"/>
         public override void Write(byte[] b, int off, int len)
         {
             outputStream.Write(b, off, len);
@@ -149,7 +146,6 @@ namespace iText.IO.Source {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         public override void Flush()
 		{
 			outputStream.Flush();

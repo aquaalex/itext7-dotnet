@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -2430,6 +2430,8 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
             tb.Transition(Text);
         }
 
+        // lists of tags to search through. A little harder to read here, but causes less GC than dynamic varargs.
+        // was contributing around 10% of parse GC load.
         private sealed class Constants {
             internal static readonly String[] InBodyStartToHead = new String[] { "base", "basefont", "bgsound", "command"
                 , "link", "meta", "noframes", "script", "style", "title" };
@@ -2474,8 +2476,6 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
 
             internal static readonly String[] InBodyEndTableFosters = new String[] { "table", "tbody", "tfoot", "thead"
                 , "tr" };
-            // lists of tags to search through. A little harder to read here, but causes less GC than dynamic varargs.
-            // was contributing around 10% of parse GC load.
         }
     }
 }

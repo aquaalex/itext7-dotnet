@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -48,7 +48,6 @@ using iText.Svg.Converter;
 
 namespace iText.Svg {
     public class SvgNodeRendererIntegrationTestUtil {
-        /// <exception cref="System.IO.IOException"/>
         public static void Convert(Stream svg, Stream pdfOutputStream) {
             PdfDocument doc = new PdfDocument(new PdfWriter(pdfOutputStream, new WriterProperties().SetCompressionLevel
                 (0)));
@@ -57,14 +56,11 @@ namespace iText.Svg {
             doc.Close();
         }
 
-        /// <exception cref="System.IO.IOException"/>
         public static void ConvertToSinglePage(Stream svg, Stream pdfOutputStream) {
             WriterProperties writerprops = new WriterProperties().SetCompressionLevel(0);
             SvgConverter.CreatePdf(svg, pdfOutputStream, writerprops);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         public static void ConvertAndCompare(String src, String dest, String fileName) {
             Convert(new FileStream(src + fileName + ".svg", FileMode.Open, FileAccess.Read), new FileStream(dest + fileName
                  + ".pdf", FileMode.Create));
@@ -74,8 +70,6 @@ namespace iText.Svg {
             NUnit.Framework.Assert.IsNull(compareResult);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         public static void ConvertAndCompareSinglePage(String src, String dest, String fileName) {
             ConvertToSinglePage(new FileStream(src + fileName + ".svg", FileMode.Open, FileAccess.Read), new FileStream
                 (dest + fileName + ".pdf", FileMode.Create));

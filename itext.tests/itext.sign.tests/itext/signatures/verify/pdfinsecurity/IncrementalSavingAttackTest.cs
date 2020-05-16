@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -57,10 +57,8 @@ namespace iText.Signatures.Verify.Pdfinsecurity {
         public static void Before() {
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         [NUnit.Framework.Test]
-        [LogMessage(iText.IO.LogMessageConstant.XREF_ERROR)]
+        [LogMessage(iText.IO.LogMessageConstant.XREF_ERROR_WHILE_READING_TABLE_WILL_BE_REBUILT)]
         public virtual void TestISA03() {
             String filePath = sourceFolder + "isa-3.pdf";
             String signatureName = "Signature1";
@@ -72,8 +70,6 @@ namespace iText.Signatures.Verify.Pdfinsecurity {
             document.Close();
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         [NUnit.Framework.Test]
         public virtual void TestISAValidPdf() {
             String filePath = sourceFolder + "isaValidPdf.pdf";

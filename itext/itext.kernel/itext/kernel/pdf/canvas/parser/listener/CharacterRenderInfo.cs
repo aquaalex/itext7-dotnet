@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,14 +52,18 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Listener {
         private Rectangle boundingBox;
 
         /// <summary>
-        /// This method converts a List<CharacterRenderInfo>
-        /// The data structure that gets returned contains both the plaintext,
-        /// as well as the mapping of indices (from the list to the string).
+        /// This method converts a
+        /// <see cref="System.Collections.IList{E}"/>
+        /// of
+        /// <see cref="CharacterRenderInfo"/>.
         /// </summary>
         /// <remarks>
-        /// This method converts a List<CharacterRenderInfo>
-        /// The data structure that gets returned contains both the plaintext,
-        /// as well as the mapping of indices (from the list to the string).
+        /// This method converts a
+        /// <see cref="System.Collections.IList{E}"/>
+        /// of
+        /// <see cref="CharacterRenderInfo"/>.
+        /// The returned data structure contains both the plaintext
+        /// and the mapping of indices (from the list to the string).
         /// These indices can differ; if there is sufficient spacing between two CharacterRenderInfo
         /// objects, this algorithm will decide to insert space. The inserted space will cause
         /// the indices to differ by at least 1.
@@ -84,6 +88,8 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Listener {
                         PutCharsWithIndex(chunk.GetText(), i, indexMap, sb);
                     }
                     else {
+                        // we insert a newline character in the resulting string if the chunks are placed on different lines
+                        sb.Append('\n');
                         PutCharsWithIndex(chunk.GetText(), i, indexMap, sb);
                     }
                 }
@@ -110,11 +116,15 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Listener {
                 throw new ArgumentException("TextRenderInfo argument is not nullable.");
             }
             // determine bounding box
-            float x0 = tri.GetDescentLine().GetStartPoint().Get(0);
-            float y0 = tri.GetDescentLine().GetStartPoint().Get(1);
-            float h = tri.GetAscentLine().GetStartPoint().Get(1) - tri.GetDescentLine().GetStartPoint().Get(1);
-            float w = Math.Abs(tri.GetBaseline().GetStartPoint().Get(0) - tri.GetBaseline().GetEndPoint().Get(0));
-            this.boundingBox = new Rectangle(x0, y0, w, h);
+            IList<Point> points = new List<Point>();
+            points.Add(new Point(tri.GetDescentLine().GetStartPoint().Get(0), tri.GetDescentLine().GetStartPoint().Get
+                (1)));
+            points.Add(new Point(tri.GetDescentLine().GetEndPoint().Get(0), tri.GetDescentLine().GetEndPoint().Get(1))
+                );
+            points.Add(new Point(tri.GetAscentLine().GetStartPoint().Get(0), tri.GetAscentLine().GetStartPoint().Get(1
+                )));
+            points.Add(new Point(tri.GetAscentLine().GetEndPoint().Get(0), tri.GetAscentLine().GetEndPoint().Get(1)));
+            this.boundingBox = Rectangle.CalculateBBox(points);
         }
 
         public virtual Rectangle GetBoundingBox() {

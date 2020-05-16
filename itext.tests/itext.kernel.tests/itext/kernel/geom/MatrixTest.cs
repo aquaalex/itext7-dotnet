@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -44,7 +44,6 @@ using iText.Test;
 
 namespace iText.Kernel.Geom {
     public class MatrixTest : ExtendedITextTest {
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TestMultiply() {
             Matrix m1 = new Matrix(2, 3, 4, 5, 6, 7);
@@ -60,7 +59,6 @@ namespace iText.Kernel.Geom {
             NUnit.Framework.Assert.AreEqual(-2f, m.GetDeterminant(), .001f);
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TestSubtract() {
             Matrix m1 = new Matrix(1, 2, 3, 4, 5, 6);
@@ -70,7 +68,6 @@ namespace iText.Kernel.Geom {
             NUnit.Framework.Assert.AreEqual(shouldBe, rslt);
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void TestAdd() {
             Matrix m1 = new Matrix(1, 2, 3, 4, 5, 6);

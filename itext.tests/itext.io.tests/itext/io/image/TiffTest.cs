@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,31 +41,38 @@ For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
 using System;
+using System.IO;
+using iText.IO.Codec;
+using iText.IO.Source;
+using iText.IO.Util;
+using iText.Test;
 
 namespace iText.IO.Image {
-    public class TiffTest {
+    public class TiffTest : ExtendedITextTest {
         public static readonly String sourceFolder = iText.Test.TestUtil.GetParentProjectDirectory(NUnit.Framework.TestContext
             .CurrentContext.TestDirectory) + "/resources/itext/io/image/";
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void OpenTiff1() {
-            ImageData img = ImageDataFactory.Create(sourceFolder + "WP_20140410_001.tif");
+            byte[] imageBytes = StreamUtil.InputStreamToArray(new FileStream(sourceFolder + "WP_20140410_001.tif", FileMode.Open
+                , FileAccess.Read));
+            // Test a more specific entry point
+            ImageData img = ImageDataFactory.CreateTiff(imageBytes, false, 1, false);
             NUnit.Framework.Assert.AreEqual(2592, img.GetWidth(), 0);
             NUnit.Framework.Assert.AreEqual(1456, img.GetHeight(), 0);
             NUnit.Framework.Assert.AreEqual(8, img.GetBpc());
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void OpenTiff2() {
-            ImageData img = ImageDataFactory.Create(sourceFolder + "WP_20140410_001_gray.tiff");
+            // Test a more specific entry point
+            ImageData img = ImageDataFactory.CreateTiff(UrlUtil.ToURL(sourceFolder + "WP_20140410_001_gray.tiff"), false
+                , 1, false);
             NUnit.Framework.Assert.AreEqual(2592, img.GetWidth(), 0);
             NUnit.Framework.Assert.AreEqual(1456, img.GetHeight(), 0);
             NUnit.Framework.Assert.AreEqual(8, img.GetBpc());
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void OpenTiff3() {
             ImageData img = ImageDataFactory.Create(sourceFolder + "WP_20140410_001_monochrome.tiff");
@@ -74,7 +81,6 @@ namespace iText.IO.Image {
             NUnit.Framework.Assert.AreEqual(8, img.GetBpc());
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void OpenTiff4() {
             ImageData img = ImageDataFactory.Create(sourceFolder + "WP_20140410_001_negate.tiff");
@@ -83,7 +89,6 @@ namespace iText.IO.Image {
             NUnit.Framework.Assert.AreEqual(8, img.GetBpc());
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void OpenTiff5() {
             ImageData img = ImageDataFactory.Create(sourceFolder + "WP_20140410_001_year1900.tiff");
@@ -92,13 +97,22 @@ namespace iText.IO.Image {
             NUnit.Framework.Assert.AreEqual(8, img.GetBpc());
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void OpenTiff6() {
             ImageData img = ImageDataFactory.Create(sourceFolder + "WP_20140410_001_year1980.tiff");
             NUnit.Framework.Assert.AreEqual(2592, img.GetWidth(), 0);
             NUnit.Framework.Assert.AreEqual(1456, img.GetHeight(), 0);
             NUnit.Framework.Assert.AreEqual(8, img.GetBpc());
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void GetStringDataFromTiff() {
+            byte[] bytes = File.ReadAllBytes(System.IO.Path.Combine(sourceFolder, "img_cmyk.tif"));
+            TIFFDirectory dir = new TIFFDirectory(new RandomAccessFileOrArray(new RandomAccessSourceFactory().CreateSource
+                (bytes)), 0);
+            String[] stringArray = new String[] { "iText? 7.1.7-SNAPSHOT ?2000-2019 iText Group NV (AGPL-version)\u0000"
+                 };
+            NUnit.Framework.Assert.AreEqual(stringArray, dir.GetField(305).GetAsStrings());
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -44,9 +44,8 @@ namespace iText.StyledXmlParser.Jsoup.Select {
     /// <summary>Depth-first node traversor.</summary>
     /// <remarks>
     /// Depth-first node traversor. Use to iterate through all nodes under and including the specified root node.
-    /// <p>
+    /// <para />
     /// This implementation does not use recursion, so a deep DOM does not risk blowing the stack.
-    /// </p>
     /// </remarks>
     public class NodeTraversor {
         private NodeVisitor visitor;

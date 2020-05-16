@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -112,8 +112,23 @@ namespace iText.Kernel.Geom {
             return new iText.Kernel.Geom.PageSize(height, width);
         }
 
+        /// <summary>
+        /// Creates a "deep copy" of this PageSize, meaning the object returned by this method will be independent
+        /// of the object being cloned.
+        /// </summary>
+        /// <remarks>
+        /// Creates a "deep copy" of this PageSize, meaning the object returned by this method will be independent
+        /// of the object being cloned.
+        /// Note that although the return type of this method is
+        /// <see cref="Rectangle"/>
+        /// ,
+        /// the actual type of the returned object is
+        /// <see cref="PageSize"/>.
+        /// </remarks>
+        /// <returns>the copied PageSize.</returns>
         public override Rectangle Clone() {
-            return new iText.Kernel.Geom.PageSize(this);
+            // super.clone is safe to return since all of the PagSize's fields are primitive.
+            return base.Clone();
         }
     }
 }

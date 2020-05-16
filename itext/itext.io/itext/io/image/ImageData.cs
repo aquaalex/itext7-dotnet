@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -71,6 +71,7 @@ namespace iText.IO.Image {
 
         protected internal int bpc = 1;
 
+        /// <summary>is the number of components used to encode colorspace, not actual colorspace.</summary>
         protected internal int colorSpace = -1;
 
         protected internal float[] decode;
@@ -192,6 +193,8 @@ namespace iText.IO.Image {
             return originalType;
         }
 
+        /// <summary>Gets the number of components used to encode colorspace, not actual colorspace.</summary>
+        /// <returns>the number of components used to encode colorspace</returns>
         public virtual int GetColorSpace() {
             return colorSpace;
         }
@@ -330,7 +333,6 @@ namespace iText.IO.Image {
         /// Load data from URL. url must be not null.
         /// Note, this method doesn't check if data or url is null.
         /// </remarks>
-        /// <exception cref="System.IO.IOException"/>
         internal virtual void LoadData() {
             RandomAccessFileOrArray raf = new RandomAccessFileOrArray(new RandomAccessSourceFactory().CreateSource(url
                 ));

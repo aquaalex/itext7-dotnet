@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -87,8 +87,7 @@ namespace iText.StyledXmlParser.Css.Media {
 
         /// <summary>
         /// Tries to match a
-        /// <see cref="MediaDeviceDescription"/>
-        /// .
+        /// <see cref="MediaDeviceDescription"/>.
         /// </summary>
         /// <param name="deviceDescription">the device description</param>
         /// <returns>true, if successful</returns>

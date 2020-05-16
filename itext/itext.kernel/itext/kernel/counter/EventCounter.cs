@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -53,7 +53,7 @@ namespace iText.Kernel.Counter {
     /// <remarks>
     /// Class that can be extended if you want to count iText events, for example the number of documents
     /// that are being processed by iText.
-    /// <p>
+    /// <para />
     /// Implementers may use this method to record actual system usage for licensing purposes
     /// (e.g. count the number of documents or the volume in bytes in the context of a SaaS license).
     /// </remarks>
@@ -62,8 +62,7 @@ namespace iText.Kernel.Counter {
 
         /// <summary>
         /// Creates instance of this class that allows all events from unknown
-        /// <see cref="iText.Kernel.Counter.Context.IContext"/>
-        /// .
+        /// <see cref="iText.Kernel.Counter.Context.IContext"/>.
         /// </summary>
         public EventCounter()
             : this(UnknownContext.PERMISSIVE) {
@@ -71,8 +70,7 @@ namespace iText.Kernel.Counter {
 
         /// <summary>
         /// Creates instance of this class with custom fallback
-        /// <see cref="iText.Kernel.Counter.Context.IContext"/>
-        /// .
+        /// <see cref="iText.Kernel.Counter.Context.IContext"/>.
         /// </summary>
         /// <param name="fallback">
         /// the

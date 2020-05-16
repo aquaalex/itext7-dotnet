@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -91,20 +91,23 @@ namespace iText.Kernel.Pdf.Canvas.Parser.Data {
         /// <remarks>
         /// Gets an image wrapped in ImageXObject.
         /// You can:
-        /// <ul>
-        /// <li>get image bytes with
+        /// <list type="bullet">
+        /// <item><description>get image bytes with
         /// <see cref="iText.Kernel.Pdf.Xobject.PdfImageXObject.GetImageBytes(bool)"/>
         /// , these image bytes
-        /// represent native image, i.e you can write these bytes to disk and get just an usual image;</li>
-        /// <li>obtain PdfStream object which contains image dictionary with
+        /// represent native image, i.e you can write these bytes to disk and get just an usual image;
+        /// </description></item>
+        /// <item><description>obtain PdfStream object which contains image dictionary with
         /// <see cref="iText.Kernel.Pdf.PdfObjectWrapper{T}.GetPdfObject()"/>
-        /// method;</li>
-        /// <li>convert image to
+        /// method;
+        /// </description></item>
+        /// <item><description>convert image to
         /// <see cref="Java.Awt.Image.BufferedImage"/>
         /// with
         /// <see cref="iText.Kernel.Pdf.Xobject.PdfImageXObject.GetBufferedImage()"/>
-        /// ;</li>
-        /// </ul>
+        /// ;
+        /// </description></item>
+        /// </list>
         /// </remarks>
         public virtual PdfImageXObject GetImage() {
             return image;

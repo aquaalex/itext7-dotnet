@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -42,17 +42,16 @@ address: sales@itextpdf.com
 */
 using System;
 using iText.Svg.Renderers.Factories;
+using iText.Test;
 
 namespace iText.Svg.Renderers {
-    public class DefaultRendererMapperTest {
+    public class DefaultRendererMapperTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void MapperNotEmptyTest() {
             DefaultSvgNodeRendererMapper mapper = new DefaultSvgNodeRendererMapper();
             NUnit.Framework.Assert.IsFalse(mapper.GetMapping().IsEmpty());
         }
 
-        /// <exception cref="Java.Lang.InstantiationException"/>
-        /// <exception cref="System.MemberAccessException"/>
         [NUnit.Framework.Test]
         public virtual void CreateAllRenderersTest() {
             DefaultSvgNodeRendererMapper mapper = new DefaultSvgNodeRendererMapper();

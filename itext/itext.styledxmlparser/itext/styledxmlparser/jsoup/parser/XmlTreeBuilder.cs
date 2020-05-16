@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -51,23 +51,29 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
     /// <c>XmlTreeBuilder</c>
     /// when you want to parse XML without any of the HTML DOM rules being applied to the
     /// document.
-    /// <p>Usage example:
-    /// <c>Document xmlDoc = Jsoup.parse(html, baseUrl, Parser.xmlParser());</c>
-    /// </p>
     /// </summary>
+    /// <remarks>
+    /// Use the
+    /// <c>XmlTreeBuilder</c>
+    /// when you want to parse XML without any of the HTML DOM rules being applied to the
+    /// document.
+    /// <para />
+    /// Usage example:
+    /// <c>Document xmlDoc = Jsoup.parse(html, baseUrl, Parser.xmlParser());</c>
+    /// </remarks>
     /// <author>Jonathan Hedley</author>
     public class XmlTreeBuilder : TreeBuilder {
         internal override void InitialiseParse(String input, String baseUri, ParseErrorList errors) {
             base.InitialiseParse(input, baseUri, errors);
             stack.Add(doc);
             // place the document onto the stack. differs from HtmlTreeBuilder (not on stack)
-            doc.OutputSettings().Syntax(Syntax.xml);
+            doc.OutputSettings().Syntax(iText.StyledXmlParser.Jsoup.Nodes.Syntax.xml);
         }
 
         internal override bool Process(Token token) {
+            // start tag, end tag, doctype, comment, character, eof
             switch (token.type) {
                 case iText.StyledXmlParser.Jsoup.Parser.TokenType.StartTag: {
-                    // start tag, end tag, doctype, comment, character, eof
                     Insert(token.AsStartTag());
                     break;
                 }

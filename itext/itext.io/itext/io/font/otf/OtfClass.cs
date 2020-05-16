@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -53,11 +53,10 @@ namespace iText.IO.Font.Otf {
 
         public const int GLYPH_MARK = 3;
 
+        //key is glyph, value is class inside all 2
         private IntHashtable mapClass = new IntHashtable();
 
-        /// <exception cref="System.IO.IOException"/>
         private OtfClass(RandomAccessFileOrArray rf, int classLocation) {
-            //key is glyph, value is class inside all 2
             rf.Seek(classLocation);
             int classFormat = rf.ReadUnsignedShort();
             if (classFormat == 1) {

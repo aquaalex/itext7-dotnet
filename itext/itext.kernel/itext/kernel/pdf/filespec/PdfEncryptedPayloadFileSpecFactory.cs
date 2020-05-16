@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -89,7 +89,6 @@ namespace iText.Kernel.Pdf.Filespec {
         /// <param name="mimeType">mime-type of the file</param>
         /// <param name="fileParameter">Pdfdictionary containing file parameters</param>
         /// <returns>PdfFileSpec containing the file specification of the encrypted payload</returns>
-        /// <exception cref="System.IO.IOException"/>
         public static PdfFileSpec Create(PdfDocument doc, String filePath, PdfEncryptedPayload encryptedPayload, PdfName
              mimeType, PdfDictionary fileParameter) {
             return AddEncryptedPayloadDictionary(PdfFileSpec.CreateEmbeddedFileSpec(doc, filePath, GenerateDescription
@@ -103,7 +102,6 @@ namespace iText.Kernel.Pdf.Filespec {
         /// <param name="encryptedPayload">the encrypted payload dictionary</param>
         /// <param name="mimeType">mime-type of the file</param>
         /// <returns>PdfFileSpec containing the file specification of the encrypted payload</returns>
-        /// <exception cref="System.IO.IOException"/>
         public static PdfFileSpec Create(PdfDocument doc, String filePath, PdfEncryptedPayload encryptedPayload, PdfName
              mimeType) {
             return Create(doc, filePath, encryptedPayload, mimeType, null);
@@ -114,7 +112,6 @@ namespace iText.Kernel.Pdf.Filespec {
         /// <param name="filePath">path to the encrypted file</param>
         /// <param name="encryptedPayload">the encrypted payload dictionary</param>
         /// <returns>PdfFileSpec containing the file specification of the encrypted payload</returns>
-        /// <exception cref="System.IO.IOException"/>
         public static PdfFileSpec Create(PdfDocument doc, String filePath, PdfEncryptedPayload encryptedPayload) {
             return Create(doc, filePath, encryptedPayload, null, null);
         }

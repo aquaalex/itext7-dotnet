@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -61,7 +61,6 @@ namespace iText.Pdfa {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void CanvasCheckTest1() {
             NUnit.Framework.Assert.That(() =>  {
@@ -84,8 +83,6 @@ namespace iText.Pdfa {
 ;
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void CanvasCheckTest2() {
             String outPdf = destinationFolder + "pdfA2b_canvasCheckTest2.pdf";
@@ -110,7 +107,6 @@ namespace iText.Pdfa {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void CanvasCheckTest3() {
             NUnit.Framework.Assert.That(() =>  {

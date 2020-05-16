@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -70,6 +70,8 @@ namespace iText.Layout.Margincollapse {
 
         private IList<IRenderer> rendererChildren = new List<IRenderer>();
 
+        // Layout box and collapse info are saved before processing the next kid, in order to be able to restore it in case
+        // the next kid is not placed. These values are not null only between startChildMarginsHandling and endChildMarginsHandling calls.
         private Rectangle backupLayoutBox;
 
         private MarginsCollapseInfo backupCollapseInfo;
@@ -77,8 +79,6 @@ namespace iText.Layout.Margincollapse {
         private bool lastKidCollapsedAfterHasClearanceApplied;
 
         public MarginsCollapseHandler(IRenderer renderer, MarginsCollapseInfo marginsCollapseInfo) {
-            // Layout box and collapse info are saved before processing the next kid, in order to be able to restore it in case
-            // the next kid is not placed. These values are not null only between startChildMarginsHandling and endChildMarginsHandling calls.
             this.renderer = renderer;
             this.collapseInfo = marginsCollapseInfo != null ? marginsCollapseInfo : new MarginsCollapseInfo();
         }
@@ -149,7 +149,8 @@ namespace iText.Layout.Margincollapse {
         }
 
         /// <summary>This method shall be called after child occupied area is included into parent occupied area.</summary>
-        /// <param name="layoutBox"/>
+        /// <param name="layoutBox">available area for child and its siblings layout. It might be adjusted inside the method
+        ///     </param>
         public virtual void EndChildMarginsHandling(Rectangle layoutBox) {
             int childIndex = processedChildrenNum - 1;
             if (RendererIsFloated(GetRendererChild(childIndex))) {
@@ -298,9 +299,9 @@ namespace iText.Layout.Margincollapse {
                 if (childIndex > firstNotEmptyKidIndex) {
                     if (LastChildMarginAdjoinedToParent(renderer)) {
                         // restore layout box after inline element
+                        // used space shall be always less or equal to collapsedMarginAfter size
                         float bottomIndent = collapseInfo.GetCollapseAfter().GetCollapsedMarginsSize() - collapseInfo.GetUsedBufferSpaceOnBottom
                             ();
-                        // used space shall be always less or equal to collapsedMarginAfter size
                         collapseInfo.SetBufferSpaceOnBottom(collapseInfo.GetBufferSpaceOnBottom() + collapseInfo.GetUsedBufferSpaceOnBottom
                             ());
                         collapseInfo.SetUsedBufferSpaceOnBottom(0);
@@ -314,8 +315,8 @@ namespace iText.Layout.Margincollapse {
                     float topIndent = collapseInfo.GetCollapseBefore().GetCollapsedMarginsSize();
                     ApplyTopMargin(layoutBox, topIndent);
                 }
+                // if not adjoined - bottom margin have been already applied on startMarginsCollapse
                 if (LastChildMarginAdjoinedToParent(renderer)) {
-                    // if not adjoined - bottom margin have been already applied on startMarginsCollapse
                     float bottomIndent = collapseInfo.GetCollapseAfter().GetCollapsedMarginsSize();
                     ApplyBottomMargin(layoutBox, bottomIndent);
                 }
@@ -456,11 +457,12 @@ namespace iText.Layout.Margincollapse {
         private static bool MarginsCouldBeSelfCollapsing(IRenderer renderer) {
             return !(renderer is TableRenderer) && !RendererIsFloated(renderer) && !HasBottomBorders(renderer) && !HasTopBorders
                 (renderer) && !HasBottomPadding(renderer) && !HasTopPadding(renderer) && !HasPositiveHeight(renderer) 
-                && !(IsBlockElement(renderer) && renderer is AbstractRenderer && ((AbstractRenderer)renderer).GetParent
-                () is LineRenderer);
+                && 
+                        // inline block
+                        !(IsBlockElement(renderer) && renderer is AbstractRenderer && ((AbstractRenderer)renderer).GetParent() is 
+                LineRenderer);
         }
 
-        // inline block
         private static bool FirstChildMarginAdjoinedToParent(IRenderer parent) {
             return !BlockFormattingContextUtil.IsRendererCreateBfc(parent) && !(parent is TableRenderer) && !HasTopBorders
                 (parent) && !HasTopPadding(parent);

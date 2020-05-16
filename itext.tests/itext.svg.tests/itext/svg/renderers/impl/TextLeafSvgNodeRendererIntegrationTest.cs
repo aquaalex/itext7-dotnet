@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -42,10 +42,10 @@ address: sales@itextpdf.com
 */
 using iText.Kernel.Font;
 using iText.Svg;
+using iText.Svg.Renderers;
 
 namespace iText.Svg.Renderers.Impl {
-    public class TextLeafSvgNodeRendererIntegrationTest {
-        /// <exception cref="System.Exception"/>
+    public class TextLeafSvgNodeRendererIntegrationTest : SvgIntegrationTest {
         [NUnit.Framework.Test]
         public virtual void GetContentLengthBaseTest() {
             TextLeafSvgNodeRenderer toTest = new TextLeafSvgNodeRenderer();
@@ -57,7 +57,6 @@ namespace iText.Svg.Renderers.Impl {
             NUnit.Framework.Assert.AreEqual(expected, actual, 1e-6f);
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void GetContentLengthNoValueTest() {
             TextLeafSvgNodeRenderer toTest = new TextLeafSvgNodeRenderer();
@@ -68,7 +67,6 @@ namespace iText.Svg.Renderers.Impl {
             NUnit.Framework.Assert.AreEqual(expected, actual, 1e-6f);
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void GetContentLengthNaNTest() {
             TextLeafSvgNodeRenderer toTest = new TextLeafSvgNodeRenderer();
@@ -80,7 +78,6 @@ namespace iText.Svg.Renderers.Impl {
             NUnit.Framework.Assert.AreEqual(expected, actual, 1e-6f);
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void GetContentLengthNegativeTest() {
             TextLeafSvgNodeRenderer toTest = new TextLeafSvgNodeRenderer();

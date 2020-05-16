@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -57,8 +57,7 @@ namespace iText.Svg {
             /// <summary>Tag defining a Hyperlink.</summary>
             public const String A = "a";
 
-            /// <summary>Alternate glyphs to be used instead of regular grlyphs, e.g.</summary>
-            /// <remarks>Alternate glyphs to be used instead of regular grlyphs, e.g. ligatures, Asian scripts, ...</remarks>
+            /// <summary>Alternate glyphs to be used instead of regular grlyphs, e.g. ligatures, Asian scripts, ...</summary>
             public const String ALT_GLYPH = "altGlyph";
 
             /// <summary>Defines a set of glyph substitions.</summary>
@@ -81,8 +80,7 @@ namespace iText.Svg {
 
             /// <summary>
             /// Tag defining a
-            /// <see cref="iText.Svg.Renderers.Impl.CircleSvgNodeRenderer">circle</see>
-            /// .
+            /// <see cref="iText.Svg.Renderers.Impl.CircleSvgNodeRenderer">circle</see>.
             /// </summary>
             /// <since>7.1.2</since>
             public const String CIRCLE = "circle";
@@ -90,7 +88,9 @@ namespace iText.Svg {
             /// <summary>Tag defining a clipping path.</summary>
             /// <remarks>Tag defining a clipping path. A clipping path defines the region where can be drawn. Anything outside the path won't be drawn.
             ///     </remarks>
-            public const String CLIP_PATH = "clippath";
+            public static readonly String CLIP_PATH = 
+                        // TODO: DEVSIX-3923 remove normalization (.toLowerCase)
+                        "clipPath".ToLowerInvariant();
 
             /// <summary>Tag defining the color profile to be used.</summary>
             public const String COLOR_PROFILE = "color-profile";
@@ -106,8 +106,7 @@ namespace iText.Svg {
 
             /// <summary>
             /// Tag defining an
-            /// <see cref="iText.Svg.Renderers.Impl.EllipseSvgNodeRenderer">ellipse</see>
-            /// .
+            /// <see cref="iText.Svg.Renderers.Impl.EllipseSvgNodeRenderer">ellipse</see>.
             /// </summary>
             /// <since>7.1.2</since>
             public const String ELLIPSE = "ellipse";
@@ -227,8 +226,7 @@ namespace iText.Svg {
 
             /// <summary>
             /// Tag defining a
-            /// <see cref="iText.Svg.Renderers.Impl.LineSvgNodeRenderer">line</see>
-            /// .
+            /// <see cref="iText.Svg.Renderers.Impl.LineSvgNodeRenderer">line</see>.
             /// </summary>
             /// <since>7.1.2</since>
             public const String LINE = "line";
@@ -257,8 +255,7 @@ namespace iText.Svg {
 
             /// <summary>
             /// Tag defining a
-            /// <see cref="iText.Svg.Renderers.Impl.PathSvgNodeRenderer">path</see>
-            /// .
+            /// <see cref="iText.Svg.Renderers.Impl.PathSvgNodeRenderer">path</see>.
             /// </summary>
             /// <since>7.1.2</since>
             public const String PATH = "path";
@@ -287,8 +284,7 @@ namespace iText.Svg {
 
             /// <summary>
             /// Tag defining a
-            /// <see cref="iText.Svg.Renderers.Impl.RectangleSvgNodeRenderer">rectangle</see>
-            /// .
+            /// <see cref="iText.Svg.Renderers.Impl.RectangleSvgNodeRenderer">rectangle</see>.
             /// </summary>
             /// <since>7.1.2</since>
             public const String RECT = "rect";
@@ -407,17 +403,37 @@ namespace iText.Svg {
             /// <summary>Attribute defining the unique id of an element.</summary>
             public const String ID = "id";
 
-            /// <summary>Attribute defining the radius of a circle.</summary>
-            public const String R = "r";
+            /// <summary>Attribute defining the marker to use at the end of a path, line, polygon or polyline</summary>
+            public const String MARKER_END = "marker-end";
 
-            /// <summary>Attribute defining the x-axis of an ellipse or the x-axis radius of rounded rectangles.</summary>
-            public const String RX = "rx";
+            /// <summary>Attribute defining the height of the viewport in which the marker is to be fitted</summary>
+            public static readonly String MARKER_HEIGHT = 
+                        // TODO: DEVSIX-3923 remove normalization (.toLowerCase)
+                        "markerHeight".ToLowerInvariant();
 
-            /// <summary>Attribute defining the y-axis of an ellipse or the y-axis radius of rounded rectangles.</summary>
-            public const String RY = "ry";
+            /// <summary>Attribute defining the marker drawn at every other vertex but the start and end of a path, line, polygon or polyline
+            ///     </summary>
+            public const String MARKER_MID = "marker-mid";
+
+            /// <summary>Attribute defining the marker to use at the start of a path, line, polygon or polyline</summary>
+            public const String MARKER_START = "marker-start";
+
+            /// <summary>Attribute defining the width of the viewport in which the marker is to be fitted</summary>
+            public static readonly String MARKER_WIDTH = 
+                        // TODO: DEVSIX-3923 remove normalization (.toLowerCase)
+                        "markerWidth".ToLowerInvariant();
+
+            /// <summary>Attribute defining the coordinate system for attributes ‘markerWidth’, ‘markerHeight’ and the contents of the ‘marker’.
+            ///     </summary>
+            public static readonly String MARKER_UNITS = 
+                        // TODO: DEVSIX-3923 remove normalization (.toLowerCase)
+                        "markerUnits".ToLowerInvariant();
 
             /// <summary>Attribute defining the opacity of a group or graphic element.</summary>
             public const String OPACITY = "opacity";
+
+            /// <summary>Attribute defining the orientation of a marker</summary>
+            public const String ORIENT = "orient";
 
             /// <summary>Close Path Operator.</summary>
             public const String PATH_DATA_CLOSE_PATH = "Z";
@@ -492,7 +508,30 @@ namespace iText.Svg {
             public const String POINTS = "points";
 
             /// <summary>Attribute defining how to preserve the aspect ratio when scaling.</summary>
-            public const String PRESERVE_ASPECT_RATIO = "preserveaspectratio";
+            public static readonly String PRESERVE_ASPECT_RATIO = 
+                        // TODO: DEVSIX-3923 remove normalization (.toLowerCase)
+                        "preserveAspectRatio".ToLowerInvariant();
+
+            /// <summary>Attribute defining the radius of a circle.</summary>
+            public const String R = "r";
+
+            /// <summary>Attribute defining the x-axis coordinate of the reference point which is to be aligned exactly at the marker position.
+            ///     </summary>
+            public static readonly String REFX = 
+                        // TODO: DEVSIX-3923 remove normalization (.toLowerCase)
+                        "refX".ToLowerInvariant();
+
+            /// <summary>Attribute defining the y-axis coordinate of the reference point which is to be aligned exactly at the marker position.
+            ///     </summary>
+            public static readonly String REFY = 
+                        // TODO: DEVSIX-3923 remove normalization (.toLowerCase)
+                        "refY".ToLowerInvariant();
+
+            /// <summary>Attribute defining the x-axis of an ellipse or the x-axis radius of rounded rectangles.</summary>
+            public const String RX = "rx";
+
+            /// <summary>Attribute defining the y-axis of an ellipse or the y-axis radius of rounded rectangles.</summary>
+            public const String RY = "ry";
 
             /// <summary>Attribute defining the stroke color.</summary>
             public const String STROKE = "stroke";
@@ -528,7 +567,9 @@ namespace iText.Svg {
             public const String TRANSFORM = "transform";
 
             /// <summary>Attribute defining the viewbox of an element.</summary>
-            public const String VIEWBOX = "viewbox";
+            public static readonly String VIEWBOX = 
+                        // TODO: DEVSIX-3923 remove normalization (.toLowerCase)
+                        "viewBox".ToLowerInvariant();
 
             /// <summary>Attribute defining the width of an element.</summary>
             public const String WIDTH = "width";
@@ -563,17 +604,20 @@ namespace iText.Svg {
 
         /// <summary>Class containing the constants for values appearing in SVG tags and attributes</summary>
         public sealed class Values {
+            /// <summary>Value representing automatic orientation for the marker attribute orient.</summary>
+            public const String AUTO = "auto";
+
+            /// <summary>Value representing reverse automatic orientation for the start marker.</summary>
+            public const String AUTO_START_REVERSE = "auto-start-reverse";
+
             /// <summary>Value representing the default value for the stroke linecap.</summary>
             public const String BUTT = "butt";
 
             /// <summary>Value representing the default aspect ratio: xmidymid.</summary>
-            public const String DEFAULT_ASPECT_RATIO = "xmidymid";
+            public const String DEFAULT_ASPECT_RATIO = SvgConstants.Values.XMID_YMID;
 
             /// <summary>Value representing how to preserve the aspect ratio when dealing with images.</summary>
             public const String DEFER = "defer";
-
-            /// <summary>Value representing the text-alignment end for text objects</summary>
-            public const String TEXT_ANCHOR_END = "end";
 
             /// <summary>Value representing the fill rule "even odd".</summary>
             public const String FILL_RULE_EVEN_ODD = "evenodd";
@@ -581,17 +625,32 @@ namespace iText.Svg {
             /// <summary>Value representing the fill rule "nonzero".</summary>
             public const String FILL_RULE_NONZERO = "nonzero";
 
-            /// <summary>Value representing the text-alignment middle for text objects</summary>
-            public const String TEXT_ANCHOR_MIDDLE = "middle";
+            /// <summary>Value representing the meet for preserve aspect ratio calculations.</summary>
+            public const String MEET = "meet";
 
             /// <summary>Value representing the "none" value".</summary>
             public const String NONE = "none";
 
+            /// <summary>The value representing slice for the preserve aspect ratio calculations;</summary>
+            public const String SLICE = "slice";
+
+            /// <summary>The value corresponding with the namespace url for SVG.</summary>
+            /// <remarks>The value corresponding with the namespace url for SVG. Will be removed since version 7.2.</remarks>
+            [Obsolete]
+            public const String SVGNAMESPACEURL = "http://www.w3.org/2000/svg";
+
+            /// <summary>Value representing the text-alignment end for text objects</summary>
+            public const String TEXT_ANCHOR_END = "end";
+
+            /// <summary>Value representing the text-alignment middle for text objects</summary>
+            public const String TEXT_ANCHOR_MIDDLE = "middle";
+
             /// <summary>Value representing the text-alignment start for text objects</summary>
             public const String TEXT_ANCHOR_START = "start";
 
-            /// <summary>The value corresponding with the namespace url for SVG</summary>
-            public const String SVGNAMESPACEURL = "http://www.w3.org/2000/svg";
+            /// <summary>The value for markerUnits that represent values in a coordinate system which has a single unit equal the size in user units of the current stroke width.
+            ///     </summary>
+            public const String STROKEWIDTH = "strokeWidth";
 
             /// <summary>Value representing how to align when scaling.</summary>
             public const String XMIN_YMIN = "xminymin";
@@ -601,6 +660,9 @@ namespace iText.Svg {
 
             /// <summary>Value representing how to align when scaling.</summary>
             public const String XMIN_YMAX = "xminymax";
+
+            /// <summary>Value representing how to align when scaling.</summary>
+            public const String XMID_YMID = "xmidymid";
 
             /// <summary>Value representing how to align when scaling.</summary>
             public const String XMID_YMIN = "xmidymin";

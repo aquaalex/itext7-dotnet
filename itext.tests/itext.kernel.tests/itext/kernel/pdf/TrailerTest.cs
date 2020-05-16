@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -66,7 +66,6 @@ namespace iText.Kernel.Pdf {
             this.productInfo = new ProductInfo("pdfProduct", 1, 0, 0, true);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void TrailerFingerprintTest() {
             FileStream fos = new FileStream(destinationFolder + "output.pdf", FileMode.Create);
@@ -80,7 +79,6 @@ namespace iText.Kernel.Pdf {
                 , productInfo.ToString()));
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private bool DoesTrailerContainFingerprint(FileInfo file, String fingerPrint) {
             FileStream raf = FileUtil.GetRandomAccessFile(file);
             // put the pointer at the end of the file

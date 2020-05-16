@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -67,7 +67,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             return attributes.Get(COMMENT_KEY);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         internal override void OuterHtmlHead(StringBuilder accum, int depth, OutputSettings @out) {
             if (@out.PrettyPrint()) {
                 Indent(accum, depth, @out);

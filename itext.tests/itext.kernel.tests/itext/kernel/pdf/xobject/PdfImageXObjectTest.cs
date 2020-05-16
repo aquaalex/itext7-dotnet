@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -60,8 +60,6 @@ namespace iText.Kernel.Pdf.Xobject {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AddFlushedImageXObjectToCanvas() {
             String filename = destinationFolder + "addFlushedImageXObjectToCanvas.pdf";
@@ -75,6 +73,83 @@ namespace iText.Kernel.Pdf.Xobject {
             canvas.AddXObject(imageXObject, 50, 500, 200);
             pdfDoc.Close();
             NUnit.Framework.Assert.IsNull(new CompareTool().CompareByContent(filename, cmpfile, destinationFolder));
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void IndexedColorPngImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "indexed.pdf", sourceFolder + "cmp_indexed.pdf", sourceFolder + "indexed.png"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void IndexedColorSimpleTransparencyPngImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "indexedSimpleTransparency.pdf", sourceFolder + "cmp_indexedSimpleTransparency.pdf"
+                , sourceFolder + "indexedSimpleTransparency.png");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void GrayPngImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "grayscale16Bpc.pdf", sourceFolder + "cmp_grayscale16Bpc.pdf", sourceFolder
+                 + "grayscale16Bpc.png");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void GrayAlphaPngImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "graya8Bpc.pdf", sourceFolder + "cmp_graya8Bpc.pdf", sourceFolder + 
+                "graya8Bpc.png");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void GrayAlphaPngWithoutEmbeddedProfileImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "graya8BpcWithoutProfile.pdf", sourceFolder + "cmp_graya8BpcWithoutProfile.pdf"
+                , sourceFolder + "graya8BpcWithoutProfile.png");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void GraySimpleTransparencyPngImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "grayscaleSimpleTransparencyImage.pdf", sourceFolder + "cmp_grayscaleSimpleTransparencyImage.pdf"
+                , sourceFolder + "grayscaleSimpleTransparencyImage.png");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void RgbPngImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "rgb16Bpc.pdf", sourceFolder + "cmp_rgb16Bpc.pdf", sourceFolder + "rgb16Bpc.png"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void RgbAlphaPngImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "rgba16Bpc.pdf", sourceFolder + "cmp_rgba16Bpc.pdf", sourceFolder + 
+                "rgba16Bpc.png");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void RgbSimpleTransparencyPngImageXObjectTest() {
+            ConvertAndCompare(destinationFolder + "rgbSimpleTransparencyImage.pdf", sourceFolder + "cmp_rgbSimpleTransparencyImage.pdf"
+                , sourceFolder + "rgbSimpleTransparencyImage.png");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SRgbImageTest() {
+            ConvertAndCompare(destinationFolder + "sRGBImage.pdf", sourceFolder + "cmp_sRGBImage.pdf", sourceFolder + 
+                "sRGBImage.png");
+        }
+
+        private void ConvertAndCompare(String outFilename, String cmpFilename, String imageFilename) {
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outFilename));
+            PdfDocument cmpDoc = new PdfDocument(new PdfReader(cmpFilename));
+            PdfImageXObject imageXObject = new PdfImageXObject(ImageDataFactory.Create(imageFilename));
+            PdfCanvas canvas = new PdfCanvas(pdfDoc.AddNewPage());
+            canvas.AddXObject(imageXObject, 50, 500, 346);
+            pdfDoc.Close();
+            PdfDocument outDoc = new PdfDocument(new PdfReader(outFilename));
+            PdfStream outStream = outDoc.GetFirstPage().GetResources().GetResource(PdfName.XObject).GetAsStream(new PdfName
+                ("Im1"));
+            PdfStream cmpStream = cmpDoc.GetFirstPage().GetResources().GetResource(PdfName.XObject).GetAsStream(new PdfName
+                ("Im1"));
+            NUnit.Framework.Assert.IsNull(new CompareTool().CompareStreamsStructure(outStream, cmpStream));
+            cmpDoc.Close();
+            outDoc.Close();
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -64,9 +64,6 @@ namespace iText.Signatures.Verify {
         public static void Before() {
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Ocsp.OcspException"/>
         [NUnit.Framework.Test]
         public virtual void ValidCrl01() {
             X509Certificate caCert = (X509Certificate)Pkcs12FileHelper.ReadFirstChain(certsSrc + "rootRsa.p12", password
@@ -75,9 +72,6 @@ namespace iText.Signatures.Verify {
             NUnit.Framework.Assert.IsTrue(VerifyTest(crlBuilder));
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Ocsp.OcspException"/>
         [NUnit.Framework.Test]
         public virtual void InvalidRevokedCrl01() {
             NUnit.Framework.Assert.That(() =>  {
@@ -95,9 +89,6 @@ namespace iText.Signatures.Verify {
 ;
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Ocsp.OcspException"/>
         [NUnit.Framework.Test]
         public virtual void InvalidOutdatedCrl01() {
             X509Certificate caCert = (X509Certificate)Pkcs12FileHelper.ReadFirstChain(certsSrc + "rootRsa.p12", password
@@ -107,8 +98,6 @@ namespace iText.Signatures.Verify {
             NUnit.Framework.Assert.IsFalse(VerifyTest(crlBuilder));
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
         private bool VerifyTest(TestCrlBuilder crlBuilder) {
             String caCertFileName = certsSrc + "rootRsa.p12";
             X509Certificate caCert = (X509Certificate)Pkcs12FileHelper.ReadFirstChain(caCertFileName, password)[0];

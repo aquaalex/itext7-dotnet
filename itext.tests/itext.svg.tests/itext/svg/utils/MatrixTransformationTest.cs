@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -42,9 +42,10 @@ address: sales@itextpdf.com
 */
 using iText.Kernel.Geom;
 using iText.Svg.Exceptions;
+using iText.Test;
 
 namespace iText.Svg.Utils {
-    public class MatrixTransformationTest {
+    public class MatrixTransformationTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void NormalMatrixTest() {
             AffineTransform expected = new AffineTransform(10d, 20d, 30d, 40d, 37.5d, 45d);

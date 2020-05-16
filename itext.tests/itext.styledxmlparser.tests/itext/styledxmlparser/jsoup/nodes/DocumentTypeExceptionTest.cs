@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,12 +41,13 @@ For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
 using System;
+using iText.Test;
 using NUnit.Framework;
 
 namespace iText.StyledXmlParser.Jsoup.Nodes {
     /// <summary>Tests for the DocumentType node</summary>
     /// <author>Jonathan Hedley, http://jonathanhedley.com/</author>
-    public class DocumentTypeExceptionTest {
+    public class DocumentTypeExceptionTest : ExtendedITextTest {
         [Test]
         public virtual void ConstructorValidationThrowsExceptionOnNulls() {
             Assert.Throws(typeof(ArgumentException), () => new DocumentType("html", null, null, ""));

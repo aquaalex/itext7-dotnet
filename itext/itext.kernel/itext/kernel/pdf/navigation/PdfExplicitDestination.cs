@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -145,12 +145,12 @@ namespace iText.Kernel.Pdf.Navigation {
         }
 
         public static iText.Kernel.Pdf.Navigation.PdfExplicitDestination CreateFitBV(PdfPage page, float left) {
-            return Create(page, PdfName.FitBH, left, float.NaN, float.NaN, float.NaN, float.NaN);
+            return Create(page, PdfName.FitBV, left, float.NaN, float.NaN, float.NaN, float.NaN);
         }
 
         [System.ObsoleteAttribute(@"Use PdfExplicitRemoteGoToDestination.CreateFitBV(int, float) instead.")]
         public static iText.Kernel.Pdf.Navigation.PdfExplicitDestination CreateFitBV(int pageNum, float left) {
-            return Create(pageNum, PdfName.FitBH, left, float.NaN, float.NaN, float.NaN, float.NaN);
+            return Create(pageNum, PdfName.FitBV, left, float.NaN, float.NaN, float.NaN, float.NaN);
         }
 
         public static iText.Kernel.Pdf.Navigation.PdfExplicitDestination Create(PdfPage page, PdfName type, float 

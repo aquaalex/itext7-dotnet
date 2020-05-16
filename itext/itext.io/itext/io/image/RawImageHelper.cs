@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -124,7 +124,6 @@ namespace iText.IO.Image {
         /// <param name="components">1,3 or 4 for GrayScale, RGB and CMYK</param>
         /// <param name="bpc">bits per component. Must be 1,2,4 or 8</param>
         /// <param name="data">the image data</param>
-        /// <exception cref="iText.IO.IOException">on error</exception>
         protected internal static void UpdateRawImageParameters(RawImageData image, int width, int height, int components
             , int bpc, byte[] data) {
             image.SetHeight(height);

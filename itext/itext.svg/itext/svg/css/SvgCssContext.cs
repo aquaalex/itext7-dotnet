@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -45,12 +45,8 @@ using iText.StyledXmlParser.Css.Resolve;
 namespace iText.Svg.Css {
     /// <summary>
     /// Context necessary for evaluating certain Css statements whose final values depends on other statements
-    /// e.g.
-    /// </summary>
-    /// <remarks>
-    /// Context necessary for evaluating certain Css statements whose final values depends on other statements
     /// e.g. relative font-size statements.
-    /// </remarks>
+    /// </summary>
     public class SvgCssContext : AbstractCssContext {
     }
 }

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -78,7 +78,7 @@ namespace iText.Kernel {
         /// This String contains the version number of this iText release.
         /// For debugging purposes, we request you NOT to change this constant.
         /// </remarks>
-        private const String release = "7.1.7-SNAPSHOT";
+        private const String release = "7.1.12-SNAPSHOT";
 
         /// <summary>This String contains the iText version as shown in the producer line.</summary>
         /// <remarks>
@@ -87,7 +87,7 @@ namespace iText.Kernel {
         /// iText Group requests that you retain the iText producer line
         /// in every PDF that is created or manipulated using iText.
         /// </remarks>
-        private const String producerLine = iTextProductName + " " + release + " \u00a92000-2019 iText Group NV";
+        private const String producerLine = iTextProductName + " " + release + " \u00a92000-2020 iText Group NV";
 
         /// <summary>The version info;</summary>
         private readonly VersionInfo info;
@@ -99,7 +99,7 @@ namespace iText.Kernel {
             this.info = new VersionInfo(iTextProductName, release, producerLine, null);
         }
 
-        private Version(VersionInfo info, bool expired) {
+        internal Version(VersionInfo info, bool expired) {
             this.info = info;
             this.expired = expired;
         }
@@ -107,12 +107,27 @@ namespace iText.Kernel {
         /// <summary>Gets an instance of the iText version that is currently used.</summary>
         /// <remarks>
         /// Gets an instance of the iText version that is currently used.
+        /// <para />
         /// Note that iText Group requests that you retain the iText producer line
         /// in every PDF that is created or manipulated using iText.
         /// </remarks>
+        /// <returns>
+        /// an instance of
+        /// <see cref="Version"/>.
+        /// </returns>
         public static iText.Kernel.Version GetInstance() {
             lock (staticLock) {
                 if (version != null) {
+                    try {
+                        LicenseScheduledCheck();
+                    }
+                    catch (Exception e) {
+                        // If any exception occurs during scheduled check of core license,
+                        // then it means that license is not valid yet, so roll back to AGPL.
+                        // The key value is null as it is similar to case
+                        // when an exception has been thrown during initial license loading
+                        AtomicSetVersion(InitAGPLVersion(e, null));
+                    }
                     return version;
                 }
             }
@@ -190,7 +205,7 @@ namespace iText.Kernel {
         /// <summary>Checks if the AGPL version is used.</summary>
         /// <returns>returns true if the AGPL version is used.</returns>
         public static bool IsAGPLVersion() {
-            return GetInstance().GetVersion().IndexOf(AGPL, StringComparison.Ordinal) > 0;
+            return GetInstance().IsAGPL();
         }
 
         /// <summary>Is the license expired?</summary>
@@ -245,6 +260,48 @@ namespace iText.Kernel {
             return info;
         }
 
+        internal static String[] ParseVersionString(String version) {
+            String splitRegex = "\\.";
+            String[] split = iText.IO.Util.StringUtil.Split(version, splitRegex);
+            //Guard for empty versions and throw exceptions
+            if (split.Length == 0) {
+                throw new LicenseVersionException(LicenseVersionException.VERSION_STRING_IS_EMPTY_AND_CANNOT_BE_PARSED);
+            }
+            //Desired Format: X.Y.Z-....
+            //Also catch X, X.Y-...
+            String major = split[0];
+            //If no minor version is present, default to 0
+            String minor = "0";
+            if (split.Length > 1) {
+                minor = split[1].Substring(0);
+            }
+            //Check if both values are numbers
+            if (!IsVersionNumeric(major)) {
+                throw new LicenseVersionException(LicenseVersionException.MAJOR_VERSION_IS_NOT_NUMERIC);
+            }
+            if (!IsVersionNumeric(minor)) {
+                throw new LicenseVersionException(LicenseVersionException.MINOR_VERSION_IS_NOT_NUMERIC);
+            }
+            return new String[] { major, minor };
+        }
+
+        internal static bool IsVersionNumeric(String version) {
+            try {
+                int value = (int)Convert.ToInt32(version);
+                // parseInt accepts numbers which start with a plus sign, but for a version it's unacceptable
+                return value >= 0 && !version.Contains("+");
+            }
+            catch (FormatException) {
+                return false;
+            }
+        }
+
+        /// <summary>Checks if the current object has been initialized with AGPL license.</summary>
+        /// <returns>returns true if the current object has been initialized with AGPL license.</returns>
+        internal bool IsAGPL() {
+            return GetVersion().IndexOf(AGPL, StringComparison.Ordinal) > 0;
+        }
+
         private static iText.Kernel.Version InitDefaultLicensedVersion(String ownerName, String key) {
             String producer = producerLine + " (" + ownerName;
             if (!key.ToLowerInvariant().StartsWith("trial")) {
@@ -264,6 +321,11 @@ namespace iText.Kernel {
 
         private static iText.Kernel.Version InitVersion(String producer, String key, bool expired) {
             return new iText.Kernel.Version(new VersionInfo(iTextProductName, release, producer, key), expired);
+        }
+
+        private static Type GetLicenseKeyClass() {
+            String licenseKeyClassFullName = "iText.License.LicenseKey, itext.licensekey";
+            return GetClassFromLicenseKey(licenseKeyClassFullName);
         }
 
         private static void CheckLicenseVersion(String coreVersionString, String licenseVersionString) {
@@ -289,36 +351,6 @@ namespace iText.Kernel {
             }
         }
 
-        private static String[] ParseVersionString(String version) {
-            String splitRegex = "\\.";
-            String[] split = iText.IO.Util.StringUtil.Split(version, splitRegex);
-            //Guard for empty versions and throw exceptions
-            if (split.Length == 0) {
-                throw new LicenseVersionException(LicenseVersionException.VERSION_STRING_IS_EMPTY_AND_CANNOT_BE_PARSED);
-            }
-            //Desired Format: X.Y.Z-....
-            //Also catch X, X.Y-...
-            String major = split[0];
-            String minor = "0";
-            //If no minor version is present, default to 0
-            if (split.Length > 1) {
-                minor = split[1].Substring(0);
-            }
-            //Check if both values are numbers
-            if (!IsVersionNumeric(major)) {
-                throw new LicenseVersionException(LicenseVersionException.MAJOR_VERSION_IS_NOT_NUMERIC);
-            }
-            if (!IsVersionNumeric(minor)) {
-                throw new LicenseVersionException(LicenseVersionException.MINOR_VERSION_IS_NOT_NUMERIC);
-            }
-            return new String[] { major, minor };
-        }
-
-        /// <exception cref="System.TypeLoadException"/>
-        /// <exception cref="System.MissingMethodException"/>
-        /// <exception cref="System.MemberAccessException"/>
-        /// <exception cref="Java.Lang.InstantiationException"/>
-        /// <exception cref="System.Reflection.TargetInvocationException"/>
         private static String[] GetLicenseeInfoFromLicenseKey(String validatorKey) {
             String licenseeInfoMethodName = "GetLicenseeInfoForVersion";
             Type klass = GetLicenseKeyClass();
@@ -345,18 +377,6 @@ namespace iText.Kernel {
             return result;
         }
 
-        private static bool IsVersionNumeric(String version) {
-            //I did not want to introduce an extra dependency on apache.commons in order to use StringUtils.
-            //This small method is not the most optimal, but it should do for release
-            try {
-                Double.Parse(version, System.Globalization.CultureInfo.InvariantCulture);
-                return true;
-            }
-            catch (FormatException) {
-                return false;
-            }
-        }
-
         private static iText.Kernel.Version AtomicSetVersion(iText.Kernel.Version newVersion) {
             lock (staticLock) {
                 version = newVersion;
@@ -364,23 +384,40 @@ namespace iText.Kernel {
             }
         }
 
-        private static Type GetLicenseKeyClass() {
-            String licenseKeyClassPartialName = "iText.License.LicenseKey, itext.licensekey";
-            String licenseKeyClassFullName = null;
+        private static void LicenseScheduledCheck() {
+            if (version.IsAGPL()) {
+                return;
+            }
+            String licenseKeyProductFullName = "iText.License.LicenseKeyProduct, itext.licensekey";
+            String checkLicenseKeyMethodName = "ScheduledCheck";
+            try {
+                Type licenseKeyClass = GetLicenseKeyClass();
+                Type licenseKeyProductClass = GetClassFromLicenseKey(licenseKeyProductFullName);
+                Type[] cArg = new Type[] { licenseKeyProductClass };
+                MethodInfo method = licenseKeyClass.GetMethod(checkLicenseKeyMethodName, cArg);
+                method.Invoke(null, new Object[] { null });
+            }
+            catch (Exception e) {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        private static Type GetClassFromLicenseKey(String classPartialName) {
+            String classFullName = null;
 
             Assembly kernelAssembly = typeof(Version).GetAssembly();
             Attribute keyVersionAttr = kernelAssembly.GetCustomAttribute(typeof(KeyVersionAttribute));
             if (keyVersionAttr is KeyVersionAttribute) {
                 String keyVersion = ((KeyVersionAttribute)keyVersionAttr).KeyVersion;
                 String format = "{0}, Version={1}, Culture=neutral, PublicKeyToken=8354ae6d2174ddca";
-                licenseKeyClassFullName = String.Format(format, licenseKeyClassPartialName, keyVersion);
+                classFullName = String.Format(format, classPartialName, keyVersion);
             }
 
             Type type = null;
-            if (licenseKeyClassFullName != null) {
+            if (classFullName != null) {
                 String fileLoadExceptionMessage = null;
                 try {
-                    type = System.Type.GetType(licenseKeyClassFullName);
+                    type = System.Type.GetType(classFullName);
                 } catch (FileLoadException fileLoadException) {
                     fileLoadExceptionMessage = fileLoadException.Message;
                 }
@@ -388,7 +425,7 @@ namespace iText.Kernel {
                 if (type == null) {
                     ILog logger = LogManager.GetLogger(typeof(Version));
                     try {
-                        type = System.Type.GetType(licenseKeyClassPartialName);
+                        type = System.Type.GetType(classPartialName);
                     } catch {
                         // ignore
                     }

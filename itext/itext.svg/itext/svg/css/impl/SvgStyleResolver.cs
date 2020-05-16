@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -81,7 +81,6 @@ namespace iText.Svg.Css.Impl {
         /// with a given default CSS.
         /// </summary>
         /// <param name="defaultCssStream">the default CSS</param>
-        /// <exception cref="System.IO.IOException"/>
         public SvgStyleResolver(Stream defaultCssStream) {
             this.css = CssStyleSheetParser.Parse(defaultCssStream);
         }
@@ -116,20 +115,7 @@ namespace iText.Svg.Css.Impl {
         }
 
         public virtual IDictionary<String, String> ResolveStyles(INode node, AbstractCssContext context) {
-            IDictionary<String, String> styles = new Dictionary<String, String>();
-            //Load in from collected style sheets
-            IList<CssDeclaration> styleSheetDeclarations = css.GetCssDeclarations(node, MediaDeviceDescription.CreateDefault
-                ());
-            foreach (CssDeclaration ssd in styleSheetDeclarations) {
-                styles.Put(ssd.GetProperty(), ssd.GetExpression());
-            }
-            //Load in attributes declarations
-            if (node is IElementNode) {
-                IElementNode eNode = (IElementNode)node;
-                foreach (IAttribute attr in eNode.GetAttributes()) {
-                    ProcessAttribute(attr, styles);
-                }
-            }
+            IDictionary<String, String> styles = ResolveNativeStyles(node, context);
             //Load in and merge inherited declarations from parent
             if (node.ParentNode() is IStylesContainer) {
                 IStylesContainer parentNode = (IStylesContainer)node.ParentNode();
@@ -146,6 +132,28 @@ namespace iText.Svg.Css.Impl {
                         }
                         sru.MergeParentStyleDeclaration(styles, entry.Key, entry.Value, parentFontSizeString);
                     }
+                }
+            }
+            return styles;
+        }
+
+        /// <summary>Resolves node styles without inheritance of parent element styles.</summary>
+        /// <param name="node">the node</param>
+        /// <param name="cssContext">the CSS context (RootFontSize, etc.)</param>
+        /// <returns>the map containing the resolved styles that are defined in the body of the element</returns>
+        public virtual IDictionary<String, String> ResolveNativeStyles(INode node, AbstractCssContext cssContext) {
+            IDictionary<String, String> styles = new Dictionary<String, String>();
+            // Load in from collected style sheets
+            IList<CssDeclaration> styleSheetDeclarations = css.GetCssDeclarations(node, MediaDeviceDescription.CreateDefault
+                ());
+            foreach (CssDeclaration ssd in styleSheetDeclarations) {
+                styles.Put(ssd.GetProperty(), ssd.GetExpression());
+            }
+            // Load in attributes declarations
+            if (node is IElementNode) {
+                IElementNode eNode = (IElementNode)node;
+                foreach (IAttribute attr in eNode.GetAttributes()) {
+                    ProcessAttribute(attr, styles);
                 }
             }
             return styles;
@@ -194,14 +202,13 @@ namespace iText.Svg.Css.Impl {
                             ()[0] is ITextNode)) {
                             String styleData;
                             if (currentNode.ChildNodes()[0] is IDataNode) {
-                                // TODO (RND-865)
                                 styleData = ((IDataNode)currentNode.ChildNodes()[0]).GetWholeData();
                             }
                             else {
                                 styleData = ((ITextNode)currentNode.ChildNodes()[0]).WholeText();
                             }
                             CssStyleSheet styleSheet = CssStyleSheetParser.Parse(styleData);
-                            //TODO(RND-863): media query wrap
+                            //TODO (DEVSIX-2263): media query wrap
                             //styleSheet = wrapStyleSheetInMediaQueryIfNecessary(headChildElement, styleSheet);
                             this.css.AppendCssStyleSheet(styleSheet);
                         }
@@ -250,8 +257,7 @@ namespace iText.Svg.Css.Impl {
 
         /// <summary>
         /// Collects fonts from a
-        /// <see cref="iText.StyledXmlParser.Css.CssStatement"/>
-        /// .
+        /// <see cref="iText.StyledXmlParser.Css.CssStatement"/>.
         /// </summary>
         /// <param name="cssStatement">the CSS statement</param>
         private void CollectFonts(CssStatement cssStatement) {
@@ -268,9 +274,9 @@ namespace iText.Svg.Css.Impl {
         }
 
         private void ProcessAttribute(IAttribute attr, IDictionary<String, String> styles) {
+            //Style attribute needs to be parsed further
             switch (attr.GetKey()) {
                 case SvgConstants.Attributes.STYLE: {
-                    //Style attribute needs to be parsed further
                     IDictionary<String, String> parsed = ParseStylesFromStyleAttribute(attr.GetValue());
                     foreach (KeyValuePair<String, String> style in parsed) {
                         styles.Put(style.Key, style.Value);

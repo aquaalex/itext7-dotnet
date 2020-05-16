@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -60,8 +60,7 @@ namespace iText.Layout.Element {
     /// It is a
     /// <see cref="BlockElement{T}"/>
     /// which essentially acts as a container for
-    /// <see cref="ILeafElement">leaf elements</see>
-    /// .
+    /// <see cref="ILeafElement">leaf elements</see>.
     /// </remarks>
     public class Paragraph : BlockElement<iText.Layout.Element.Paragraph> {
         protected internal DefaultAccessibilityProperties tagProperties;
@@ -119,8 +118,11 @@ namespace iText.Layout.Element {
         /// <see cref="System.Collections.IList{E}"/>
         /// of layout elements to the Paragraph.
         /// </summary>
-        /// 
-        /// 
+        /// <param name="elements">the content to be added</param>
+        /// <typeparam name="T2">
+        /// any
+        /// <see cref="ILeafElement"/>
+        /// </typeparam>
         /// <returns>this Paragraph</returns>
         public virtual iText.Layout.Element.Paragraph AddAll<T2>(IList<T2> elements)
             where T2 : ILeafElement {
@@ -208,16 +210,51 @@ namespace iText.Layout.Element {
 
         /// <summary>
         /// Sets the indent value for the first line of the
-        /// <see cref="Paragraph"/>
-        /// .
+        /// <see cref="Paragraph"/>.
         /// </summary>
         /// <param name="indent">
         /// the indent value that must be applied to the first line of
-        /// the Paragraph, as a <code>float</code>
+        /// the Paragraph, as a <c>float</c>
         /// </param>
         /// <returns>this Paragraph</returns>
         public virtual iText.Layout.Element.Paragraph SetFirstLineIndent(float indent) {
             SetProperty(Property.FIRST_LINE_INDENT, indent);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets orphans restriction on a
+        /// <see cref="Paragraph"/>.
+        /// </summary>
+        /// <param name="orphansControl">
+        /// an instance of
+        /// <see cref="iText.Layout.Properties.ParagraphOrphansControl"/>.
+        /// </param>
+        /// <returns>
+        /// this
+        /// <see cref="Paragraph"/>
+        /// instance.
+        /// </returns>
+        public virtual iText.Layout.Element.Paragraph SetOrphansControl(ParagraphOrphansControl orphansControl) {
+            SetProperty(Property.ORPHANS_CONTROL, orphansControl);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets widows restriction on a
+        /// <see cref="Paragraph"/>.
+        /// </summary>
+        /// <param name="widowsControl">
+        /// an instance of
+        /// <see cref="iText.Layout.Properties.ParagraphWidowsControl"/>.
+        /// </param>
+        /// <returns>
+        /// this
+        /// <see cref="Paragraph"/>
+        /// instance.
+        /// </returns>
+        public virtual iText.Layout.Element.Paragraph SetWidowsControl(ParagraphWidowsControl widowsControl) {
+            SetProperty(Property.WIDOWS_CONTROL, widowsControl);
             return this;
         }
 

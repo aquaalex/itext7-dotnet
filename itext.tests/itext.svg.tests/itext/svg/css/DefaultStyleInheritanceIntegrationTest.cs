@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -58,34 +58,26 @@ namespace iText.Svg.Css {
         }
 
         //Css inheritance
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleGroupInheritanceTest() {
-            ConvertAndCompareVisually(sourceFolder, destinationFolder, "simpleGroupInheritance");
+            ConvertAndCompare(sourceFolder, destinationFolder, "simpleGroupInheritance");
         }
 
         //Inheritance in use tags
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void UseFillInheritanceTest() {
-            ConvertAndCompareVisually(sourceFolder, destinationFolder, "useFillInheritance");
+            ConvertAndCompare(sourceFolder, destinationFolder, "useFillInheritance");
         }
 
         //Inheritance and g-tags
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void GroupInheritanceTest() {
-            ConvertAndCompareVisually(sourceFolder, destinationFolder, "groupInheritance");
+            ConvertAndCompare(sourceFolder, destinationFolder, "groupInheritance");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void UseInheritanceNotOverridingTest() {
-            ConvertAndCompareVisually(sourceFolder, destinationFolder, "useInheritanceNotOverriding");
+            ConvertAndCompare(sourceFolder, destinationFolder, "useInheritanceNotOverriding");
         }
     }
 }

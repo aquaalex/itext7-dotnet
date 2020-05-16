@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -69,10 +69,6 @@ namespace iText.Signatures.Testutils.Builder {
             this.tsaPrivateKey = tsaPrivateKey;
         }
 
-        /// <exception cref="Org.BouncyCastle.Operator.OperatorCreationException"/>
-        /// <exception cref="Org.BouncyCastle.Tsp.TSPException"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.Certificates.CertificateEncodingException"/>
         public virtual byte[] CreateTimeStampToken(TimeStampRequest request) {
             // just a more or less random oid of timestamp policy
             String policy = "1.3.6.1.4.1.45794.1.1";

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -101,14 +101,14 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Get an attribute's value by its key.</summary>
         /// <remarks>
         /// Get an attribute's value by its key.
-        /// <p>
-        /// To get an absolute URL from an attribute that may be a relative URL, prefix the key with <code><b>abs</b></code>,
+        /// <para />
+        /// To get an absolute URL from an attribute that may be a relative URL, prefix the key with <c><b>abs</b></c>,
         /// which is a shortcut to the
         /// <see cref="AbsUrl(System.String)"/>
         /// method.
-        /// </p>
+        /// <para />
         /// E.g.:
-        /// <blockquote><code>String url = a.attr("abs:href");</code></blockquote>
+        /// <blockquote><c>String url = a.attr("abs:href");</c></blockquote>
         /// </remarks>
         /// <param name="attributeKey">The attribute key.</param>
         /// <returns>The attribute, or empty string if not present (to avoid nulls).</returns>
@@ -197,27 +197,27 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             private readonly String baseUri;
         }
 
-        /// <summary>Get an absolute URL from a URL attribute that may be relative (i.e.</summary>
+        /// <summary>
+        /// Get an absolute URL from a URL attribute that may be relative (i.e. an <c>&lt;a href&gt;</c> or
+        /// <c>&lt;img src&gt;</c>).
+        /// </summary>
         /// <remarks>
-        /// Get an absolute URL from a URL attribute that may be relative (i.e. an <code>&lt;a href&gt;</code> or
-        /// <code>&lt;img src&gt;</code>).
-        /// <p>
-        /// E.g.: <code>String absUrl = linkEl.absUrl("href");</code>
-        /// </p>
-        /// <p>
+        /// Get an absolute URL from a URL attribute that may be relative (i.e. an <c>&lt;a href&gt;</c> or
+        /// <c>&lt;img src&gt;</c>).
+        /// <para />
+        /// E.g.: <c>String absUrl = linkEl.absUrl("href");</c>
+        /// <para />
         /// If the attribute value is already absolute (i.e. it starts with a protocol, like
-        /// <code>http://</code> or <code>https://</code> etc), and it successfully parses as a URL, the attribute is
+        /// <c>http://</c> or <c>https://</c> etc), and it successfully parses as a URL, the attribute is
         /// returned directly. Otherwise, it is treated as a URL relative to the element's
         /// <see cref="baseUri"/>
         /// , and made
         /// absolute using that.
-        /// </p>
-        /// <p>
+        /// <para />
         /// As an alternate, you can use the
         /// <see cref="Attr(System.String)"/>
-        /// method with the <code>abs:</code> prefix, e.g.:
-        /// <code>String absUrl = linkEl.attr("abs:href");</code>
-        /// </p>
+        /// method with the <c>abs:</c> prefix, e.g.:
+        /// <c>String absUrl = linkEl.attr("abs:href");</c>
         /// </remarks>
         /// <param name="attributeKey">The attribute key</param>
         /// <returns>
@@ -320,8 +320,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             parentNode.RemoveChild(this);
         }
 
-        /// <summary>Insert the specified HTML into the DOM before this node (i.e.</summary>
-        /// <remarks>Insert the specified HTML into the DOM before this node (i.e. as a preceding sibling).</remarks>
+        /// <summary>Insert the specified HTML into the DOM before this node (i.e. as a preceding sibling).</summary>
         /// <param name="html">HTML to add before this node</param>
         /// <returns>this node, for chaining</returns>
         /// <seealso cref="After(System.String)"/>
@@ -330,8 +329,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             return this;
         }
 
-        /// <summary>Insert the specified node into the DOM before this node (i.e.</summary>
-        /// <remarks>Insert the specified node into the DOM before this node (i.e. as a preceding sibling).</remarks>
+        /// <summary>Insert the specified node into the DOM before this node (i.e. as a preceding sibling).</summary>
         /// <param name="node">to add before this node</param>
         /// <returns>this node, for chaining</returns>
         /// <seealso cref="After(Node)"/>
@@ -342,8 +340,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             return this;
         }
 
-        /// <summary>Insert the specified HTML into the DOM after this node (i.e.</summary>
-        /// <remarks>Insert the specified HTML into the DOM after this node (i.e. as a following sibling).</remarks>
+        /// <summary>Insert the specified HTML into the DOM after this node (i.e. as a following sibling).</summary>
         /// <param name="html">HTML to add after this node</param>
         /// <returns>this node, for chaining</returns>
         /// <seealso cref="Before(System.String)"/>
@@ -352,8 +349,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             return this;
         }
 
-        /// <summary>Insert the specified node into the DOM after this node (i.e.</summary>
-        /// <remarks>Insert the specified node into the DOM after this node (i.e. as a following sibling).</remarks>
+        /// <summary>Insert the specified node into the DOM after this node (i.e. as a following sibling).</summary>
         /// <param name="node">to add after this node</param>
         /// <returns>this node, for chaining</returns>
         /// <seealso cref="Before(Node)"/>
@@ -411,20 +407,19 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <remarks>
         /// Removes this node from the DOM, and moves its children up into the node's parent. This has the effect of dropping
         /// the node but keeping its children.
-        /// <p>
+        /// <para />
         /// For example, with the input html:
-        /// </p>
-        /// <p>
+        /// <para />
         /// <c>&lt;div&gt;One &lt;span&gt;Two &lt;b&gt;Three&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;</c>
-        /// </p>
+        /// <para />
         /// Calling
         /// <c>element.unwrap()</c>
         /// on the
         /// <c>span</c>
         /// element will result in the html:
-        /// <p>
+        /// <para />
         /// <c>&lt;div&gt;One Two &lt;b&gt;Three&lt;/b&gt;&lt;/div&gt;</c>
-        /// </p>
+        /// <para />
         /// and the
         /// <c>"Two "</c>
         /// 
@@ -631,16 +626,13 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
 
         /// <summary>Get the outer HTML of this node.</summary>
         /// <param name="accum">accumulator to place HTML into</param>
-        /// <exception cref="System.IO.IOException">if appending to the given accumulator fails.</exception>
         internal abstract void OuterHtmlHead(StringBuilder accum, int depth, OutputSettings @out);
 
-        /// <exception cref="System.IO.IOException"/>
         internal abstract void OuterHtmlTail(StringBuilder accum, int depth, OutputSettings @out);
 
         /// <summary>
         /// Write this node and its children to the given
-        /// <see cref="System.Text.StringBuilder"/>
-        /// .
+        /// <see cref="System.Text.StringBuilder"/>.
         /// </summary>
         /// <param name="appendable">
         /// the
@@ -661,7 +653,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             return OuterHtml();
         }
 
-        /// <exception cref="System.IO.IOException"/>
         protected internal virtual void Indent(StringBuilder accum, int depth, OutputSettings @out) {
             accum.Append("\n").Append(iText.StyledXmlParser.Jsoup.Helper.StringUtil.Padding(depth * @out.IndentAmount(
                 )));
@@ -698,10 +689,9 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// Create a stand-alone, deep copy of this node, and all of its children. The cloned node will have no siblings or
         /// parent node. As a stand-alone object, any changes made to the clone or any of its children will not impact the
         /// original node.
-        /// <p>
+        /// <para />
         /// The cloned node may be adopted into another Document or node structure using
-        /// <see cref="Element.AppendChild(Node)"/>
-        /// .
+        /// <see cref="Element.AppendChild(Node)"/>.
         /// </remarks>
         /// <returns>stand-alone cloned node</returns>
         public virtual Object Clone() {

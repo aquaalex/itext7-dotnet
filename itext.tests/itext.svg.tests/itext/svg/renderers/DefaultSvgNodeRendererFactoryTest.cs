@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -48,9 +48,11 @@ using iText.Svg.Dummy.Factories;
 using iText.Svg.Dummy.Renderers.Impl;
 using iText.Svg.Exceptions;
 using iText.Svg.Renderers.Factories;
+using iText.Test;
+using iText.Test.Attributes;
 
 namespace iText.Svg.Renderers {
-    public class DefaultSvgNodeRendererFactoryTest {
+    public class DefaultSvgNodeRendererFactoryTest : ExtendedITextTest {
         private ISvgNodeRendererFactory fact;
 
         [NUnit.Framework.SetUp]
@@ -59,6 +61,7 @@ namespace iText.Svg.Renderers {
         }
 
         [NUnit.Framework.Test]
+        [LogMessage(SvgLogMessageConstant.UNMAPPEDTAG)]
         public virtual void NonExistingTagTest() {
             iText.StyledXmlParser.Jsoup.Nodes.Element nonExistingElement = new iText.StyledXmlParser.Jsoup.Nodes.Element
                 (iText.StyledXmlParser.Jsoup.Parser.Tag.ValueOf("notAnExistingTag"), "");
@@ -78,7 +81,6 @@ namespace iText.Svg.Renderers {
 ;
         }
 
-        /// <exception cref="System.MissingMethodException"/>
         [NUnit.Framework.Test]
         public virtual void ProtectedConstructorInnerTest() {
             NUnit.Framework.Assert.That(() =>  {
@@ -108,7 +110,6 @@ namespace iText.Svg.Renderers {
 ;
         }
 
-        /// <exception cref="System.MissingMethodException"/>
         [NUnit.Framework.Test]
         public virtual void ArgumentedConstructorInnerTest() {
             NUnit.Framework.Assert.That(() =>  {

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -67,7 +67,6 @@ namespace iText.IO.Util {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         public static Stream OpenStream(Uri url) {
             Stream isp;
             if (url.IsFile) {
@@ -134,6 +133,16 @@ namespace iText.IO.Util {
         public static String GetFileUriString(String filename)
         {
             return new FileInfo(filename).FullName;
+        }
+        
+        /// <summary>
+        /// This method gets normalized uri string from a file.
+        /// </summary>
+        /// <param name="filename">a given filename</param>
+        /// <returns>a normalized uri string</returns>
+        public static String GetNormalizedFileUriString(String filename)
+        {
+            return "file://" + UrlUtil.ToNormalizedURI(filename).AbsolutePath;
         }
     }
 }

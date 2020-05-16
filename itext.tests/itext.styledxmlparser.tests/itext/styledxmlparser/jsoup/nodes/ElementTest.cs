@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -45,11 +45,12 @@ using System.Collections.Generic;
 using iText.IO.Util;
 using iText.StyledXmlParser.Jsoup;
 using iText.StyledXmlParser.Jsoup.Select;
+using iText.Test;
 
 namespace iText.StyledXmlParser.Jsoup.Nodes {
     /// <summary>Tests for Element (DOM stuff mostly).</summary>
     /// <author>Jonathan Hedley</author>
-    public class ElementTest {
+    public class ElementTest : ExtendedITextTest {
         private String reference = "<div id=div1><p>Hello</p><p>Another <b>element</b></p><div id=div2><img src=foo.png></div></div>";
 
         [NUnit.Framework.Test]

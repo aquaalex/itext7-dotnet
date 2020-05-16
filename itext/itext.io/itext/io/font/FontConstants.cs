@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -51,6 +51,7 @@ namespace iText.IO.Font {
     /// </summary>
     [System.ObsoleteAttribute(@"Use constants from com.itextpdf.io.font.constants.")]
     public class FontConstants {
+        //-Font styles------------------------------------------------------------------------------------------------------
         /// <summary>Undefined font style.</summary>
         [System.ObsoleteAttribute(@"use iText.IO.Font.Constants.FontStyles.UNDEFINED instead.")]
         public const int UNDEFINED = -1;
@@ -71,6 +72,7 @@ namespace iText.IO.Font {
         [System.ObsoleteAttribute(@"use iText.IO.Font.Constants.FontStyles.BOLDITALIC instead.")]
         public const int BOLDITALIC = BOLD | ITALIC;
 
+        //-Default fonts----------------------------------------------------------------------------------------------------
         /// <summary>This is a possible value of a base 14 type 1 font</summary>
         [System.ObsoleteAttribute(@"use iText.IO.Font.Constants.StandardFonts.COURIER instead.")]
         public const String COURIER = "Courier";
@@ -126,7 +128,5 @@ namespace iText.IO.Font {
         /// <summary>This is a possible value of a base 14 type 1 font</summary>
         [System.ObsoleteAttribute(@"use iText.IO.Font.Constants.StandardFonts.ZAPFDINGBATS instead.")]
         public const String ZAPFDINGBATS = "ZapfDingbats";
-        //-Font styles------------------------------------------------------------------------------------------------------
-        //-Default fonts----------------------------------------------------------------------------------------------------
     }
 }

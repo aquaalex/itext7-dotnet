@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -63,15 +63,14 @@ namespace iText.Forms {
 
         [NUnit.Framework.OneTimeSetUp]
         public static void BeforeClass() {
-            ITextTest.CreateOrClearDestinationFolder(destinationFolder);
+            CreateOrClearDestinationFolder(destinationFolder);
         }
 
+        // Custom entry in Info dictionary is used because standard entried are gone into metadata in PDF 2.0
         internal const String customInfoEntryKey = "Custom";
 
         internal const String customInfoEntryValue = "String";
 
-        // Custom entry in Info dictionary is used because standard entried are gone into metadata in PDF 2.0
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void EncryptedDocumentWithFormFields() {
             PdfReader reader = new PdfReader(sourceFolder + "encryptedDocumentWithFormFields.pdf", new ReaderProperties
@@ -82,9 +81,6 @@ namespace iText.Forms {
             pdfDocument.Close();
         }
 
-        /// <exception cref="System.Exception"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="iText.Kernel.XMP.XMPException"/>
         [NUnit.Framework.Test]
         public virtual void EncryptAes256Pdf2PermissionsTest01() {
             String filename = "encryptAes256Pdf2PermissionsTest01.pdf";
@@ -114,9 +110,6 @@ namespace iText.Forms {
             }
         }
 
-        /// <exception cref="System.Exception"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="iText.Kernel.XMP.XMPException"/>
         [NUnit.Framework.Test]
         public virtual void EncryptAes256Pdf2PermissionsTest02() {
             String filename = "encryptAes256Pdf2PermissionsTest02.pdf";

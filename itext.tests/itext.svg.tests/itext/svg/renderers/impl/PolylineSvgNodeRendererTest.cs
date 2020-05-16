@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -54,7 +54,7 @@ using iText.Svg.Renderers;
 using iText.Test;
 
 namespace iText.Svg.Renderers.Impl {
-    public class PolylineSvgNodeRendererTest {
+    public class PolylineSvgNodeRendererTest : SvgIntegrationTest {
         private static readonly String sourceFolder = iText.Test.TestUtil.GetParentProjectDirectory(NUnit.Framework.TestContext
             .CurrentContext.TestDirectory) + "/resources/itext/svg/renderers/impl/PolylineSvgNodeRendererTest/";
 
@@ -66,8 +66,6 @@ namespace iText.Svg.Renderers.Impl {
             ITextTest.CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PolylineRendererTest() {
             String filename = "polylineRendererTest.pdf";
@@ -122,8 +120,6 @@ namespace iText.Svg.Renderers.Impl {
 ;
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PolyLineEmptyPointsListTest() {
             String filename = "polyLineEmptyPointsListTest.pdf";
@@ -165,6 +161,11 @@ namespace iText.Svg.Renderers.Impl {
             for (int x = 0; x < attributePoints.Count; x++) {
                 NUnit.Framework.Assert.AreEqual(expectedPoints[x], attributePoints[x]);
             }
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ElementDimensionExceedsViewboxBoundaryTest() {
+            ConvertAndCompare(sourceFolder, destinationFolder, "elementDimensionExceedsViewboxBoundary");
         }
     }
 }

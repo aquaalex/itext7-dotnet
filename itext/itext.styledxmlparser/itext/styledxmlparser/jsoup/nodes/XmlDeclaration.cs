@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,13 +52,13 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
 
         private readonly bool isProcessingInstruction;
 
+        // <! if true, <? if false, declaration (and last data char should be ?)
         /// <summary>Create a new XML declaration</summary>
         /// <param name="name">of declaration</param>
         /// <param name="baseUri">base uri</param>
         /// <param name="isProcessingInstruction">is processing instruction</param>
         public XmlDeclaration(String name, String baseUri, bool isProcessingInstruction)
             : base(baseUri) {
-            // <! if true, <? if false, declaration (and last data char should be ?)
             Validate.NotNull(name);
             this.name = name;
             this.isProcessingInstruction = isProcessingInstruction;
@@ -81,7 +81,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         }
 
         // attr html starts with a " "
-        /// <exception cref="System.IO.IOException"/>
         internal override void OuterHtmlHead(StringBuilder accum, int depth, OutputSettings @out) {
             accum.Append("<").Append(isProcessingInstruction ? "!" : "?").Append(name);
             attributes.Html(accum, @out);

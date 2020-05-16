@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,7 +52,7 @@ namespace iText.Svg.Renderers.Impl {
     /// <summary>Responsible for drawing Images to the canvas.</summary>
     /// <remarks>
     /// Responsible for drawing Images to the canvas.
-    /// Referenced SVG images aren't supported yet. TODO RND-984
+    /// Referenced SVG images aren't supported yet. TODO DEVSIX-2277
     /// </remarks>
     public class ImageSvgNodeRenderer : AbstractSvgNodeRenderer {
         public override ISvgNodeRenderer CreateDeepCopy() {

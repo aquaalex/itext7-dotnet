@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -141,10 +141,6 @@ namespace iText.Signatures {
         /// <param name="issuerCert">certificate of the issues</param>
         /// <param name="serialNumber">serial number</param>
         /// <returns>an OCSP request</returns>
-        /// <exception cref="Org.BouncyCastle.Ocsp.OcspException"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Operator.OperatorException"/>
-        /// <exception cref="Org.BouncyCastle.Security.Certificates.CertificateEncodingException"/>
         private static OcspReq GenerateOCSPRequest(X509Certificate issuerCert, BigInteger serialNumber) {
             //Add provider BC
             // Generate the id for the certificate we are looking for
@@ -154,10 +150,6 @@ namespace iText.Signatures {
             return SignUtils.GenerateOcspRequestWithNonce(id);
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="Org.BouncyCastle.Ocsp.OcspException"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Operator.OperatorException"/>
         private OcspResp GetOcspResponse(X509Certificate checkCert, X509Certificate rootCert, String url) {
             if (checkCert == null || rootCert == null) {
                 return null;

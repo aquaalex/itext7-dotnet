@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -48,10 +48,15 @@ namespace iText.Kernel.Log {
     /// Factory that can be registered in
     /// <see cref="CounterManager"/>
     /// and creates a counter for every reader or writer class.
-    /// <p>
+    /// </summary>
+    /// <remarks>
+    /// Factory that can be registered in
+    /// <see cref="CounterManager"/>
+    /// and creates a counter for every reader or writer class.
+    /// <para />
     /// You can implement your own counter factory and register it like this:
-    /// <code>CounterManager.getInstance().registerCounter(new SystemOutCounterFactory());</code>
-    /// <p>
+    /// <c>CounterManager.getInstance().register(new SystemOutCounterFactory());</c>
+    /// <para />
     /// <see cref="SystemOutCounterFactory"/>
     /// is just an example of
     /// <see cref="ICounterFactory"/>
@@ -60,9 +65,9 @@ namespace iText.Kernel.Log {
     /// <see cref="SystemOutCounter"/>
     /// that writes info about files being read and written to the
     /// <see cref="System.Console.Out"/>
-    /// <p>
+    /// <para />
     /// This functionality can be used to create metrics in a SaaS context.
-    /// </summary>
+    /// </remarks>
     [System.ObsoleteAttribute(@"will be removed in next major release, please use iText.Kernel.Counter.IEventCounterFactory instead."
         )]
     public interface ICounterFactory {

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,32 +41,37 @@ For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
+using iText.Layout.Font;
 using iText.StyledXmlParser.Node;
 using iText.StyledXmlParser.Node.Impl.Jsoup.Node;
+using iText.StyledXmlParser.Resolver.Resource;
 using iText.Svg.Dummy.Processors.Impl;
 using iText.Svg.Dummy.Renderers.Impl;
 using iText.Svg.Exceptions;
+using iText.Svg.Processors;
+using iText.Svg.Processors.Impl;
 using iText.Svg.Renderers;
 using iText.Svg.Renderers.Impl;
+using iText.Test;
 
 namespace iText.Svg.Converter {
-    public class SvgConverterUnitTest {
+    public class SvgConverterUnitTest : ExtendedITextTest {
+        // we cannot easily mock the PdfDocument, so we make do with as close to unit testing as we can
         private PdfDocument doc;
 
         private readonly String content = "<svg width=\"10\" height=\"10\"/>";
 
         private Stream @is;
 
-        // we cannot easily mock the PdfDocument, so we make do with as close to unit testing as we can
         [NUnit.Framework.SetUp]
         public virtual void Setup() {
             doc = new PdfDocument(new PdfWriter(new MemoryStream()));
             doc.AddNewPage();
-            @is = new MemoryStream(content.GetBytes(Encoding.UTF8));
+            @is = new MemoryStream(content.GetBytes(System.Text.Encoding.UTF8));
         }
 
         [NUnit.Framework.TearDown]
@@ -95,14 +100,12 @@ namespace iText.Svg.Converter {
             TestResourceCreated(doc, 1);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void DrawStreamOnDocumentCreatesResourceTest() {
             SvgConverter.DrawOnDocument(@is, doc, 1);
             TestResourceCreated(doc, 1);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void DrawStreamOnDocumentWithPropsCreatesResourceTest() {
             SvgConverter.DrawOnDocument(@is, doc, 1, new DummySvgConverterProperties());
@@ -125,7 +128,6 @@ namespace iText.Svg.Converter {
             TestResourceCreated(doc, 2);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void DrawStreamOnPageCreatesResourceTest() {
             PdfPage page = doc.AddNewPage();
@@ -134,7 +136,6 @@ namespace iText.Svg.Converter {
             TestResourceCreated(doc, 2);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void DrawStreamOnPageWithPropsCreatesResourceTest() {
             PdfPage page = doc.AddNewPage();
@@ -161,7 +162,6 @@ namespace iText.Svg.Converter {
             TestResourceCreated(doc, 2);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void DrawStreamOnCanvasCreatesResourceTest() {
             PdfPage page = doc.AddNewPage();
@@ -171,7 +171,6 @@ namespace iText.Svg.Converter {
             TestResourceCreated(doc, 2);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void DrawStreamOnCanvasWithPropsCreatesResourceTest() {
             PdfPage page = doc.AddNewPage();
@@ -193,14 +192,12 @@ namespace iText.Svg.Converter {
             NUnit.Framework.Assert.AreEqual(0, doc.GetLastPage().GetResources().GetPdfObject().Size());
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ConvertStreamToXObjectCreatesNoResourceTest() {
             SvgConverter.ConvertToXObject(@is, doc);
             NUnit.Framework.Assert.AreEqual(0, doc.GetLastPage().GetResources().GetPdfObject().Size());
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ConvertStreamToXObjectWithPropsCreatesNoResourceTest() {
             SvgConverter.ConvertToXObject(@is, doc, new DummySvgConverterProperties());
@@ -222,7 +219,7 @@ namespace iText.Svg.Converter {
         public virtual void ProcessNode() {
             INode svg = new JsoupElementNode(new iText.StyledXmlParser.Jsoup.Nodes.Element(iText.StyledXmlParser.Jsoup.Parser.Tag
                 .ValueOf("svg"), ""));
-            IBranchSvgNodeRenderer node = (IBranchSvgNodeRenderer)SvgConverter.Process(svg).GetRootRenderer();
+            IBranchSvgNodeRenderer node = (IBranchSvgNodeRenderer)SvgConverter.Process(svg, null).GetRootRenderer();
             NUnit.Framework.Assert.IsTrue(node is SvgTagSvgNodeRenderer);
             NUnit.Framework.Assert.AreEqual(0, node.GetChildren().Count);
             NUnit.Framework.Assert.IsNull(node.GetParent());
@@ -237,7 +234,6 @@ namespace iText.Svg.Converter {
             NUnit.Framework.Assert.AreEqual(0, node.ChildNodes().Count);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ParseStream() {
             INode actual = SvgConverter.Parse(@is);
@@ -247,7 +243,6 @@ namespace iText.Svg.Converter {
             NUnit.Framework.Assert.AreEqual(0, node.ChildNodes().Count);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ParseStreamWithProps() {
             INode actual = SvgConverter.Parse(@is, new DummySvgConverterProperties());
@@ -257,10 +252,9 @@ namespace iText.Svg.Converter {
             NUnit.Framework.Assert.AreEqual(0, node.ChildNodes().Count);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ParseStreamErrorEncodingTooBig() {
-            @is = new MemoryStream(content.GetBytes(Encoding.Unicode));
+            @is = new MemoryStream(content.GetBytes(System.Text.Encoding.Unicode));
             INode actual = SvgConverter.Parse(@is, new DummySvgConverterProperties());
             // defaults to UTF-8
             NUnit.Framework.Assert.AreEqual(1, actual.ChildNodes().Count);
@@ -274,10 +268,9 @@ namespace iText.Svg.Converter {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ParseStreamWithOtherEncoding() {
-            @is = new MemoryStream(content.GetBytes(Encoding.Unicode));
+            @is = new MemoryStream(content.GetBytes(System.Text.Encoding.Unicode));
             INode actual = SvgConverter.Parse(@is, new SvgConverterUnitTest.OtherCharsetDummySvgConverterProperties());
             NUnit.Framework.Assert.AreEqual(1, actual.ChildNodes().Count);
             JsoupElementNode node = (JsoupElementNode)actual.ChildNodes()[0];
@@ -285,7 +278,6 @@ namespace iText.Svg.Converter {
             NUnit.Framework.Assert.AreEqual(0, node.ChildNodes().Count);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void ParseStreamErrorOtherCharset() {
             INode actual = SvgConverter.Parse(@is, new SvgConverterUnitTest.OtherCharsetDummySvgConverterProperties());
@@ -301,6 +293,61 @@ namespace iText.Svg.Converter {
             }
             , NUnit.Framework.Throws.InstanceOf<SvgProcessingException>().With.Message.EqualTo(SvgLogMessageConstant.PARAMETER_CANNOT_BE_NULL))
 ;
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ResourceResolverInstanceTest() {
+            DummySvgConverterProperties properties = new DummySvgConverterProperties();
+            SvgProcessorContext context = new SvgProcessorContext(properties);
+            ResourceResolver initialResolver = context.GetResourceResolver();
+            SvgProcessorResult svgProcessorResult = new SvgProcessorResult(new Dictionary<String, ISvgNodeRenderer>(), 
+                new SvgTagSvgNodeRenderer(), context);
+            ResourceResolver currentResolver = SvgConverter.GetResourceResolver(svgProcessorResult, properties);
+            NUnit.Framework.Assert.AreEqual(initialResolver, currentResolver);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ResourceResolverInstanceCustomResolverTest() {
+            //TODO remove in version 7.2
+            DummySvgConverterProperties properties = new DummySvgConverterProperties();
+            SvgConverterUnitTest.TestSvgProcessorResult testSvgProcessorResult = new SvgConverterUnitTest.TestSvgProcessorResult
+                (this);
+            ResourceResolver currentResolver = SvgConverter.GetResourceResolver(testSvgProcessorResult, properties);
+            NUnit.Framework.Assert.IsNotNull(currentResolver);
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ResourceResolverInstanceCustomResolverNullPropsTest() {
+            //TODO remove in version 7.2
+            SvgConverterUnitTest.TestSvgProcessorResult testSvgProcessorResult = new SvgConverterUnitTest.TestSvgProcessorResult
+                (this);
+            ResourceResolver currentResolver = SvgConverter.GetResourceResolver(testSvgProcessorResult, null);
+            NUnit.Framework.Assert.IsNotNull(currentResolver);
+        }
+
+        //TODO remove in version 7.2
+        internal class TestSvgProcessorResult : ISvgProcessorResult {
+            public TestSvgProcessorResult(SvgConverterUnitTest _enclosing) {
+                this._enclosing = _enclosing;
+            }
+
+            public virtual IDictionary<String, ISvgNodeRenderer> GetNamedObjects() {
+                return null;
+            }
+
+            public virtual ISvgNodeRenderer GetRootRenderer() {
+                return null;
+            }
+
+            public virtual FontProvider GetFontProvider() {
+                return null;
+            }
+
+            public virtual FontSet GetTempFonts() {
+                return null;
+            }
+
+            private readonly SvgConverterUnitTest _enclosing;
         }
     }
 }

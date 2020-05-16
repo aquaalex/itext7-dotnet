@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -276,9 +276,13 @@ namespace iText.StyledXmlParser.Css.Parse {
 
         /// <summary>Enumeration of the different token types.</summary>
         public enum TokenType {
+            /// <summary>The string type.</summary>
             STRING,
+            /// <summary>The function type.</summary>
             FUNCTION,
+            /// <summary>The comma type.</summary>
             COMMA,
+            /// <summary>Unknown type.</summary>
             UNKNOWN
         }
     }

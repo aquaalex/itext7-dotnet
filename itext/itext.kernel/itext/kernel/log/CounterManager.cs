@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -47,13 +47,17 @@ using System.Collections.Generic;
 namespace iText.Kernel.Log {
     /// <summary>
     /// Manager that works with
+    /// <see cref="ICounterFactory"/>.
+    /// </summary>
+    /// <remarks>
+    /// Manager that works with
     /// <see cref="ICounterFactory"/>
     /// . Create
     /// <see cref="ICounter"/>
     /// for each registered
     /// <see cref="ICounterFactory"/>
     /// and send corresponding events on document read and write.
-    /// <p>
+    /// <para />
     /// You can implement your own
     /// <see cref="ICounterFactory"/>
     /// and register them with
@@ -63,14 +67,14 @@ namespace iText.Kernel.Log {
     /// and register it with
     /// <see cref="SimpleCounterFactory"/>
     /// like this:
-    /// <code>CounterManager.getInstance().register(new SimpleCounterFactory(new SystemOutCounter());</code>
+    /// <c>CounterManager.getInstance().register(new SimpleCounterFactory(new SystemOutCounter());</c>
     /// <see cref="SystemOutCounter"/>
     /// is just an example of a
     /// <see cref="ICounter"/>
     /// implementation.
-    /// <p>
+    /// <para />
     /// This functionality can be used to create metrics in a SaaS context.
-    /// </summary>
+    /// </remarks>
     [System.ObsoleteAttribute(@"will be removed in next major release, please use iText.Kernel.Counter.EventCounterHandler instead."
         )]
     public class CounterManager {
@@ -84,11 +88,21 @@ namespace iText.Kernel.Log {
         }
 
         /// <summary>Returns the singleton instance of the factory.</summary>
+        /// <returns>
+        /// the
+        /// <see cref="CounterManager"/>
+        /// instance.
+        /// </returns>
         public static iText.Kernel.Log.CounterManager GetInstance() {
             return instance;
         }
 
         /// <summary>Returns a list of registered counters for specific class.</summary>
+        /// <param name="cls">the class for which registered counters are fetched.</param>
+        /// <returns>
+        /// list of registered
+        /// <see cref="ICounter"/>.
+        /// </returns>
         public virtual IList<ICounter> GetCounters(Type cls) {
             List<ICounter> result = new List<ICounter>();
             foreach (ICounterFactory factory in factories) {
@@ -102,9 +116,13 @@ namespace iText.Kernel.Log {
 
         /// <summary>
         /// Register new
+        /// <see cref="ICounterFactory"/>.
+        /// </summary>
+        /// <remarks>
+        /// Register new
         /// <see cref="ICounterFactory"/>
         /// . Does nothing if same factory was already registered.
-        /// </summary>
+        /// </remarks>
         /// <param name="factory">
         /// 
         /// <see cref="ICounterFactory"/>
@@ -118,9 +136,13 @@ namespace iText.Kernel.Log {
 
         /// <summary>
         /// Unregister specified
+        /// <see cref="ICounterFactory"/>.
+        /// </summary>
+        /// <remarks>
+        /// Unregister specified
         /// <see cref="ICounterFactory"/>
         /// . Does nothing if this factory wasn't registered first.
-        /// </summary>
+        /// </remarks>
         /// <param name="factory">
         /// 
         /// <see cref="ICounterFactory"/>

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -43,6 +43,7 @@ address: sales@itextpdf.com
 using System;
 using iText.Svg.Exceptions;
 using iText.Test;
+using iText.Test.Attributes;
 
 namespace iText.Svg.Renderers {
     public class FillTest : SvgIntegrationTest {
@@ -57,109 +58,87 @@ namespace iText.Svg.Renderers {
             ITextTest.CreateDestinationFolder(DESTINATION_FOLDER);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void NormalRectangleFillTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "normalRectangleFill");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "normalRectangleFill");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void MultipleNormalRectangleFillTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "multipleNormalRectangleFill");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "multipleNormalRectangleFill");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void NoRectangleFillColorTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "noRectangleFillColor");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "noRectangleFillColor");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void EoFillTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "eofill");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "eofill");
         }
 
-        /* This test should fail when RND-910 is resolved*/
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
+        /* This test should fail when DEVSIX-2251 is resolved*/
         [NUnit.Framework.Test]
         public virtual void EoFillTest01() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "eofill01");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "eofill01");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void EoFillTest02() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "eofill02");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "eofill02");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void EoFillTest03() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "eofill03");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "eofill03");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void MultipleObjectsTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "multipleObjectsTest");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "multipleObjectsTest");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void EoFillStrokeTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "eofillstroke");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "eofillstroke");
         }
 
-        /* This test should fail when RND-1031 is resolved*/
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
+        /* This test should fail when DEVSIX-2251 is resolved*/
         [NUnit.Framework.Test]
         public virtual void NonZeroFillTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "nonzerofill");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "nonzerofill");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void OpacityFillTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "opacityfill");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "opacityfill");
         }
 
-        /* This test should fail when RND-1108 is resolved*/
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void EofillUnsuportedAtributeTest() {
             NUnit.Framework.Assert.That(() =>  {
-                ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "eofillUnsuportedAtributeTest");
+                ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "eofillUnsuportedAtributeTest");
             }
             , NUnit.Framework.Throws.InstanceOf<SvgProcessingException>())
 ;
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PathVerticalLineFillTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "pathVerticalLineFillTest");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "pathVerticalLineFillTest");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PathHorizontalLineFillTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "pathHorizontalLineFillTest");
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "pathHorizontalLineFillTest");
+        }
+
+        [NUnit.Framework.Test]
+        [LogMessage(SvgLogMessageConstant.UNMAPPEDTAG)]
+        public virtual void InvalidUrlFillTest() {
+            //TODO update cmp file after DEVSIX-3365 will be fixed
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "invalidUrlFillTest");
         }
     }
 }

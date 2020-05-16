@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -62,6 +62,7 @@ namespace iText.StyledXmlParser.Css {
             FONT_ABSOLUTE_SIZE_KEYWORDS_VALUES = JavaCollectionsUtil.UnmodifiableMap(keywordValues);
         }
 
+        // properties
         /// <summary>The Constant BACKGROUND.</summary>
         public const String BACKGROUND = "background";
 
@@ -299,6 +300,9 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant OPACITY.</summary>
         public const String OPACITY = "opacity";
 
+        /// <summary>The Constant OPRPHANS.</summary>
+        public const String ORPHANS = "orphans";
+
         /// <summary>The Constant OUTLINE.</summary>
         public const String OUTLINE = "outline";
 
@@ -313,6 +317,9 @@ namespace iText.StyledXmlParser.Css {
 
         /// <summary>The Constant OVERFLOW_WRAP.</summary>
         public const String OVERFLOW_WRAP = "overflow-wrap";
+
+        /// <summary>The Constant OVERFLOW.</summary>
+        public const String OVERFLOW = "overflow";
 
         /// <summary>The Constant PADDING.</summary>
         public const String PADDING = "padding";
@@ -389,6 +396,9 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant WHITE_SPACE.</summary>
         public const String WHITE_SPACE = "white-space";
 
+        /// <summary>The Constant WIDOWS.</summary>
+        public const String WIDOWS = "widows";
+
         /// <summary>The Constant WIDTH.</summary>
         public const String WIDTH = "width";
 
@@ -404,6 +414,7 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant WRITING_MODE.</summary>
         public const String WRITING_MODE = "writing-mode";
 
+        // property values
         /// <summary>The Constant ALWAYS.</summary>
         public const String ALWAYS = "always";
 
@@ -464,6 +475,9 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant DECIMAL_LEADING_ZERO.</summary>
         public const String DECIMAL_LEADING_ZERO = "decimal-leading-zero";
 
+        /// <summary>The Constant DEG.</summary>
+        public const String DEG = "deg";
+
         /// <summary>The Constant DISC.</summary>
         public const String DISC = "disc";
 
@@ -478,6 +492,9 @@ namespace iText.StyledXmlParser.Css {
 
         /// <summary>The Constant GEORGIAN.</summary>
         public const String GEORGIAN = "georgian";
+
+        /// <summary>The Constant GRAD.</summary>
+        public const String GRAD = "grad";
 
         /// <summary>The Constant GROOVE.</summary>
         public const String GROOVE = "groove";
@@ -584,6 +601,9 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant PADDING_BOX.</summary>
         public const String PADDING_BOX = "padding-box";
 
+        /// <summary>The Constant RAD.</summary>
+        public const String RAD = "rad";
+
         /// <summary>The Constant REPEAT.</summary>
         public const String REPEAT = "repeat";
 
@@ -680,6 +700,9 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant UPPER_ROMAN.</summary>
         public const String UPPER_ROMAN = "upper-roman";
 
+        /// <summary>The Constant value VISIBLE.</summary>
+        public const String VISIBLE = "visible";
+
         /// <summary>The Constant X_LARGE.</summary>
         public const String X_LARGE = "x-large";
 
@@ -692,6 +715,7 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant XX_SMALL.</summary>
         public const String XX_SMALL = "xx-small";
 
+        // properties possible values
         /// <summary>The Constant BACKGROUND_SIZE_VALUES.</summary>
         public static readonly ICollection<String> BACKGROUND_SIZE_VALUES = JavaCollectionsUtil.UnmodifiableSet(new 
             HashSet<String>(JavaUtil.ArraysAsList(AUTO, COVER, CONTAIN)));
@@ -724,6 +748,12 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant FONT_ABSOLUTE_SIZE_KEYWORDS.</summary>
         public static readonly IDictionary<String, String> FONT_ABSOLUTE_SIZE_KEYWORDS_VALUES;
 
+        /// <summary>The Constant METRIC_MEASUREMENTS.</summary>
+        public static readonly String[] METRIC_MEASUREMENTS_VALUES = new String[] { CommonCssConstants.PX, CommonCssConstants
+            .IN, CommonCssConstants.CM, CommonCssConstants.MM, CommonCssConstants.PC, CommonCssConstants.PT, CommonCssConstants
+            .Q };
+
+        // pseudo-classes
         /// <summary>The Constant ACTIVE.</summary>
         public const String ACTIVE = "active";
 
@@ -817,6 +847,7 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant VISITED.</summary>
         public const String VISITED = "visited";
 
+        // units of measurement
         /// <summary>The Constant CM.</summary>
         public const String CM = "cm";
 
@@ -850,16 +881,11 @@ namespace iText.StyledXmlParser.Css {
         /// <summary>The Constant Q.</summary>
         public const String Q = "q";
 
+        // units of resolution
         /// <summary>The Constant DPCM.</summary>
         public const String DPCM = "dpcm";
 
         /// <summary>The Constant DPPX.</summary>
         public const String DPPX = "dppx";
-        // properties
-        // property values
-        // properties possible values
-        // pseudo-classes
-        // units of measurement
-        // units of resolution
     }
 }

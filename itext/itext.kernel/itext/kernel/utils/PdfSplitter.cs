@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -361,8 +361,8 @@ namespace iText.Kernel.Utils {
         private PageRange GetNextRange(int startPage, int endPage, long size) {
             PdfResourceCounter counter = new PdfResourceCounter(pdfDocument.GetTrailer());
             IDictionary<int, PdfObject> resources = counter.GetResources();
-            long lengthWithoutXref = counter.GetLength(null);
             // initialize with trailer length
+            long lengthWithoutXref = counter.GetLength(null);
             int currentPage = startPage;
             bool oversized = false;
             do {

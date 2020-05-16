@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -124,7 +124,6 @@ namespace iText.IO.Font.Cmap {
             return result;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         public virtual IDictionary<int, int?> CreateReverseMapping() {
             IDictionary<int, int?> result = new Dictionary<int, int?>();
             foreach (KeyValuePair<int, char[]> entry in byteMappings) {

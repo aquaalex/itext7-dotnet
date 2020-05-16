@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -47,20 +47,23 @@ using iText.IO.Util;
 namespace iText.Layout.Font {
     /// <summary>
     /// Ordered range for
-    /// <see cref="FontInfo.GetFontUnicodeRange()"/>
-    /// .
+    /// <see cref="FontInfo.GetFontUnicodeRange()"/>.
+    /// </summary>
+    /// <remarks>
+    /// Ordered range for
+    /// <see cref="FontInfo.GetFontUnicodeRange()"/>.
     /// To create a custom Range instance
     /// <see cref="RangeBuilder"/>
     /// shall be used.
-    /// </summary>
+    /// </remarks>
     public class Range {
+        //ordered sub-ranges
         private Range.SubRange[] ranges;
 
         private Range() {
         }
 
         internal Range(IList<Range.SubRange> ranges) {
-            //ordered sub-ranges
             if (ranges.Count == 0) {
                 throw new ArgumentException("Ranges shall not be empty");
             }
@@ -68,7 +71,8 @@ namespace iText.Layout.Font {
         }
 
         /// <summary>Binary search over ordered segments.</summary>
-        /// <param name="n"/>
+        /// <param name="n">numeric character reference based on the character's Unicode code point</param>
+        /// <returns>true if this Range contains the specified code point, otherwise false</returns>
         public virtual bool Contains(int n) {
             int low = 0;
             int high = ranges.Length - 1;

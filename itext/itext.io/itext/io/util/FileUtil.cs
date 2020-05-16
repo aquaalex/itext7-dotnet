@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -116,7 +116,6 @@ namespace iText.IO.Util {
             return null;
         }
 
-        /// <exception cref="System.ArgumentException"/>
         public static StreamWriter CreatePrintWriter(Stream output, String encoding) {
             return new StreamWriter(output, EncodingUtil.GetEncoding(encoding));
         }
@@ -134,6 +133,10 @@ namespace iText.IO.Util {
 
         public static FileStream GetFileOutputStream(FileInfo file) {
             return file.Open(FileMode.Create);
+        }
+        
+        public static FileStream GetInputStreamForFile(String path) {
+            return new FileStream(path, FileMode.Open, FileAccess.Read);
         }
 
         public static FileStream GetRandomAccessFile(FileInfo file) {

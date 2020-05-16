@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -90,9 +90,10 @@ namespace iText.Kernel.Counter {
         protected internal override void OnEvent(IEvent @event, IMetaInfo metaInfo) {
             if (count.IncrementAndGet() > repeatLevel) {
                 if (iText.Kernel.Version.IsAGPLVersion() || iText.Kernel.Version.IsExpired()) {
-                    String message = iText.IO.Util.JavaUtil.GetStringForBytes(message_1);
+                    String message = iText.IO.Util.JavaUtil.GetStringForBytes(message_1, iText.IO.Util.EncodingUtil.ISO_8859_1
+                        );
                     if (iText.Kernel.Version.IsExpired()) {
-                        message = iText.IO.Util.JavaUtil.GetStringForBytes(message_2);
+                        message = iText.IO.Util.JavaUtil.GetStringForBytes(message_2, iText.IO.Util.EncodingUtil.ISO_8859_1);
                     }
                     level++;
                     if (level == 1) {

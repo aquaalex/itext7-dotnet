@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -58,6 +58,12 @@ namespace iText.Pdfa {
     /// <see cref="iText.Kernel.Pdf.PdfDocument"/>
     /// and is in charge of creating files
     /// that comply with the PDF/A standard.
+    /// </summary>
+    /// <remarks>
+    /// This class extends
+    /// <see cref="iText.Kernel.Pdf.PdfDocument"/>
+    /// and is in charge of creating files
+    /// that comply with the PDF/A standard.
     /// Client code is still responsible for making sure the file is actually PDF/A
     /// compliant: multiple steps must be undertaken (depending on the
     /// <see cref="iText.Kernel.Pdf.PdfAConformanceLevel"/>
@@ -67,13 +73,18 @@ namespace iText.Pdfa {
     /// ,
     /// and thus refuse to output a PDF/A file if at any point the document does not
     /// adhere to the PDF/A guidelines specified by the
-    /// <see cref="iText.Kernel.Pdf.PdfAConformanceLevel"/>
-    /// .
-    /// </summary>
+    /// <see cref="iText.Kernel.Pdf.PdfAConformanceLevel"/>.
+    /// </remarks>
     public class PdfADocument : PdfDocument {
+        private static IPdfPageFactory pdfAPageFactory = new PdfAPageFactory();
+
         protected internal PdfAChecker checker;
 
-        /// <summary>Constructs a new PdfADocument for writing purposes, i.e.</summary>
+        private bool alreadyLoggedThatObjectFlushingWasNotPerformed = false;
+
+        private bool alreadyLoggedThatPageFlushingWasNotPerformed = false;
+
+        /// <summary>Constructs a new PdfADocument for writing purposes, i.e. from scratch.</summary>
         /// <remarks>
         /// Constructs a new PdfADocument for writing purposes, i.e. from scratch. A
         /// PDF/A file has a conformance level, and must have an explicit output
@@ -93,7 +104,7 @@ namespace iText.Pdfa {
             : this(writer, conformanceLevel, outputIntent, new DocumentProperties()) {
         }
 
-        /// <summary>Constructs a new PdfADocument for writing purposes, i.e.</summary>
+        /// <summary>Constructs a new PdfADocument for writing purposes, i.e. from scratch.</summary>
         /// <remarks>
         /// Constructs a new PdfADocument for writing purposes, i.e. from scratch. A
         /// PDF/A file has a conformance level, and must have an explicit output
@@ -229,8 +240,7 @@ namespace iText.Pdfa {
         /// <summary>
         /// Gets the PdfAConformanceLevel set in the constructor or in the metadata
         /// of the
-        /// <see cref="iText.Kernel.Pdf.PdfReader"/>
-        /// .
+        /// <see cref="iText.Kernel.Pdf.PdfReader"/>.
         /// </summary>
         /// <returns>
         /// a
@@ -238,6 +248,15 @@ namespace iText.Pdfa {
         /// </returns>
         public virtual PdfAConformanceLevel GetConformanceLevel() {
             return checker.GetConformanceLevel();
+        }
+
+        internal virtual void LogThatPdfAPageFlushingWasNotPerformed() {
+            if (!alreadyLoggedThatPageFlushingWasNotPerformed) {
+                alreadyLoggedThatPageFlushingWasNotPerformed = true;
+                // This log message will be printed once for one instance of the document.
+                LogManager.GetLogger(typeof(iText.Pdfa.PdfADocument)).Warn(PdfALogMessageConstant.PDFA_PAGE_FLUSHING_WAS_NOT_PERFORMED
+                    );
+            }
         }
 
         protected override void AddCustomMetadataExtensions(XMPMeta xmpMeta) {
@@ -274,16 +293,21 @@ namespace iText.Pdfa {
             checker.CheckDocument(catalog);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         protected override void FlushObject(PdfObject pdfObject, bool canBeInObjStm) {
             MarkObjectAsMustBeFlushed(pdfObject);
             if (isClosing || checker.ObjectIsChecked(pdfObject)) {
                 base.FlushObject(pdfObject, canBeInObjStm);
             }
+            else {
+                if (!alreadyLoggedThatObjectFlushingWasNotPerformed) {
+                    alreadyLoggedThatObjectFlushingWasNotPerformed = true;
+                    // This log message will be printed once for one instance of the document.
+                    LogManager.GetLogger(typeof(iText.Pdfa.PdfADocument)).Warn(PdfALogMessageConstant.PDFA_OBJECT_FLUSHING_WAS_NOT_PERFORMED
+                        );
+                }
+            }
         }
 
-        //suppress the call
-        //TODO log unsuccessful call
         protected override void FlushFonts() {
             foreach (PdfFont pdfFont in GetDocumentFonts()) {
                 checker.CheckFont(pdfFont);
@@ -317,6 +341,14 @@ namespace iText.Pdfa {
         [Obsolete]
         protected override IList<ICounter> GetCounters() {
             return CounterManager.GetInstance().GetCounters(typeof(iText.Pdfa.PdfADocument));
+        }
+
+        protected override IPdfPageFactory GetPageFactory() {
+            return pdfAPageFactory;
+        }
+
+        internal virtual bool IsClosing() {
+            return isClosing;
         }
 
         private static PdfVersion GetPdfVersionForPdfA(PdfAConformanceLevel conformanceLevel) {

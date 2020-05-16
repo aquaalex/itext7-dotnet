@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -167,6 +167,7 @@ namespace iText.Svg.Processors.Impl.Font {
             this.sources = new List<FontFace.FontFaceSrc>(sources);
         }
 
+        //region Nested types
         /// <summary>Class that defines a font face source.</summary>
         internal class FontFaceSrc {
             /// <summary>The UrlPattern used to compose a source path.</summary>
@@ -191,7 +192,6 @@ namespace iText.Svg.Processors.Impl.Font {
             /// <summary>Indicates if the font is local.</summary>
             internal readonly bool isLocal;
 
-            //region Nested types
             /* (non-Javadoc)
             * @see java.lang.Object#toString()
             */
@@ -263,8 +263,7 @@ namespace iText.Svg.Processors.Impl.Font {
 
             /// <summary>
             /// Removes single and double quotes at the start and the end of a
-            /// <see cref="System.String"/>
-            /// .
+            /// <see cref="System.String"/>.
             /// </summary>
             /// <param name="quotedString">
             /// a
@@ -301,11 +300,17 @@ namespace iText.Svg.Processors.Impl.Font {
         /// <summary>The Enum FontFormat.</summary>
         internal enum FontFormat {
             None,
+            /// <summary>"truetype"</summary>
             TrueType,
+            /// <summary>"opentype"</summary>
             OpenType,
+            /// <summary>"woff"</summary>
             WOFF,
+            /// <summary>"woff2"</summary>
             WOFF2,
+            /// <summary>"embedded-opentype"</summary>
             EOT,
+            /// <summary>"svg"</summary>
             SVG
         }
         //endregion

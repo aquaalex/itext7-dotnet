@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -435,12 +435,12 @@ namespace iText.StyledXmlParser.Jsoup.Select {
             evals.Add(new Evaluator.IndexEquals(ConsumeIndex()));
         }
 
+        //pseudo selectors :first-child, :last-child, :nth-child, ...
         private static readonly Regex NTH_AB = iText.IO.Util.StringUtil.RegexCompile("((\\+|-)?(\\d+)?)n(\\s*(\\+|-)?\\s*\\d+)?"
             , System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
         private static readonly Regex NTH_B = iText.IO.Util.StringUtil.RegexCompile("(\\+|-)?(\\d+)");
 
-        //pseudo selectors :first-child, :last-child, :nth-child, ...
         private void CssNthChild(bool backwards, bool ofType) {
             String argS = tq.ChompTo(")").Trim().ToLowerInvariant();
             Match mAB = iText.IO.Util.StringUtil.Match(NTH_AB, argS);

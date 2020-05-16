@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -123,7 +123,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             return accum.ToString();
         }
 
-        /// <exception cref="System.IO.IOException"/>
         protected internal virtual void Html(StringBuilder accum, OutputSettings @out) {
             accum.Append(key);
             if (!ShouldCollapseAttribute(@out)) {

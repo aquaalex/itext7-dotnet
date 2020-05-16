@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -90,7 +90,7 @@ namespace iText.StyledXmlParser.Node.Impl.Jsoup.Node {
             }
             else {
                 ILog logger = LogManager.GetLogger(typeof(iText.StyledXmlParser.Node.Impl.Jsoup.Node.JsoupNode));
-                logger.Error("Error adding child node");
+                logger.Error(iText.StyledXmlParser.LogMessageConstant.ERROR_ADDING_CHILD_NODE);
             }
         }
 

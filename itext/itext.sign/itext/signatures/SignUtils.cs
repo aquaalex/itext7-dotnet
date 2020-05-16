@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -64,14 +64,13 @@ using Org.BouncyCastle.Ocsp;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Security.Certificates;
 using Org.BouncyCastle.Tsp;
+using Org.BouncyCastle.Utilities.Collections;
 using Org.BouncyCastle.X509;
 using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 using X509Extension = Org.BouncyCastle.Asn1.X509.X509Extension;
 
 namespace iText.Signatures {
     internal sealed class SignUtils {
-        internal static readonly DateTime UNDEFINED_TIMESTAMP_DATE = DateTime.MaxValue;
-
         internal static String GetPrivateKeyAlgorithm(ICipherParameters cp) {
             String algorithm;
             if (cp is RsaKeyParameters) {
@@ -95,8 +94,6 @@ namespace iText.Signatures {
         /// </summary>
         /// <param name="input">The input Stream holding the unparsed CRL.</param>
         /// <returns>The parsed CRL object.</returns>
-        /// <exception cref="CertificateException"/>
-        /// <exception cref="CrlException"/>
         internal static X509Crl ParseCrlFromStream(Stream input) {
             return new X509CrlParser().ReadCrl(input);
         }
@@ -248,18 +245,21 @@ namespace iText.Signatures {
         /// </summary>
         /// <param name="cert"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
         [Obsolete]
         internal static bool HasUnsupportedCriticalExtension(X509Certificate cert) {
             if ( cert == null ) {
                 throw new ArgumentException("X509Certificate can't be null.");
             }
 
-            foreach (String oid in cert.GetCriticalExtensionOids()) {
-                if (OID.X509Extensions.SUPPORTED_CRITICAL_EXTENSIONS.Contains(oid)) {
-                    continue;
+            ISet criticalExtensionsSet = cert.GetCriticalExtensionOids();
+            if (criticalExtensionsSet != null) {
+                foreach (String oid in criticalExtensionsSet) {
+                    if (OID.X509Extensions.SUPPORTED_CRITICAL_EXTENSIONS.Contains(oid)) {
+                        continue;
+                        
+                    }
+                    return true;
                 }
-                return true;
             }
             return false;
         }

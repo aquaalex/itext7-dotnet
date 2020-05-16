@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -218,6 +218,8 @@ namespace iText.Kernel {
         public const String DocumentHasNoPages = "Document has no pages.";
 
         public const String DocumentHasNoPdfCatalogObject = "Document has no PDF Catalog object.";
+
+        public const String DocumentHasNotBeenReadYet = "The PDF document has not been read yet. Document reading occurs in PdfDocument class constructor";
 
         public const String DocumentMustBePreClosed = "Document must be preClosed.";
 
@@ -607,6 +609,7 @@ namespace iText.Kernel {
         }
 
         /// <summary>Gets additional params for Exception message.</summary>
+        /// <returns>array of additional params</returns>
         protected internal virtual Object[] GetMessageParams() {
             Object[] parameters = new Object[messageParams.Count];
             for (int i = 0; i < messageParams.Count; i++) {

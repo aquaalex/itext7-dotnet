@@ -1,7 +1,7 @@
 /*
 *
 * This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 * Authors: Bruno Lowagie, Paulo Soares, et al.
 *
 * This program is free software; you can redistribute it and/or modify
@@ -93,7 +93,6 @@ namespace iText.Signatures {
         }
 
         /// <summary><inheritDoc/></summary>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public virtual byte[] Sign(byte[] message) {
             String algorithm = hashAlgorithm + "with" + encryptionAlgorithm;
             ISigner sig = SignUtils.GetSignatureHelper(algorithm);

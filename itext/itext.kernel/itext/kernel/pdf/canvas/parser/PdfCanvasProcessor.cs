@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -56,6 +56,7 @@ using iText.Kernel.Pdf.Canvas.Parser.Data;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using iText.Kernel.Pdf.Canvas.Parser.Util;
 using iText.Kernel.Pdf.Colorspace;
+using iText.Kernel.Pdf.Extgstate;
 
 namespace iText.Kernel.Pdf.Canvas.Parser {
     /// <summary>Processor for a PDF content stream.</summary>
@@ -282,8 +283,13 @@ namespace iText.Kernel.Pdf.Canvas.Parser {
         /// Accessor method for the
         /// <see cref="iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener"/>
         /// object maintained in this class.
-        /// Necessary for implementing custom ContentOperator implementations.
         /// </summary>
+        /// <remarks>
+        /// Accessor method for the
+        /// <see cref="iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener"/>
+        /// object maintained in this class.
+        /// Necessary for implementing custom ContentOperator implementations.
+        /// </remarks>
         /// <returns>the renderListener</returns>
         public virtual IEventListener GetEventListener() {
             return eventListener;
@@ -407,7 +413,7 @@ namespace iText.Kernel.Pdf.Canvas.Parser {
         /// <see cref="iText.Kernel.Pdf.Canvas.PdfCanvasConstants.FillingRule.NONZERO_WINDING"/>
         /// or
         /// <see cref="iText.Kernel.Pdf.Canvas.PdfCanvasConstants.FillingRule.EVEN_ODD"/>
-        /// In case it isn't applicable pass any <CODE>byte</CODE> value.
+        /// In case it isn't applicable pass any <c>byte</c> value.
         /// </param>
         protected internal virtual void PaintPath(int operation, int rule) {
             ParserGraphicsState gs = GetGraphicsState();
@@ -453,8 +459,13 @@ namespace iText.Kernel.Pdf.Canvas.Parser {
         /// <summary>
         /// Creates a
         /// <see cref="iText.Kernel.Font.PdfFont"/>
-        /// object by a font dictionary. The font may have been cached in case it is an indirect object.
+        /// object by a font dictionary.
         /// </summary>
+        /// <remarks>
+        /// Creates a
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// object by a font dictionary. The font may have been cached in case it is an indirect object.
+        /// </remarks>
         /// <param name="fontDict"/>
         /// <returns>the font</returns>
         protected internal virtual PdfFont GetFont(PdfDictionary fontDict) {
@@ -815,7 +826,6 @@ namespace iText.Kernel.Pdf.Canvas.Parser {
                         throw new PdfException(PdfException._1IsAnUnknownGraphicsStateDictionary).SetMessageParams(dictionaryName);
                     }
                 }
-                // at this point, all we care about is the FONT entry in the GS dictionary TODO merge the whole gs dictionary
                 PdfArray fontParameter = gsDic.GetAsArray(PdfName.Font);
                 if (fontParameter != null) {
                     PdfFont font = processor.GetFont(fontParameter.GetAsDictionary(0));
@@ -823,6 +833,8 @@ namespace iText.Kernel.Pdf.Canvas.Parser {
                     processor.GetGraphicsState().SetFont(font);
                     processor.GetGraphicsState().SetFontSize(size);
                 }
+                PdfExtGState pdfExtGState = new PdfExtGState(gsDic.Clone(JavaCollectionsUtil.SingletonList(PdfName.Font)));
+                processor.GetGraphicsState().UpdateFromExtGState(pdfExtGState);
             }
         }
 
@@ -953,6 +965,9 @@ namespace iText.Kernel.Pdf.Canvas.Parser {
                     }
                 }
             }
+            ILog logger = LogManager.GetLogger(typeof(PdfCanvasProcessor));
+            logger.Warn(MessageFormatUtil.Format(KernelLogMessageConstant.UNABLE_TO_PARSE_COLOR_WITHIN_COLORSPACE, JavaUtil.ArraysToString
+                ((Object[])operands.ToArray()), pdfColorSpace.GetPdfObject()));
             return null;
         }
 

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -61,8 +61,7 @@ namespace iText.Signatures {
     /// <summary>Provides convenient methods to make a signature appearance.</summary>
     /// <remarks>
     /// Provides convenient methods to make a signature appearance. Use it in conjunction with
-    /// <see cref="PdfSigner"/>
-    /// .
+    /// <see cref="PdfSigner"/>.
     /// </remarks>
     public class PdfSignatureAppearance {
         /// <summary>Extra space at the top.</summary>
@@ -461,14 +460,9 @@ namespace iText.Signatures {
         }
 
         /// <summary>Constructs appearance (top-level) for a signature.</summary>
-        /// <remarks>
-        /// Constructs appearance (top-level) for a signature.
-        /// <p>
-        /// Consult <A HREF="http://partners.adobe.com/asn/developer/pdfs/tn/PPKAppearances.pdf">PPKAppearances.pdf</A>
-        /// for further details.
-        /// </remarks>
+        /// <seealso><a href="http://partners.adobe.com/asn/developer/pdfs/tn/ppkappearances.pdf">PPKAppearances.pdf</a> for further details
+        ///     </seealso>
         /// <returns>a top-level signature appearance</returns>
-        /// <exception cref="System.IO.IOException"/>
         protected internal virtual PdfFormXObject GetAppearance() {
             PdfCanvas canvas;
             if (IsInvisible()) {
@@ -576,11 +570,11 @@ namespace iText.Signatures {
                             throw new InvalidOperationException("A signature image must be present when rendering mode is graphic. Use setSignatureGraphic()"
                                 );
                         }
-                        signatureRect = new Rectangle(MARGIN, MARGIN, rotatedRect.GetWidth() - 2 * MARGIN, rotatedRect.GetHeight()
-                             - 2 * MARGIN);
+                        signatureRect = new Rectangle(MARGIN, MARGIN, rotatedRect.GetWidth() - 2 * MARGIN, 
+                                                // take all space available
+                                                rotatedRect.GetHeight() - 2 * MARGIN);
                     }
                     else {
-                        // take all space available
                         dataRect = new Rectangle(MARGIN, MARGIN, rotatedRect.GetWidth() - 2 * MARGIN, rotatedRect.GetHeight() * (1
                              - TOP_SECTION) - 2 * MARGIN);
                     }
@@ -726,7 +720,7 @@ namespace iText.Signatures {
             PdfCanvas canvas;
             canvas = new PdfCanvas(n2, document);
             Paragraph paragraph = new Paragraph(text).SetFont(font).SetMargin(0).SetMultipliedLeading(0.9f);
-            iText.Layout.Canvas layoutCanvas = new iText.Layout.Canvas(canvas, document, dataRect);
+            iText.Layout.Canvas layoutCanvas = new iText.Layout.Canvas(canvas, dataRect);
             paragraph.SetFontColor(layer2FontColor);
             if (layer2FontSize == 0) {
                 ApplyCopyFittingFontSize(paragraph, dataRect, layoutCanvas.GetRenderer());
@@ -760,9 +754,13 @@ namespace iText.Signatures {
 
         /// <summary>Signature rendering modes.</summary>
         public enum RenderingMode {
+            /// <summary>The rendering mode is just the description.</summary>
             DESCRIPTION,
+            /// <summary>The rendering mode is the name of the signer and the description.</summary>
             NAME_AND_DESCRIPTION,
+            /// <summary>The rendering mode is an image and the description.</summary>
             GRAPHIC_AND_DESCRIPTION,
+            /// <summary>The rendering mode is just an image.</summary>
             GRAPHIC
         }
     }

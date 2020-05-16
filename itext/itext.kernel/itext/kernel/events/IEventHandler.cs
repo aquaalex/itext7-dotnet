@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -45,8 +45,7 @@ namespace iText.Kernel.Events {
     /// <summary>Interface for handling events.</summary>
     /// <remarks>
     /// Interface for handling events. EventHandlers are added to the
-    /// <see cref="EventDispatcher"/>
-    /// .
+    /// <see cref="EventDispatcher"/>.
     /// </remarks>
     public interface IEventHandler {
         /// <summary>Hook for handling events.</summary>
@@ -55,6 +54,6 @@ namespace iText.Kernel.Events {
         /// associated to the specified Event or, if available, the PdfPage instance.
         /// </remarks>
         /// <param name="event">the Event that needs to be processed</param>
-        void HandleEvent(Event @event);
+        void HandleEvent(iText.Kernel.Events.Event @event);
     }
 }

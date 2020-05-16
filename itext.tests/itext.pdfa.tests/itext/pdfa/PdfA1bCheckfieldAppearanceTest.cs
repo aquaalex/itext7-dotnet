@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -66,8 +66,6 @@ namespace iText.Pdfa {
             CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PdfA1bCheckFieldOffAppearanceTest() {
             String name = "pdfA1b_checkFieldOffAppearance";
@@ -90,8 +88,6 @@ namespace iText.Pdfa {
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void PdfA1bCheckFieldOnAppearanceTest() {
             String name = "pdfA1b_checkFieldOnAppearance";

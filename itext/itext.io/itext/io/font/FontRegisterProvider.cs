@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -68,16 +68,15 @@ namespace iText.IO.Font {
             RegisterStandardFontFamilies();
         }
 
-        /// <summary>Constructs a <CODE>Font</CODE>-object.</summary>
+        /// <summary>Constructs a <c>Font</c>-object.</summary>
         /// <param name="fontName">the name of the font</param>
         /// <param name="style">the style of this font</param>
         /// <returns>the Font constructed based on the parameters</returns>
-        /// <exception cref="System.IO.IOException"/>
         internal virtual FontProgram GetFont(String fontName, int style) {
             return GetFont(fontName, style, true);
         }
 
-        /// <summary>Constructs a <CODE>Font</CODE>-object.</summary>
+        /// <summary>Constructs a <c>Font</c>-object.</summary>
         /// <param name="fontName">the name of the font</param>
         /// <param name="style">the style of this font</param>
         /// <param name="cached">
@@ -85,7 +84,6 @@ namespace iText.IO.Font {
         /// the cache if new, false if the font is always created new
         /// </param>
         /// <returns>the Font constructed based on the parameters</returns>
-        /// <exception cref="System.IO.IOException"/>
         internal virtual FontProgram GetFont(String fontName, int style, bool cached) {
             if (fontName == null) {
                 return null;
@@ -161,7 +159,6 @@ namespace iText.IO.Font {
             fontFamilies.Put(StandardFontFamilies.ZAPFDINGBATS.ToLowerInvariant(), family);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         protected internal virtual FontProgram GetFontProgram(String fontName, bool cached) {
             FontProgram fontProgram = null;
             fontName = fontNames.Get(fontName.ToLowerInvariant());
@@ -304,7 +301,7 @@ namespace iText.IO.Font {
 
         /// <summary>Register all the fonts in a directory and possibly its subdirectories.</summary>
         /// <param name="dir">the directory</param>
-        /// <param name="scanSubdirectories">recursively scan subdirectories if <code>true</true></param>
+        /// <param name="scanSubdirectories">recursively scan subdirectories if <c>true</c></param>
         /// <returns>the number of fonts registered</returns>
         internal virtual int RegisterFontDirectory(String dir, bool scanSubdirectories) {
             LOGGER.Debug(MessageFormatUtil.Format("Registering directory {0}, looking for fonts", dir));

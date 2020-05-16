@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -51,7 +51,7 @@ namespace iText.Kernel.Log {
     /// <remarks>
     /// Interface that can be implemented if you want to count the number of documents
     /// that are being processed by iText.
-    /// <p>
+    /// <para />
     /// Implementers may use this method to record actual system usage for licensing purposes
     /// (e.g. count the number of documents or the volumne in bytes in the context of a SaaS license).
     /// </remarks>

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -69,9 +69,9 @@ namespace iText.Layout {
             CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ParenthesisTest01() {
+            //TODO DEVSIX-3148
             String outFileName = destinationFolder + "parenthesisTest01.pdf";
             String cmpFileName = sourceFolder + "cmp_parenthesisTest01.pdf";
             PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outFileName));
@@ -90,7 +90,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void UriTest01() {
             String outFileName = destinationFolder + "uriTest01.pdf";
@@ -121,7 +120,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void WidthTest01() {
             String outFileName = destinationFolder + "widthTest01.pdf";
@@ -141,7 +139,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void WidthTest02() {
             String outFileName = destinationFolder + "widthTest02.pdf";
@@ -159,7 +156,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void WidthTest03() {
             String outFileName = destinationFolder + "widthTest03.pdf";
@@ -187,7 +183,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void NonBreakingHyphenTest01() {
             String outFileName = destinationFolder + "nonBreakingHyphenTest01.pdf";
@@ -211,7 +206,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void NonBreakingHyphenTest02() {
             String outFileName = destinationFolder + "nonBreakingHyphenTest02.pdf";
@@ -236,7 +230,6 @@ namespace iText.Layout {
                 , "diff"));
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void HyphenSymbolTest01() {
             String outFileName = destinationFolder + "hyphenSymbolTest01.pdf";

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -92,9 +92,9 @@ namespace iText.Svg.Css.Impl {
             else {
                 if (CommonCssConstants.TEXT_DECORATION.Equals(styleProperty) && !CommonCssConstants.INLINE_BLOCK.Equals(styles
                     .Get(CommonCssConstants.DISPLAY))) {
-                    // TODO Note! This property is formally not inherited, but the browsers behave very similar to inheritance here.
-                    /* Text decorations on inline boxes are drawn across the entire element,
-                    going across any descendant elements without paying any attention to their presence. */
+                    // Note! This property is formally not inherited, but the browsers behave very similar to inheritance here.
+                    // Text decorations on inline boxes are drawn across the entire element,
+                    // going across any descendant elements without paying any attention to their presence.
                     // Also, when, for example, parent element has text-decoration:underline, and the child text-decoration:overline,
                     // then the text in the child will be both overline and underline. This is why the declarations are merged
                     // See TextDecorationTest#textDecoration01Test

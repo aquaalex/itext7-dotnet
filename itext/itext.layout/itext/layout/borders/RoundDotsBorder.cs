@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -50,8 +50,7 @@ namespace iText.Layout.Borders {
     /// <summary>Draws a border with rounded dots around the element it's been set to.</summary>
     /// <remarks>
     /// Draws a border with rounded dots around the element it's been set to. For square dots see
-    /// <see cref="DottedBorder"/>
-    /// .
+    /// <see cref="DottedBorder"/>.
     /// </remarks>
     public class RoundDotsBorder : Border {
         /// <summary>The modifier to be applied on the width to have the initial gap size</summary>
@@ -90,7 +89,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap);
             float[] startingPoints = GetStartingPointsForBorderSide(x1, y1, x2, y2, defaultSide);
             x1 = startingPoints[0];
             y1 = startingPoints[1];
@@ -109,7 +108,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap);
             bool isHorizontal = false;
             if (Math.Abs(y2 - y1) < 0.0005f) {
                 isHorizontal = true;
@@ -134,7 +133,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap);
             canvas.SaveState().SetStrokeColor(transparentColor.GetColor());
             transparentColor.ApplyStrokeTransparency(canvas);
             canvas.SetLineWidth(width).SetLineCapStyle(PdfCanvasConstants.LineCapStyle.ROUND).SetLineDash(0, adjustedGap
@@ -144,6 +143,19 @@ namespace iText.Layout.Borders {
             float[] verticalRadii = new float[] { verticalRadius1, verticalRadius2 };
             DrawDiscontinuousBorders(canvas, boundingRectangle, horizontalRadii, verticalRadii, defaultSide, borderWidthBefore
                 , borderWidthAfter);
+        }
+
+        /// <summary>Adjusts the size of the gap between dots</summary>
+        /// <param name="distance">
+        /// the
+        /// <see cref="Border">border</see>
+        /// length
+        /// </param>
+        /// <param name="initialGap">the initial size of the gap</param>
+        /// <returns>the adjusted size of the gap</returns>
+        [System.ObsoleteAttribute(@"logic moved to super-class")]
+        protected internal override float GetDotsGap(double distance, float initialGap) {
+            return base.GetDotsGap(distance, initialGap);
         }
     }
 }

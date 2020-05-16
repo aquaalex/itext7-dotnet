@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -60,8 +60,6 @@ namespace iText.Forms {
             CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void FormFillingAppend_form_empty_Test() {
             String srcFilename = sourceFolder + "Form_Empty.pdf";
@@ -86,8 +84,6 @@ namespace iText.Forms {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void FormFillingAppend_form_filled_Test() {
             String srcFilename = sourceFolder + "Form_Empty.pdf";
@@ -111,7 +107,6 @@ namespace iText.Forms {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private void Flatten(String src, String dest) {
             PdfDocument doc = new PdfDocument(new PdfReader(src), new PdfWriter(dest));
             PdfAcroForm form = PdfAcroForm.GetAcroForm(doc, true);

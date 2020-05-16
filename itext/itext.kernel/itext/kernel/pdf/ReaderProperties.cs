@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -46,18 +46,18 @@ using Org.BouncyCastle.X509;
 
 namespace iText.Kernel.Pdf {
     public class ReaderProperties {
+        //added by ujihara for decryption
         protected internal byte[] password;
 
+        //added by Aiken Sam for certificate decryption
         protected internal ICipherParameters certificateKey;
 
+        //added by Aiken Sam for certificate decryption
         protected internal X509Certificate certificate;
 
+        //added by Aiken Sam for certificate decryption
         protected internal MemoryLimitsAwareHandler memoryLimitsAwareHandler;
 
-        //added by ujihara for decryption
-        //added by Aiken Sam for certificate decryption
-        //added by Aiken Sam for certificate decryption
-        //added by Aiken Sam for certificate decryption
         /// <summary>Defines the password which will be used if the document is encrypted with standard encryption.</summary>
         /// <remarks>
         /// Defines the password which will be used if the document is encrypted with standard encryption.

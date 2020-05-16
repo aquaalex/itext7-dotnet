@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -44,9 +44,10 @@ using System;
 using System.Text;
 using iText.IO.Util;
 using iText.StyledXmlParser.Jsoup.Nodes;
+using iText.Test;
 
 namespace iText.StyledXmlParser.Jsoup.Select {
-    public class CssTest {
+    public class CssTest : ExtendedITextTest {
         private Document html = null;
 
         private static String htmlString;

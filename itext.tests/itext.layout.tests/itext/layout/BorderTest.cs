@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -71,8 +71,6 @@ namespace iText.Layout {
             CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SimpleBordersTest() {
             fileName = "simpleBordersTest.pdf";
@@ -102,8 +100,6 @@ namespace iText.Layout {
             CloseDocumentAndCompareOutputs(doc);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void Borders3DTest() {
             fileName = "borders3DTest.pdf";
@@ -161,8 +157,6 @@ namespace iText.Layout {
             CloseDocumentAndCompareOutputs(doc);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BorderSidesTest() {
             fileName = "borderSidesTest.pdf";
@@ -185,8 +179,6 @@ namespace iText.Layout {
             CloseDocumentAndCompareOutputs(doc);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void BorderBoxTest() {
             fileName = "borderBoxTest.pdf";
@@ -222,8 +214,6 @@ namespace iText.Layout {
             CloseDocumentAndCompareOutputs(doc);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.IO.LogMessageConstant.ELEMENT_DOES_NOT_FIT_AREA, Count = 1)]
         public virtual void RotatedBordersTest() {
@@ -244,7 +234,6 @@ namespace iText.Layout {
             CloseDocumentAndCompareOutputs(doc);
         }
 
-        /// <exception cref="System.IO.FileNotFoundException"/>
         private Document CreateDocument() {
             outFileName = destinationFolder + fileName;
             cmpFileName = sourceFolder + cmpPrefix + fileName;
@@ -252,8 +241,6 @@ namespace iText.Layout {
             return new Document(pdfDocument);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         private void CloseDocumentAndCompareOutputs(Document document) {
             document.Close();
             String compareResult = new CompareTool().CompareByContent(outFileName, cmpFileName, destinationFolder, "diff"
@@ -261,6 +248,62 @@ namespace iText.Layout {
             if (compareResult != null) {
                 NUnit.Framework.Assert.Fail(compareResult);
             }
+        }
+
+        //When 7.2 release is in progress, remove the underlying code. It's here to pass A SQ line coverage quality gate and tests deprecated protected methods
+        public class TestDashedBorder : DashedBorder {
+            public TestDashedBorder(BorderTest _enclosing, float width)
+                : base(width) {
+                this._enclosing = _enclosing;
+            }
+
+            public virtual float PublicGetDotsGap(double distance, float initialGap) {
+                return this.GetDotsGap(distance, initialGap);
+            }
+
+            private readonly BorderTest _enclosing;
+        }
+
+        public class TestDottedBorder : DottedBorder {
+            public TestDottedBorder(BorderTest _enclosing, float width)
+                : base(width) {
+                this._enclosing = _enclosing;
+            }
+
+            public virtual float PublicGetDotsGap(double distance, float initialGap) {
+                return this.GetDotsGap(distance, initialGap);
+            }
+
+            private readonly BorderTest _enclosing;
+        }
+
+        public class TestRoundDotsBorder : RoundDotsBorder {
+            public TestRoundDotsBorder(BorderTest _enclosing, float width)
+                : base(width) {
+                this._enclosing = _enclosing;
+            }
+
+            public virtual float PublicGetDotsGap(double distance, float initialGap) {
+                return this.GetDotsGap(distance, initialGap);
+            }
+
+            private readonly BorderTest _enclosing;
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void GetDotsGapTest() {
+            float expected = 0.2f;
+            double distance = 0.2;
+            float initialGap = 0.2f;
+            BorderTest.TestDashedBorder db = new BorderTest.TestDashedBorder(this, 1f);
+            BorderTest.TestDottedBorder dotb = new BorderTest.TestDottedBorder(this, 1f);
+            BorderTest.TestRoundDotsBorder rdb = new BorderTest.TestRoundDotsBorder(this, 1f);
+            float dbActual = db.PublicGetDotsGap(distance, initialGap);
+            float dotbActual = dotb.PublicGetDotsGap(distance, initialGap);
+            float rdbActual = rdb.PublicGetDotsGap(distance, initialGap);
+            NUnit.Framework.Assert.AreEqual(expected, dbActual, 0.0001f);
+            NUnit.Framework.Assert.AreEqual(expected, dotbActual, 0.0001f);
+            NUnit.Framework.Assert.AreEqual(expected, rdbActual, 0.0001f);
         }
     }
 }

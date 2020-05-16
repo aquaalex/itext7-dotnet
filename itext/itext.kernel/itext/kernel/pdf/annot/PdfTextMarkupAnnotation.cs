@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -72,7 +72,7 @@ namespace iText.Kernel.Pdf.Annot {
         /// <summary>Creates a text markup annotation of highlight style subtype.</summary>
         /// <remarks>
         /// Creates a text markup annotation of highlight style subtype.
-        /// <p>
+        /// <para />
         /// IMPORTANT NOTE on <b>quadPoints</b> argument:
         /// According to Table 179 in ISO 32000-1, the QuadPoints array lists the vertices in counterclockwise
         /// order and the text orientation is defined by the first and second vertex. This basically means QuadPoints is
@@ -104,7 +104,7 @@ namespace iText.Kernel.Pdf.Annot {
         /// <summary>Creates a text markup annotation of underline style subtype.</summary>
         /// <remarks>
         /// Creates a text markup annotation of underline style subtype.
-        /// <p>
+        /// <para />
         /// IMPORTANT NOTE on <b>quadPoints</b> argument:
         /// According to Table 179 in ISO 32000-1, the QuadPoints array lists the vertices in counterclockwise
         /// order and the text orientation is defined by the first and second vertex. This basically means QuadPoints is
@@ -136,7 +136,7 @@ namespace iText.Kernel.Pdf.Annot {
         /// <summary>Creates a text markup annotation of strikeout style subtype.</summary>
         /// <remarks>
         /// Creates a text markup annotation of strikeout style subtype.
-        /// <p>
+        /// <para />
         /// IMPORTANT NOTE on <b>quadPoints</b> argument:
         /// According to Table 179 in ISO 32000-1, the QuadPoints array lists the vertices in counterclockwise
         /// order and the text orientation is defined by the first and second vertex. This basically means QuadPoints is
@@ -168,7 +168,7 @@ namespace iText.Kernel.Pdf.Annot {
         /// <summary>Creates a text markup annotation of squiggly-underline type.</summary>
         /// <remarks>
         /// Creates a text markup annotation of squiggly-underline type.
-        /// <p>
+        /// <para />
         /// IMPORTANT NOTE on <b>quadPoints</b> argument:
         /// According to Table 179 in ISO 32000-1, the QuadPoints array lists the vertices in counterclockwise
         /// order and the text orientation is defined by the first and second vertex. This basically means QuadPoints is
@@ -210,7 +210,7 @@ namespace iText.Kernel.Pdf.Annot {
         /// An array of 8 × n numbers specifying the coordinates of n quadrilaterals in default user space.
         /// Quadrilaterals are used to define a word or group of contiguous words in the text
         /// underlying the text markup annotation.
-        /// <p>
+        /// <para />
         /// IMPORTANT NOTE: According to Table 179 in ISO 32000-1, the QuadPoints array lists the vertices in counterclockwise
         /// order and the text orientation is defined by the first and second vertex. This basically means QuadPoints is
         /// specified as lower-left, lower-right, top-right, top-left. HOWEVER, Adobe's interpretation
@@ -232,9 +232,14 @@ namespace iText.Kernel.Pdf.Annot {
         /// Sets n quadrilaterals in default user space by passing an
         /// <see cref="iText.Kernel.Pdf.PdfArray"/>
         /// of 8 × n numbers.
+        /// </summary>
+        /// <remarks>
+        /// Sets n quadrilaterals in default user space by passing an
+        /// <see cref="iText.Kernel.Pdf.PdfArray"/>
+        /// of 8 × n numbers.
         /// Quadrilaterals are used to define a word or group of contiguous words in the text
         /// underlying the text markup annotation.
-        /// <p>
+        /// <para />
         /// IMPORTANT NOTE: According to Table 179 in ISO 32000-1, the QuadPoints array lists the vertices in counterclockwise
         /// order and the text orientation is defined by the first and second vertex. This basically means QuadPoints is
         /// specified as lower-left, lower-right, top-right, top-left. HOWEVER, Adobe's interpretation
@@ -242,7 +247,7 @@ namespace iText.Kernel.Pdf.Annot {
         /// This means that if the QuadPoints array is specified according to the standard, the rendering is not as expected.
         /// Other viewers seem to follow Adobe's interpretation. Hence we recommend to use and expect QuadPoints array in Z-order,
         /// just as Acrobat and probably most other viewers expect.
-        /// </summary>
+        /// </remarks>
         /// <param name="quadPoints">
         /// an
         /// <see cref="iText.Kernel.Pdf.PdfArray"/>

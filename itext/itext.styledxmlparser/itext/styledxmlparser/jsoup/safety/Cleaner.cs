@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -50,21 +50,17 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
     /// <remarks>
     /// The whitelist based HTML cleaner. Use to ensure that end-user provided HTML contains only the elements and attributes
     /// that you are expecting; no junk, and no cross-site scripting attacks!
-    /// <p>
+    /// <para />
     /// The HTML cleaner parses the input as HTML and then runs it through a white-list, so the output HTML can only contain
     /// HTML that is allowed by the whitelist.
-    /// </p>
-    /// <p>
+    /// <para />
     /// It is assumed that the input HTML is a body fragment; the clean methods only pull from the source's body, and the
     /// canned white-lists only allow body contained tags.
-    /// </p>
-    /// <p>
+    /// <para />
     /// Rather than interacting directly with a Cleaner object, generally see the
     /// <c>clean</c>
     /// methods in
-    /// <see cref="iText.StyledXmlParser.Jsoup.Jsoup"/>
-    /// .
-    /// </p>
+    /// <see cref="iText.StyledXmlParser.Jsoup.Jsoup"/>.
     /// </remarks>
     public class Cleaner {
         private Whitelist whitelist;
@@ -80,7 +76,7 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         ///     </summary>
         /// <remarks>
         /// Creates a new, clean document, from the original dirty document, containing only elements allowed by the whitelist.
-        /// The original document is not modified. Only elements from the dirt document's <code>body</code> are used.
+        /// The original document is not modified. Only elements from the dirt document's <c>body</c> are used.
         /// </remarks>
         /// <param name="dirtyDocument">Untrusted base document to clean.</param>
         /// <returns>cleaned document.</returns>
@@ -98,13 +94,12 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
         /// <remarks>
         /// Determines if the input document is valid, against the whitelist. It is considered valid if all the tags and attributes
         /// in the input HTML are allowed by the whitelist.
-        /// <p>
+        /// <para />
         /// This method can be used as a validator for user input forms. An invalid document will still be cleaned successfully
         /// using the
         /// <see cref="Clean(iText.StyledXmlParser.Jsoup.Nodes.Document)"/>
         /// document. If using as a validator, it is recommended to still clean the document
         /// to ensure enforced attributes are set correctly, and that the output is tidied.
-        /// </p>
         /// </remarks>
         /// <param name="dirtyDocument">document to test</param>
         /// <returns>true if no tags or attributes need to be removed; false if they do</returns>
@@ -123,10 +118,10 @@ namespace iText.StyledXmlParser.Jsoup.Safety {
 
             internal iText.StyledXmlParser.Jsoup.Nodes.Element destination;
 
+            // current element to append nodes to
             internal CleaningVisitor(Cleaner _enclosing, iText.StyledXmlParser.Jsoup.Nodes.Element root, iText.StyledXmlParser.Jsoup.Nodes.Element
                  destination) {
                 this._enclosing = _enclosing;
-                // current element to append nodes to
                 this.root = root;
                 this.destination = destination;
             }

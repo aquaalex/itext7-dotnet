@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -72,10 +72,10 @@ namespace iText.Kernel.Pdf.Tagging {
             }
             SetForbidRelease();
             parentTreeHandler = new ParentTreeHandler(this);
+            // TODO may be remove?
             GetRoleMap();
         }
 
-        // TODO may be remove?
         public static PdfName ConvertRoleToPdfName(String role) {
             PdfName name = PdfName.staticNames.Get(role);
             if (name != null) {
@@ -207,8 +207,14 @@ namespace iText.Kernel.Pdf.Tagging {
         /// Adds a
         /// <see cref="PdfNamespace"/>
         /// to the list of the namespaces used within the document.
-        /// <p>This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.</p>
         /// </summary>
+        /// <remarks>
+        /// Adds a
+        /// <see cref="PdfNamespace"/>
+        /// to the list of the namespaces used within the document.
+        /// <para />
+        /// This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.
+        /// </remarks>
         /// <param name="namespace">
         /// a
         /// <see cref="PdfNamespace"/>
@@ -249,18 +255,25 @@ namespace iText.Kernel.Pdf.Tagging {
         /// <see cref="iText.Kernel.Pdf.Filespec.PdfFileSpec"/>
         /// objects, where each specified file
         /// is a pronunciation lexicon, which is an XML file conforming to the Pronunciation Lexicon Specification (PLS) Version 1.0.
-        /// These pronunciation lexicons may be used as pronunciation hints when the document’s content is presented via
-        /// text-to-speech. Where two or more pronunciation lexicons apply to the same text, the first match – as defined by
-        /// the order of entries in the array and the order of entries inside the pronunciation lexicon file – should be used.
-        /// <p>
-        /// See ISO 32000-2 14.9.6, "Pronunciation hints".
         /// </summary>
-        /// <returns>
+        /// <remarks>
         /// A
         /// <see cref="System.Collections.IList{E}"/>
         /// containing one or more
         /// <see cref="iText.Kernel.Pdf.Filespec.PdfFileSpec"/>
-        /// .
+        /// objects, where each specified file
+        /// is a pronunciation lexicon, which is an XML file conforming to the Pronunciation Lexicon Specification (PLS) Version 1.0.
+        /// These pronunciation lexicons may be used as pronunciation hints when the document’s content is presented via
+        /// text-to-speech. Where two or more pronunciation lexicons apply to the same text, the first match – as defined by
+        /// the order of entries in the array and the order of entries inside the pronunciation lexicon file – should be used.
+        /// <para />
+        /// See ISO 32000-2 14.9.6, "Pronunciation hints".
+        /// </remarks>
+        /// <returns>
+        /// A
+        /// <see cref="System.Collections.IList{E}"/>
+        /// containing one or more
+        /// <see cref="iText.Kernel.Pdf.Filespec.PdfFileSpec"/>.
         /// </returns>
         public virtual IList<PdfFileSpec> GetPronunciationLexiconsList() {
             PdfArray pronunciationLexicons = GetPdfObject().GetAsArray(PdfName.PronunciationLexicon);
@@ -280,11 +293,16 @@ namespace iText.Kernel.Pdf.Tagging {
         /// Adds a single
         /// <see cref="iText.Kernel.Pdf.Filespec.PdfFileSpec"/>
         /// object, which specifies XML file conforming to PLS.
-        /// For more info see
-        /// <see cref="GetPronunciationLexiconsList()"/>
-        /// .
-        /// <p>This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.</p>
         /// </summary>
+        /// <remarks>
+        /// Adds a single
+        /// <see cref="iText.Kernel.Pdf.Filespec.PdfFileSpec"/>
+        /// object, which specifies XML file conforming to PLS.
+        /// For more info see
+        /// <see cref="GetPronunciationLexiconsList()"/>.
+        /// <para />
+        /// This value has meaning only for the PDF documents of version <b>2.0 and higher</b>.
+        /// </remarks>
         /// <param name="pronunciationLexiconFileSpec">
         /// a
         /// <see cref="iText.Kernel.Pdf.Filespec.PdfFileSpec"/>
@@ -328,8 +346,9 @@ namespace iText.Kernel.Pdf.Tagging {
         /// actual page tags.
         /// </remarks>
         public virtual ICollection<PdfMcr> GetPageMarkedContentReferences(PdfPage page) {
-            IDictionary<int, PdfMcr> pageMcrs = GetParentTreeHandler().GetPageMarkedContentReferences(page);
-            return pageMcrs != null ? JavaCollectionsUtil.UnmodifiableCollection(pageMcrs.Values) : null;
+            ParentTreeHandler.PageMcrsContainer pageMcrs = GetParentTreeHandler().GetPageMarkedContentReferences(page);
+            return pageMcrs != null ? JavaCollectionsUtil.UnmodifiableCollection(pageMcrs.GetAllMcrsAsCollection()) : 
+                null;
         }
 
         public virtual PdfMcr FindMcrByMcid(PdfDictionary pageDict, int mcid) {
@@ -359,13 +378,16 @@ namespace iText.Kernel.Pdf.Tagging {
 
         /// <summary>
         /// Copies structure to a
-        /// <paramref name="destDocument"/>
-        /// .
+        /// <paramref name="destDocument"/>.
+        /// </summary>
+        /// <remarks>
+        /// Copies structure to a
+        /// <paramref name="destDocument"/>.
         /// NOTE: Works only for
         /// <see cref="PdfStructTreeRoot"/>
         /// that is read from the document opened in reading mode,
         /// otherwise an exception is thrown.
-        /// </summary>
+        /// </remarks>
         /// <param name="destDocument">document to copy structure to. Shall not be current document.</param>
         /// <param name="page2page">association between original page and copied page.</param>
         public virtual void CopyTo(PdfDocument destDocument, IDictionary<PdfPage, PdfPage> page2page) {
@@ -376,11 +398,16 @@ namespace iText.Kernel.Pdf.Tagging {
         /// Copies structure to a
         /// <paramref name="destDocument"/>
         /// and insert it in a specified position in the document.
+        /// </summary>
+        /// <remarks>
+        /// Copies structure to a
+        /// <paramref name="destDocument"/>
+        /// and insert it in a specified position in the document.
         /// NOTE: Works only for
         /// <see cref="PdfStructTreeRoot"/>
         /// that is read from the document opened in reading mode,
         /// otherwise an exception is thrown.
-        /// </summary>
+        /// </remarks>
         /// <param name="destDocument">document to copy structure to.</param>
         /// <param name="insertBeforePage">indicates where the structure to be inserted.</param>
         /// <param name="page2page">association between original page and copied page.</param>
@@ -393,7 +420,7 @@ namespace iText.Kernel.Pdf.Tagging {
         ///     </summary>
         /// <remarks>
         /// Moves structure associated with specified page and insert it in a specified position in the document.
-        /// <p>
+        /// <para />
         /// NOTE: Works only for document with not flushed pages.
         /// </remarks>
         /// <param name="fromPage">page which tag structure will be moved</param>
@@ -420,22 +447,15 @@ namespace iText.Kernel.Pdf.Tagging {
             return document;
         }
 
-        /// <summary>
-        /// <p>
-        /// Adds file associated with structure tree root and identifies the relationship between them.
-        /// </summary>
+        /// <summary>Adds file associated with structure tree root and identifies the relationship between them.</summary>
         /// <remarks>
-        /// <p>
         /// Adds file associated with structure tree root and identifies the relationship between them.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Associated files may be used in Pdf/A-3 and Pdf 2.0 documents.
         /// The method adds file to array value of the AF key in the structure tree root dictionary.
         /// If description is provided, it also will add file description to catalog Names tree.
-        /// </p>
-        /// <p>
+        /// <para />
         /// For associated files their associated file specification dictionaries shall include the AFRelationship key
-        /// </p>
         /// </remarks>
         /// <param name="description">the file description</param>
         /// <param name="fs">file specification dictionary of associated file</param>
@@ -456,20 +476,17 @@ namespace iText.Kernel.Pdf.Tagging {
         }
 
         /// <summary>
-        /// <p>
+        /// <para />
         /// Adds file associated with structure tree root and identifies the relationship between them.
         /// </summary>
         /// <remarks>
-        /// <p>
+        /// <para />
         /// Adds file associated with structure tree root and identifies the relationship between them.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Associated files may be used in Pdf/A-3 and Pdf 2.0 documents.
         /// The method adds file to array value of the AF key in the structure tree root dictionary.
-        /// </p>
-        /// <p>
+        /// <para />
         /// For associated files their associated file specification dictionaries shall include the AFRelationship key
-        /// </p>
         /// </remarks>
         /// <param name="fs">file specification dictionary of associated file</param>
         public virtual void AddAssociatedFile(PdfFileSpec fs) {

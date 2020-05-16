@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -62,12 +62,6 @@ namespace iText.Signatures.Verify {
         public static void After() {
         }
 
-        /// <exception cref="Java.Security.Cert.CertificateException"/>
-        /// <exception cref="Org.BouncyCastle.Security.SecurityUtilityException"/>
-        /// <exception cref="Java.Security.KeyStoreException"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Java.Security.UnrecoverableKeyException"/>
-        /// <exception cref="Java.Security.NoSuchProviderException"/>
         [NUnit.Framework.Test]
         public virtual void ValidCertificateChain01() {
             X509Certificate[] certChain = Pkcs12FileHelper.ReadFirstChain(certsSrc + "signCertRsaWithChain.p12", password

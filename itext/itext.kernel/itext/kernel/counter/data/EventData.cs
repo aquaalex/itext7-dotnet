@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -54,7 +54,7 @@ namespace iText.Kernel.Counter.Data {
     /// for adding some additional information to the event before processing
     /// and merging same events by increasing count.
     /// </remarks>
-    /// 
+    /// <typeparam name="T">the signature type</typeparam>
     public class EventData<T> {
         private readonly T signature;
 

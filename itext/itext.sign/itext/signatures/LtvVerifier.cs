@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -72,7 +72,7 @@ namespace iText.Signatures {
         /// <summary>The fields in the revision that is being verified.</summary>
         protected internal PdfAcroForm acroForm;
 
-        /// <summary>The date the revision was signed, or <code>null</code> for the highest revision.</summary>
+        /// <summary>The date the revision was signed, or <c>null</c> for the highest revision.</summary>
         protected internal DateTime signDate;
 
         /// <summary>The signature that covers the revision.</summary>
@@ -94,7 +94,6 @@ namespace iText.Signatures {
 
         /// <summary>Creates a VerificationData object for a PdfReader</summary>
         /// <param name="document">The document we want to verify.</param>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public LtvVerifier(PdfDocument document)
             : base(null) {
             InitLtvVerifier(document);
@@ -133,8 +132,6 @@ namespace iText.Signatures {
 
         /// <summary>Verifies all the document-level timestamps and all the signatures in the document.</summary>
         /// <param name="result"/>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public virtual IList<VerificationOK> Verify(IList<VerificationOK> result) {
             if (result == null) {
                 result = new List<VerificationOK>();
@@ -146,8 +143,6 @@ namespace iText.Signatures {
         }
 
         /// <summary>Verifies a document level timestamp.</summary>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
         public virtual IList<VerificationOK> VerifySignature() {
             LOGGER.Info("Verifying signature.");
             IList<VerificationOK> result = new List<VerificationOK>();
@@ -205,7 +200,6 @@ namespace iText.Signatures {
         /// do they chain up correctly?
         /// </summary>
         /// <param name="chain">the certificate chain</param>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public virtual void VerifyChain(X509Certificate[] chain) {
             // Loop over the certificates in the chain
             for (int i = 0; i < chain.Length; i++) {
@@ -224,11 +218,9 @@ namespace iText.Signatures {
         /// <param name="signCert">the signing certificate</param>
         /// <param name="issuerCert">the issuer's certificate</param>
         /// <returns>
-        /// a list of <code>VerificationOK</code> objects.
+        /// a list of <c>VerificationOK</c> objects.
         /// The list will be empty if the certificate couldn't be verified.
         /// </returns>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
         /// <seealso cref="RootStoreVerifier.Verify(Org.BouncyCastle.X509.X509Certificate, Org.BouncyCastle.X509.X509Certificate, System.DateTime)
         ///     "/>
         public override IList<VerificationOK> Verify(X509Certificate signCert, X509Certificate issuerCert, DateTime
@@ -249,14 +241,12 @@ namespace iText.Signatures {
         }
 
         /// <summary>Switches to the previous revision.</summary>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public virtual void SwitchToPreviousRevision() {
             LOGGER.Info("Switching to previous revision.");
             latestRevision = false;
             dss = document.GetCatalog().GetPdfObject().GetAsDictionary(PdfName.DSS);
             DateTime cal = pkcs7.GetTimeStampDate();
-            if (cal == SignUtils.UNDEFINED_TIMESTAMP_DATE) {
+            if (cal == TimestampConstants.UNDEFINED_TIMESTAMP_DATE) {
                 cal = pkcs7.GetSignDate();
             }
             // TODO: get date from signature
@@ -282,8 +272,6 @@ namespace iText.Signatures {
 
         /// <summary>Gets a list of X509CRL objects from a Document Security Store.</summary>
         /// <returns>a list of CRLs</returns>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
-        /// <exception cref="System.IO.IOException"/>
         public virtual IList<X509Crl> GetCRLsFromDSS() {
             IList<X509Crl> crls = new List<X509Crl>();
             if (dss == null) {
@@ -302,8 +290,6 @@ namespace iText.Signatures {
 
         /// <summary>Gets OCSP responses from the Document Security Store.</summary>
         /// <returns>a list of BasicOCSPResp objects</returns>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public virtual IList<BasicOcspResp> GetOCSPResponsesFromDSS() {
             IList<BasicOcspResp> ocsps = new List<BasicOcspResp>();
             if (dss == null) {
@@ -328,7 +314,6 @@ namespace iText.Signatures {
             return ocsps;
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         protected internal virtual void InitLtvVerifier(PdfDocument document) {
             this.document = document;
             this.acroForm = PdfAcroForm.GetAcroForm(document, true);
@@ -346,7 +331,6 @@ namespace iText.Signatures {
         /// and throws an exception if the document was altered
         /// </summary>
         /// <returns>a PdfPKCS7 object</returns>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         protected internal virtual PdfPKCS7 CoversWholeDocument() {
             PdfPKCS7 pkcs7 = sgnUtil.ReadSignatureData(signatureName);
             if (sgnUtil.SignatureCoversWholeDocument(signatureName)) {

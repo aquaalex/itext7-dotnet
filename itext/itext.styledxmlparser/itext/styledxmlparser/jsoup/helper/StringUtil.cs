@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -203,7 +203,6 @@ namespace iText.StyledXmlParser.Jsoup.Helper {
         /// <param name="base">the existing absolulte base URL</param>
         /// <param name="relUrl">the relative URL to resolve. (If it's already absolute, it will be returned)</param>
         /// <returns>the resolved absolute URL</returns>
-        /// <exception cref="UriFormatException">if an error occurred generating the URL</exception>
         public static Uri Resolve(Uri @base, String relUrl) {
             Uri result;
             if (!TryResolve(@base, relUrl, out result)) {

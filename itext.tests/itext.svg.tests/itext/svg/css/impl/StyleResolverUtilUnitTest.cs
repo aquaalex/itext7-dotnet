@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -42,9 +42,10 @@ address: sales@itextpdf.com
 */
 using System;
 using System.Collections.Generic;
+using iText.Test;
 
 namespace iText.Svg.Css.Impl {
-    public class StyleResolverUtilUnitTest {
+    public class StyleResolverUtilUnitTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void MergeParentDeclarationsFillTest() {
             IDictionary<String, String> styles = new Dictionary<String, String>();

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -47,69 +47,151 @@ using iText.Test;
 namespace iText.Svg.Renderers.Impl {
     public class PreserveAspectRatioSvgNodeRendererIntegrationTest : SvgIntegrationTest {
         private static readonly String SOURCE_FOLDER = iText.Test.TestUtil.GetParentProjectDirectory(NUnit.Framework.TestContext
-            .CurrentContext.TestDirectory) + "/resources/itext/svg/renderers/impl/RootSvgNodeRendererTest/aspectratio/";
+            .CurrentContext.TestDirectory) + "/resources/itext/svg/renderers/impl/PreserveAspectRatioSvgNodeRendererIntegrationTest/";
 
         private static readonly String DESTINATION_FOLDER = NUnit.Framework.TestContext.CurrentContext.TestDirectory
-             + "/test/itext/svg/renderers/impl/RootSvgNodeRendererTest/aspectratio/";
+             + "/test/itext/svg/renderers/impl/PreserveAspectRatioSvgNodeRendererIntegrationTest/";
 
         [NUnit.Framework.OneTimeSetUp]
         public static void BeforeClass() {
             ITextTest.CreateDestinationFolder(DESTINATION_FOLDER);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
-        public virtual void XMinYMinTest() {
-            ConvertAndCompareVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "xminymin");
+        public virtual void AspectRatioPreservationMidXMidYMeetMinimalTest() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "aspectRatioPreservationMidXMidYMeetMinimalTest");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ViewBoxScalingTestPreserveAspectDefaultAll() {
-            ConvertAndCompareSinglePageVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectDefaultAll"
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectDefaultAll"
                 );
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ViewBoxWithoutSetPreserveAspectRatio() {
-            ConvertAndCompareSinglePageVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxWithoutSetPreserveAspectRatio"
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxWithoutSetPreserveAspectRatio");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxScalingTestPreserveAspectDefaultAllGroup() {
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectDefaultAllGroup"
                 );
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ViewBoxScalingTestDoNotPreserveAspectMin() {
-            ConvertAndCompareSinglePageVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestDoNotPreserveAspectMin"
-                );
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestDoNotPreserveAspectMin");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ViewBoxScalingTestDoNotPreserveAspectAll() {
-            ConvertAndCompareSinglePageVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestDoNotPreserveAspectAll"
-                );
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestDoNotPreserveAspectAll");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ViewBoxScalingTestDoNotPreserveAspectMetricDimensionsMin() {
-            ConvertAndCompareSinglePageVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestDoNotPreserveAspectMetricDimensionsMin"
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestDoNotPreserveAspectMetricDimensionsMin"
                 );
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void ViewBoxScalingTestDoNotPreserveAspectMetricDimensionsAll() {
-            ConvertAndCompareSinglePageVisually(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestDoNotPreserveAspectMetricDimensionsAll"
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestDoNotPreserveAspectMetricDimensionsAll"
                 );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxScalingTestPreserveAspectRatioXMinYMinMeetScaling() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectRatioXMinYMinMeetScaling"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxScalingTestPreserveAspectRatioXMinYMidMeetScaling() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectRatioXMinYMidMeetScaling"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxScalingTestPreserveAspectRatioXMinYMaxMeetScaling() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectRatioXMinYMaxMeetScaling"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxScalingTestPreserveAspectRatioXMidYMinMeetScaling() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectRatioXMidYMinMeetScaling"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxScalingTestPreserveAspectRatioXMidYMaxMeetScaling() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectRatioXMidYMaxMeetScaling"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxScalingTestPreserveAspectRatioXMaxYMinMeetScaling() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectRatioXMaxYMinMeetScaling"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxScalingTestPreserveAspectRatioXMaxYMidMeetScaling() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxScalingTestPreserveAspectRatioXMaxYMidMeetScaling"
+                );
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxTranslationTestInnerZeroCoordinatesViewBox() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxTranslationTestInnerZeroCoordinatesViewBox");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxTranslationTestOuterZeroCoordinatesViewBox() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxTranslationTestOuterZeroCoordinatesViewBox");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void ViewBoxTranslationTestMultipleViewBoxes() {
+            ConvertAndCompare(SOURCE_FOLDER, DESTINATION_FOLDER, "viewBoxTranslationTestMultipleViewBoxes");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SvgTranslationYMinMeetTest() {
+            //TODO (DEVSIX-3537) change cmp files after the ticket will be fixed 
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "svgTranslationYMinMeetTest");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SvgTranslationYMidMeetTest() {
+            //TODO (DEVSIX-3537) change cmp files after the ticket will be fixed
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "svgTranslationYMidMeetTest");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SvgTranslationYMaxMeetTest() {
+            //TODO (DEVSIX-3537) change cmp files after the ticket will be fixed
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "svgTranslationYMaxMeetTest");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SvgTranslationXMinMeetTest() {
+            //TODO (DEVSIX-3537) change cmp files after the ticket will be fixed
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "svgTranslationXMinMeetTest");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SvgTranslationXMidMeetTest() {
+            //TODO (DEVSIX-3537) change cmp files after the ticket will be fixed
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "svgTranslationXMidMeetTest");
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void SvgTranslationXMaxMeetTest() {
+            //TODO (DEVSIX-3537) change cmp files after the ticket will be fixed
+            ConvertAndCompareSinglePage(SOURCE_FOLDER, DESTINATION_FOLDER, "svgTranslationXMaxMeetTest");
         }
     }
 }

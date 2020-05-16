@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -70,7 +70,7 @@ namespace iText.StyledXmlParser.Css.Resolve {
             , CommonCssConstants.WRITING_MODE, CommonCssConstants.BORDER_COLLAPSE, CommonCssConstants.BORDER_SPACING
             , CommonCssConstants.CAPTION_SIDE, CommonCssConstants.EMPTY_CELLS, CommonCssConstants.LIST_STYLE, CommonCssConstants
             .LIST_STYLE_IMAGE, CommonCssConstants.LIST_STYLE_POSITION, CommonCssConstants.LIST_STYLE_TYPE, CommonCssConstants
-            .QUOTES));
+            .QUOTES, CommonCssConstants.ORPHANS, CommonCssConstants.WIDOWS));
 
         // Color Properties
         // Basic Box Properties

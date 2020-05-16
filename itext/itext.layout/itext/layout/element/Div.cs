@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -51,12 +51,18 @@ namespace iText.Layout.Element {
     /// A
     /// <see cref="Div"/>
     /// is a container object that defines a section in a document,
+    /// which will have some shared layout properties.
+    /// </summary>
+    /// <remarks>
+    /// A
+    /// <see cref="Div"/>
+    /// is a container object that defines a section in a document,
     /// which will have some shared layout properties. Like all
     /// <see cref="BlockElement{T}"/>
     /// types, it will try to take up as much horizontal space as possible.
-    /// <p>
+    /// <para />
     /// The concept is very similar to that of the div tag in HTML.
-    /// </summary>
+    /// </remarks>
     public class Div : BlockElement<Div> {
         protected internal DefaultAccessibilityProperties tagProperties;
 

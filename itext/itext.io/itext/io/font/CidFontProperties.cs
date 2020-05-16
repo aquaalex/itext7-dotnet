@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -111,7 +111,6 @@ namespace iText.IO.Font {
             return registryNames;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private static void LoadRegistry() {
             Stream resource = ResourceUtil.GetResourceStream(FontResources.CMAPS + "cjk_registry.properties");
             Properties p = new Properties();
@@ -130,7 +129,6 @@ namespace iText.IO.Font {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private static IDictionary<String, Object> ReadFontProperties(String name) {
             name += ".properties";
             Stream resource = ResourceUtil.GetResourceStream(FontResources.CMAPS + name);

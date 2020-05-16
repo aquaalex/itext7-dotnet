@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -62,8 +62,8 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
 
         private readonly String[] stringCache = new String[512];
 
+        // holds reused strings in this doc, to lessen garbage
         internal CharacterReader(String input) {
-            // holds reused strings in this doc, to lessen garbage
             Validate.NotNull(input);
             this.input = input.ToCharArray();
             this.length = this.input.Length;

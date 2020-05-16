@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -47,14 +47,12 @@ using iText.Test;
 namespace iText.Layout {
     public class HyphenateResultTest : ExtendedITextTest {
         [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("DEVSIX-2036")]
         public virtual void UkraineHyphenTest() {
             //здравствуйте
             TestHyphenateResult("uk", "\u0437\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u0439", new int[] { 5 });
         }
 
         [NUnit.Framework.Test]
-        [NUnit.Framework.Ignore("DEVSIX-2036")]
         public virtual void UkraineNoneHyphenTest() {
             //день
             TestHyphenateResult("uk", "\u0434\u0435\u043D\u044C", null);
@@ -64,6 +62,12 @@ namespace iText.Layout {
         public virtual void ParenthesisTest01() {
             //Annuitätendarlehen
             TestHyphenateResult("de", "((:::(\"|;Annuitätendarlehen|\")))", new int[] { 5, 7, 10, 13, 15 });
+        }
+
+        [NUnit.Framework.Test]
+        public virtual void HindiHyphResult() {
+            //लाभहानि
+            TestHyphenateResult("hi", "लाभहानि", new int[] { 3 });
         }
 
         [NUnit.Framework.Test]

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -235,8 +235,8 @@ namespace iText.IO.Source {
                     }
                     int fracLen = 0;
                     if (v % 100 != 0) {
-                        fracLen = 2;
                         //fracLen include '.'
+                        fracLen = 2;
                         if (v % 10 != 0) {
                             fracLen++;
                         }
@@ -248,8 +248,8 @@ namespace iText.IO.Source {
                         v /= 100;
                     }
                     buf = buffer != null ? buffer : new ByteBuffer(intLen + fracLen + (negative ? 1 : 0));
+                    //-1 because fracLen include '.'
                     for (int i = 0; i < fracLen - 1; i++) {
-                        //-1 because fracLen include '.'
                         buf.Prepend(bytes[v % 10]);
                         v /= 10;
                     }

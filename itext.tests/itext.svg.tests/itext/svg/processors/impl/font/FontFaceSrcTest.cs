@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,6 @@ namespace iText.Svg.Processors.Impl.Font {
         public static void BeforeClass() {
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void SrcPropertyTest() {
             String fontSrc = "web-fonts/droid-serif-invalid.";
@@ -117,7 +116,6 @@ namespace iText.Svg.Processors.Impl.Font {
             }
         }
 
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(iText.StyledXmlParser.LogMessageConstant.QUOTE_IS_NOT_CLOSED_IN_CSS_EXPRESSION)]
         public virtual void ParseBase64SrcTest() {

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -57,7 +57,7 @@ using iText.Layout.Tagging;
 
 namespace iText.Layout {
     /// <summary>A generic abstract root element for a PDF layout object hierarchy.</summary>
-    /// 
+    /// <typeparam name="T">this type</typeparam>
     public abstract class RootElement<T> : ElementPropertyContainer<T>, IDisposable
         where T : IPropertyContainer {
         protected internal bool immediateFlush = true;
@@ -124,14 +124,16 @@ namespace iText.Layout {
 
         /// <summary>
         /// Sets
-        /// <see cref="iText.Layout.Font.FontProvider"/>
-        /// .
-        /// Note, font provider is inherited property.
+        /// <see cref="iText.Layout.Font.FontProvider"/>.
         /// </summary>
+        /// <remarks>
+        /// Sets
+        /// <see cref="iText.Layout.Font.FontProvider"/>.
+        /// Note, font provider is inherited property.
+        /// </remarks>
         /// <param name="fontProvider">
         /// instance of
-        /// <see cref="iText.Layout.Font.FontProvider"/>
-        /// .
+        /// <see cref="iText.Layout.Font.FontProvider"/>.
         /// </param>
         public virtual void SetFontProvider(FontProvider fontProvider) {
             SetProperty(Property.FONT_PROVIDER, fontProvider);

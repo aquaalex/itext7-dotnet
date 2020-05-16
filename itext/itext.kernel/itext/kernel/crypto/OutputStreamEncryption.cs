@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -44,17 +44,17 @@ address: sales@itextpdf.com
 
 using System.IO;
 
-namespace iText.Kernel.Crypto
-{
-	public abstract class OutputStreamEncryption : Stream
-	{
+namespace iText.Kernel.Crypto {
+	public abstract class OutputStreamEncryption : Stream {
 		protected internal Stream @out;
 
 		private byte[] sb = new byte[1];
 
-		/// <summary>Creates a new instance of OutputStreamCounter</summary>
-		protected internal OutputStreamEncryption(Stream @out)
-		{
+        /// <summary>
+        /// Creates a new instance of <see cref="OutputStreamEncryption"/>
+        /// </summary>
+        /// <param name="out">the target <see cref="Stream"/> to write encrypted content to</param>
+        protected internal OutputStreamEncryption(Stream @out) {
 			this.@out = @out;
 		}
 
@@ -75,7 +75,6 @@ namespace iText.Kernel.Crypto
 		/// <c>OutputStream</c>
 		/// does nothing.
 		/// </remarks>
-		/// <exception cref="System.IO.IOException">if an I/O error occurs.</exception>
 	    protected override void Dispose(bool disposing) {
 	        if (disposing) {
 	            Finish();
@@ -104,9 +103,7 @@ namespace iText.Kernel.Crypto
 		/// <c>OutputStream</c>
 		/// does nothing.
 		/// </remarks>
-		/// <exception cref="System.IO.IOException">if an I/O error occurs.</exception>
-		public override void Flush()
-		{
+		public override void Flush() {
 			@out.Flush();
 		}
 
@@ -121,10 +118,8 @@ namespace iText.Kernel.Crypto
 		/// .
 		/// </summary>
 		/// <param name="b">the data.</param>
-		/// <exception cref="System.IO.IOException">if an I/O error occurs.</exception>
 		/// <seealso cref="System.IO.Stream.Write(byte[], int, int)"/>
-		public virtual void Write(byte[] b)
-		{
+		public virtual void Write(byte[] b) {
 			Write(b, 0, b.Length);
 		}
 
@@ -152,14 +147,7 @@ namespace iText.Kernel.Crypto
 		/// <c>byte</c>
 		/// .
 		/// </param>
-		/// <exception cref="System.IO.IOException">
-		/// if an I/O error occurs. In particular, an
-		/// <c>IOException</c>
-		/// may be thrown if the
-		/// output stream has been closed.
-		/// </exception>
-		public virtual void Write(int b)
-		{
+		public virtual void Write(int b) {
 			sb[0] = (byte)b;
 			Write(sb, 0, 1);
 		}
@@ -215,13 +203,6 @@ namespace iText.Kernel.Crypto
 		/// <param name="b">the data.</param>
 		/// <param name="off">the start offset in the data.</param>
 		/// <param name="len">the number of bytes to write.</param>
-		/// <exception cref="System.IO.IOException">
-		/// if an I/O error occurs. In particular,
-		/// an
-		/// <c>IOException</c>
-		/// is thrown if the output
-		/// stream is closed.
-		/// </exception>
 		public abstract override void Write(byte[] b, int off, int len);
 
 	    public abstract void Finish();

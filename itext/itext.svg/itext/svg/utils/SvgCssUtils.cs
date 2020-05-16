@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -71,10 +71,18 @@ namespace iText.Svg.Utils {
 
         ///<summary>Converts a float pts values to pixels </summary>
         ///<param name="v"> the value to be converted pixels</param>
-        ///<returns>float converted value pts*0.75f</returns>
+        ///<returns>float converted value pts/0.75f</returns>
         public static float ConvertPtsToPx(float v)
         {
-            return v * 0.75f;
+            return v / 0.75f;
+        }
+        
+        ///<summary>Converts a double pts values to pixels </summary>
+        ///<param name="v"> the value to be converted pixels</param>
+        ///<returns>double converted value pts/0.75</returns>
+        public static double ConvertPtsToPx(double v)
+        {
+            return v / 0.75;
         }
        
         ///<summary>Converts a float to a String.</summary>
@@ -101,7 +109,7 @@ namespace iText.Svg.Utils {
         /// <param name="headChildElement">the head child element</param>
         /// <returns>true, if the element node represents a style sheet link</returns>
         public static bool IsStyleSheetLink(IElementNode headChildElement) {
-            return headChildElement.Name().Equals(SvgConstants.Tags.LINK) && SvgConstants.Attributes.STYLESHEET.Equals(headChildElement
+            return SvgConstants.Tags.LINK.Equals(headChildElement.Name()) && SvgConstants.Attributes.STYLESHEET.Equals(headChildElement
                 .GetAttribute(SvgConstants.Attributes.REL));
         }
     }

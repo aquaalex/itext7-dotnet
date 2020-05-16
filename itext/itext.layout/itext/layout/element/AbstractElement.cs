@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -56,7 +56,7 @@ namespace iText.Layout.Element {
     /// implementations
     /// share.
     /// </summary>
-    /// 
+    /// <typeparam name="T">the type of the implementation</typeparam>
     public abstract class AbstractElement<T> : ElementPropertyContainer<T>, IElement
         where T : IElement {
         protected internal IRenderer nextRenderer;
@@ -133,8 +133,8 @@ namespace iText.Layout.Element {
             return childElements;
         }
 
-        /// <summary>Returns <code>true</code> if this list contains no elements.</summary>
-        /// <returns><code>true</code> if this list contains no elements</returns>
+        /// <summary>Returns <c>true</c> if this list contains no elements.</summary>
+        /// <returns><c>true</c> if this list contains no elements</returns>
         public virtual bool IsEmpty() {
             return 0 == childElements.Count;
         }
@@ -161,7 +161,7 @@ namespace iText.Layout.Element {
         /// Explicitly sets the page number this element should be put on. The location
         /// on the page will be the same as if it were added at the end of the document,
         /// but it will be located on the specified page.
-        /// <p>
+        /// <para />
         /// This method should be used very carefully in client code.
         /// </remarks>
         /// <param name="pageNumber">the page number of the page this element should be placed on</param>

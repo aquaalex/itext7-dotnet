@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -109,8 +109,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// to a
         /// <c>&lt;div&gt;</c>
         /// with
-        /// <c>el.tagName("div");</c>
-        /// .
+        /// <c>el.tagName("div");</c>.
         /// </remarks>
         /// <param name="tagName">new tag name for this element</param>
         /// <returns>this element, for chaining</returns>
@@ -162,8 +161,8 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
 
         /// <summary>Set a boolean attribute value on this element.</summary>
         /// <remarks>
-        /// Set a boolean attribute value on this element. Setting to <code>true</code> sets the attribute value to "" and
-        /// marks the attribute as boolean so no value is written out. Setting to <code>false</code> removes the attribute
+        /// Set a boolean attribute value on this element. Setting to <c>true</c> sets the attribute value to "" and
+        /// marks the attribute as boolean so no value is written out. Setting to <c>false</c> removes the attribute
         /// with the same key if it exists.
         /// </remarks>
         /// <param name="attributeKey">the attribute key</param>
@@ -178,16 +177,15 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <remarks>
         /// Get this element's HTML5 custom data attributes. Each attribute in the element that has a key
         /// starting with "data-" is included the dataset.
-        /// <p>
+        /// <para />
         /// E.g., the element
         /// <c>&lt;div data-package="jsoup" data-language="Java" class="group"&gt;...</c>
         /// has the dataset
-        /// <c>package=jsoup, language=java</c>
-        /// .
-        /// <p>
+        /// <c>package=jsoup, language=java</c>.
+        /// <para />
         /// This map is a filtered view of the element's attribute map. Changes to one map (add, remove, update) are reflected
         /// in the other map.
-        /// <p>
+        /// <para />
         /// You can find elements that have data attributes using the
         /// <c>[^data-]</c>
         /// attribute key prefix selector.
@@ -224,10 +222,9 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Get a child element of this element, by its 0-based index number.</summary>
         /// <remarks>
         /// Get a child element of this element, by its 0-based index number.
-        /// <p>
+        /// <para />
         /// Note that an element can have both mixed Nodes and Elements as children. This method inspects
         /// a filtered list of children that are elements, and the index is based on that filtered list.
-        /// </p>
         /// </remarks>
         /// <param name="index">the index number of the element to retrieve</param>
         /// <returns>
@@ -242,11 +239,10 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Get this element's child elements.</summary>
         /// <remarks>
         /// Get this element's child elements.
-        /// <p>
+        /// <para />
         /// This is effectively a filter on
         /// <see cref="Node.ChildNodes()"/>
         /// to get Element nodes.
-        /// </p>
         /// </remarks>
         /// <returns>
         /// child elements. If this element has no children, returns an
@@ -268,7 +264,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Get this element's child text nodes.</summary>
         /// <remarks>
         /// Get this element's child text nodes. The list is unmodifiable but the text nodes may be manipulated.
-        /// <p>
+        /// <para />
         /// This is effectively a filter on
         /// <see cref="Node.ChildNodes()"/>
         /// to get Text nodes.
@@ -276,39 +272,39 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <returns>
         /// child text nodes. If this element has no text nodes, returns an
         /// empty list.
-        /// </p>
+        /// <para />
         /// For example, with the input HTML:
         /// <c>&lt;p&gt;One &lt;span&gt;Two&lt;/span&gt; Three &lt;br&gt; Four&lt;/p&gt;</c>
         /// with the
         /// <c>p</c>
         /// element selected:
-        /// <ul>
-        /// <li>
+        /// <list type="bullet">
+        /// <item><description>
         /// <c>p.text()</c>
         /// =
         /// <c>"One Two Three Four"</c>
-        /// </li>
-        /// <li>
+        /// </description></item>
+        /// <item><description>
         /// <c>p.ownText()</c>
         /// =
         /// <c>"One Three Four"</c>
-        /// </li>
-        /// <li>
+        /// </description></item>
+        /// <item><description>
         /// <c>p.children()</c>
         /// =
         /// <c>Elements[&lt;span&gt;, &lt;br&gt;]</c>
-        /// </li>
-        /// <li>
+        /// </description></item>
+        /// <item><description>
         /// <c>p.childNodes()</c>
         /// =
         /// <c>List&lt;Node&gt;["One ", &lt;span&gt;, " Three ", &lt;br&gt;, " Four"]</c>
-        /// </li>
-        /// <li>
+        /// </description></item>
+        /// <item><description>
         /// <c>p.textNodes()</c>
         /// =
         /// <c>List&lt;TextNode&gt;["One ", " Three ", " Four"]</c>
-        /// </li>
-        /// </ul>
+        /// </description></item>
+        /// </list>
         /// </returns>
         public virtual IList<TextNode> TextNodes() {
             IList<TextNode> textNodes = new List<TextNode>();
@@ -323,11 +319,10 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Get this element's child data nodes.</summary>
         /// <remarks>
         /// Get this element's child data nodes. The list is unmodifiable but the data nodes may be manipulated.
-        /// <p>
+        /// <para />
         /// This is effectively a filter on
         /// <see cref="Node.ChildNodes()"/>
         /// to get Data nodes.
-        /// </p>
         /// </remarks>
         /// <returns>
         /// child data nodes. If this element has no data nodes, returns an
@@ -347,32 +342,35 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>
         /// Find elements that match the
         /// <see cref="iText.StyledXmlParser.Jsoup.Select.Selector"/>
+        /// CSS query, with this element as the starting context.
+        /// </summary>
+        /// <remarks>
+        /// Find elements that match the
+        /// <see cref="iText.StyledXmlParser.Jsoup.Select.Selector"/>
         /// CSS query, with this element as the starting context. Matched elements
         /// may include this element, or any of its children.
-        /// <p>
+        /// <para />
         /// This method is generally more powerful to use than the DOM-type
         /// <c>getElementBy*</c>
         /// methods, because
         /// multiple filters can be combined, e.g.:
-        /// </p>
-        /// <ul>
-        /// <li>
+        /// <list type="bullet">
+        /// <item><description>
         /// <c>el.select("a[href]")</c>
         /// - finds links (
         /// <c>a</c>
         /// tags with
         /// <c>href</c>
         /// attributes)
-        /// <li>
+        /// </description></item>
+        /// <item><description>
         /// <c>el.select("a[href*=example.com]")</c>
         /// - finds links pointing to example.com (loosely)
-        /// </ul>
-        /// <p>
+        /// </description></item>
+        /// </list>
         /// See the query syntax documentation in
-        /// <see cref="iText.StyledXmlParser.Jsoup.Select.Selector"/>
-        /// .
-        /// </p>
-        /// </summary>
+        /// <see cref="iText.StyledXmlParser.Jsoup.Select.Selector"/>.
+        /// </remarks>
         /// <param name="cssQuery">
         /// a
         /// <see cref="iText.StyledXmlParser.Jsoup.Select.Selector"/>
@@ -380,8 +378,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// </param>
         /// <returns>elements that match the query (empty if none match)</returns>
         /// <seealso cref="iText.StyledXmlParser.Jsoup.Select.Selector"/>
-        /// <exception cref="iText.StyledXmlParser.Jsoup.Select.Selector.SelectorParseException">(unchecked) on an invalid CSS query.
-        ///     </exception>
         public virtual Elements Select(String cssQuery) {
             return Selector.Select(cssQuery, this);
         }
@@ -602,13 +598,12 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Get a CSS selector that will uniquely select this element.</summary>
         /// <remarks>
         /// Get a CSS selector that will uniquely select this element.
-        /// <p>
+        /// <para />
         /// If the element has an ID, returns #id;
         /// otherwise returns the parent (if any) CSS selector, followed by
         /// <literal>'&gt;'</literal>
         /// ,
         /// followed by a unique selector for the element (tag.class.class:nth-child(n)).
-        /// </p>
         /// </remarks>
         /// <returns>the CSS Path that can be used to retrieve the element in a selector.</returns>
         public virtual String CssSelector() {
@@ -666,13 +661,11 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// of the first
         /// <c>p</c>
         /// is the second
-        /// <c>p</c>
-        /// .
-        /// <p>
+        /// <c>p</c>.
+        /// <para />
         /// This is similar to
         /// <see cref="Node.NextSibling()"/>
         /// , but specifically finds only Elements
-        /// </p>
         /// </remarks>
         /// <returns>the next element, or null if there is no next element</returns>
         /// <seealso cref="PreviousElementSibling()"/>
@@ -769,7 +762,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Find an element by ID, including or under this element.</summary>
         /// <remarks>
         /// Find an element by ID, including or under this element.
-        /// <p>
+        /// <para />
         /// Note that this finds the first matching ID, starting with this element. If you search down from a different
         /// starting point, it is possible to find a different element by ID. For unique element by ID within a Document,
         /// use
@@ -791,13 +784,12 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Find elements that have this class, including or under this element.</summary>
         /// <remarks>
         /// Find elements that have this class, including or under this element. Case insensitive.
-        /// <p>
+        /// <para />
         /// Elements can have multiple classes (e.g.
         /// <c>&lt;div class="header round first"&gt;</c>
         /// . This method
         /// checks each class, so you can find the above with
-        /// <c>el.getElementsByClass("header");</c>
-        /// .
+        /// <c>el.getElementsByClass("header");</c>.
         /// </remarks>
         /// <param name="className">the name of the class to search for.</param>
         /// <returns>elements with the supplied class name, empty if none</returns>
@@ -895,8 +887,11 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
 
         /// <summary>Find elements that have attributes whose values match the supplied regular expression.</summary>
         /// <param name="key">name of the attribute</param>
-        /// <param name="regex">regular expression to match against attribute values. You can use <a href="http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded">embedded flags</a> (such as (?i) and (?m) to control regex options.
-        ///     </param>
+        /// <param name="regex">
+        /// regular expression to match against attribute values.
+        /// You can use <a href="http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded">embedded flags</a>
+        /// (such as (?i) and (?m) to control regex options.
+        /// </param>
         /// <returns>elements that have attributes matching this regular expression</returns>
         public virtual Elements GetElementsByAttributeValueMatching(String key, String regex) {
             Regex pattern;
@@ -963,8 +958,11 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         }
 
         /// <summary>Find elements whose text matches the supplied regular expression.</summary>
-        /// <param name="regex">regular expression to match text against. You can use <a href="http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded">embedded flags</a> (such as (?i) and (?m) to control regex options.
-        ///     </param>
+        /// <param name="regex">
+        /// regular expression to match text against.
+        /// You can use <a href="http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded">embedded flags</a>
+        /// (such as (?i) and (?m) to control regex options.
+        /// </param>
         /// <returns>elements matching the supplied regular expression.</returns>
         /// <seealso cref="Text()"/>
         public virtual Elements GetElementsMatchingText(String regex) {
@@ -987,8 +985,11 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         }
 
         /// <summary>Find elements whose text matches the supplied regular expression.</summary>
-        /// <param name="regex">regular expression to match text against. You can use <a href="http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded">embedded flags</a> (such as (?i) and (?m) to control regex options.
-        ///     </param>
+        /// <param name="regex">
+        /// regular expression to match text against.
+        /// You can use <a href="http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded">embedded flags</a>
+        /// (such as (?i) and (?m) to control regex options.
+        /// </param>
         /// <returns>elements matching the supplied regular expression.</returns>
         /// <seealso cref="OwnText()"/>
         public virtual Elements GetElementsMatchingOwnText(String regex) {
@@ -1011,7 +1012,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Gets the combined text of this element and all its children.</summary>
         /// <remarks>
         /// Gets the combined text of this element and all its children. Whitespace is normalized and trimmed.
-        /// <p>
+        /// <para />
         /// For example, given HTML
         /// <c>&lt;p&gt;Hello  &lt;b&gt;there&lt;/b&gt; now! &lt;/p&gt;</c>
         /// ,
@@ -1024,12 +1025,12 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <seealso cref="TextNodes()"/>
         public virtual String Text() {
             StringBuilder accum = new StringBuilder();
-            new NodeTraversor(new _NodeVisitor_952(accum)).Traverse(this);
+            new NodeTraversor(new _NodeVisitor_955(accum)).Traverse(this);
             return accum.ToString().Trim();
         }
 
-        private sealed class _NodeVisitor_952 : NodeVisitor {
-            public _NodeVisitor_952(StringBuilder accum) {
+        private sealed class _NodeVisitor_955 : NodeVisitor {
+            public _NodeVisitor_955(StringBuilder accum) {
                 this.accum = accum;
             }
 
@@ -1058,7 +1059,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// <summary>Gets the text owned by this element only; does not get the combined text of all children.</summary>
         /// <remarks>
         /// Gets the text owned by this element only; does not get the combined text of all children.
-        /// <p>
+        /// <para />
         /// For example, given HTML
         /// <c>&lt;p&gt;Hello &lt;b&gt;there&lt;/b&gt; now!&lt;/p&gt;</c>
         /// ,
@@ -1069,8 +1070,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// whereas
         /// <c>p.text()</c>
         /// returns
-        /// <c>"Hello there now!"</c>
-        /// .
+        /// <c>"Hello there now!"</c>.
         /// Note that the text within the
         /// <c>b</c>
         /// element is not returned, as it is not a direct child of the
@@ -1194,7 +1194,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
         /// </summary>
         /// <remarks>
         /// Gets the literal value of this element's "class" attribute, which may include multiple class names, space
-        /// separated. (E.g. on <code>&lt;div class="header gray"&gt;</code> returns, "<code>header gray</code>")
+        /// separated. (E.g. on <c>&lt;div class="header gray"&gt;</c> returns, "<c>header gray</c>")
         /// </remarks>
         /// <returns>The literal class attribute, or <b>empty string</b> if no class attribute set.</returns>
         public virtual String ClassName() {
@@ -1337,7 +1337,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             return this;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         internal override void OuterHtmlHead(StringBuilder accum, int depth, OutputSettings @out) {
             if (@out.PrettyPrint() && (tag.FormatAsBlock() || (Parent() != null && ((iText.StyledXmlParser.Jsoup.Nodes.Element
                 )Parent()).Tag().FormatAsBlock()) || @out.Outline())) {
@@ -1354,7 +1353,7 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             attributes.Html(accum, @out);
             // selfclosing includes unknown tags, isEmpty defines tags that are always empty
             if (childNodes.IsEmpty() && tag.IsSelfClosing()) {
-                if (@out.Syntax() == Syntax.html && tag.IsEmpty()) {
+                if (@out.Syntax() == iText.StyledXmlParser.Jsoup.Nodes.Syntax.html && tag.IsEmpty()) {
                     accum.Append('>');
                 }
                 else {
@@ -1367,7 +1366,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             }
         }
 
-        /// <exception cref="System.IO.IOException"/>
         internal override void OuterHtmlTail(StringBuilder accum, int depth, OutputSettings @out) {
             if (!(childNodes.IsEmpty() && tag.IsSelfClosing())) {
                 if (@out.PrettyPrint() && (!childNodes.IsEmpty() && (tag.FormatAsBlock() || (@out.Outline() && (childNodes

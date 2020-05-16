@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -54,10 +54,10 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
 
         private const char ESC = '\\';
 
+        // escape char for chomp balanced.
         /// <summary>Create a new TokenQueue.</summary>
         /// <param name="data">string of data to back queue.</param>
         public TokenQueue(String data) {
-            // escape char for chomp balanced.
             Validate.NotNull(data);
             queue = data;
         }
@@ -182,7 +182,7 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
         /// <remarks>
         /// Consumes the supplied sequence of the queue. If the queue does not start with the supplied sequence, will
         /// throw an illegal state exception -- but you should be running match() against that condition.
-        /// <p>
+        /// <para />
         /// Case insensitive.
         /// </remarks>
         /// <param name="seq">sequence to remove from head of queue.</param>
@@ -265,7 +265,7 @@ namespace iText.StyledXmlParser.Jsoup.Parser {
         ///     </summary>
         /// <remarks>
         /// Pulls a string off the queue (like consumeTo), and then pulls off the matched string (but does not return it).
-        /// <p>
+        /// <para />
         /// If the queue runs out of characters before finding the seq, will return as much as it can (and queue will go
         /// isEmpty() == true).
         /// </remarks>

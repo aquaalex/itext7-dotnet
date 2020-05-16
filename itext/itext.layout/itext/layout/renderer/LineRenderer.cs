@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -55,12 +55,16 @@ using iText.Layout.Properties;
 
 namespace iText.Layout.Renderer {
     public class LineRenderer : AbstractRenderer {
+        // AbstractRenderer.EPS is not enough here
         private const float MIN_MAX_WIDTH_CORRECTION_EPS = 0.001f;
+
+        private static readonly ILog logger = LogManager.GetLogger(typeof(LineRenderer));
 
         protected internal float maxAscent;
 
         protected internal float maxDescent;
 
+        // bidi levels
         protected internal byte[] levels;
 
         private float maxTextAscent;
@@ -71,8 +75,6 @@ namespace iText.Layout.Renderer {
 
         private float maxBlockDescent;
 
-        // AbstractRenderer.EPS is not enough here
-        // bidi levels
         public override LayoutResult Layout(LayoutContext layoutContext) {
             Rectangle layoutBox = layoutContext.GetArea().GetBBox().Clone();
             bool wasParentsHeightClipped = layoutContext.IsClippedHeight();
@@ -97,9 +99,18 @@ namespace iText.Layout.Renderer {
             }
             occupiedArea = new LayoutArea(layoutContext.GetArea().GetPageNumber(), layoutBox.Clone().MoveUp(layoutBox.
                 GetHeight()).SetHeight(0).SetWidth(0));
+            UpdateChildrenParent();
             float curWidth = 0;
-            maxAscent = 0;
-            maxDescent = 0;
+            if (RenderingMode.HTML_MODE.Equals(this.GetProperty<RenderingMode?>(Property.RENDERING_MODE)) && HasChildRendererInHtmlMode
+                ()) {
+                float[] ascenderDescender = LineHeightHelper.GetActualAscenderDescender(this);
+                maxAscent = ascenderDescender[0];
+                maxDescent = ascenderDescender[1];
+            }
+            else {
+                maxAscent = 0;
+                maxDescent = 0;
+            }
             maxTextAscent = 0;
             maxTextDescent = 0;
             maxBlockAscent = -1e20f;
@@ -113,7 +124,6 @@ namespace iText.Layout.Renderer {
             else {
                 widthHandler = new MaxSumWidthHandler(minMaxWidth);
             }
-            UpdateChildrenParent();
             ResolveChildrenFonts();
             int totalNumberOfTrimmedGlyphs = TrimFirst();
             BaseDirection? baseDirection = ApplyOtf();
@@ -301,8 +311,9 @@ namespace iText.Layout.Renderer {
                             }
                             bbox.SetWidth(inlineBlockWidth);
                             if (childBlockMinMaxWidth.GetMinWidth() > bbox.GetWidth()) {
-                                LogManager.GetLogger(typeof(LineRenderer)).Warn(iText.IO.LogMessageConstant.INLINE_BLOCK_ELEMENT_WILL_BE_CLIPPED
-                                    );
+                                if (logger.IsWarnEnabled) {
+                                    logger.Warn(iText.IO.LogMessageConstant.INLINE_BLOCK_ELEMENT_WILL_BE_CLIPPED);
+                                }
                                 childRenderer.SetProperty(Property.FORCED_PLACEMENT, true);
                             }
                         }
@@ -320,8 +331,8 @@ namespace iText.Layout.Renderer {
                     }
                     childResult = childRenderer.Layout(new LayoutContext(new LayoutArea(layoutContext.GetArea().GetPageNumber(
                         ), bbox), wasParentsHeightClipped));
+                    // it means that we've already increased layout area by MIN_MAX_WIDTH_CORRECTION_EPS
                     if (childResult is MinMaxWidthLayoutResult && null != childBlockMinMaxWidth) {
-                        // it means that we've already increased layout area by MIN_MAX_WIDTH_CORRECTION_EPS
                         MinMaxWidth childResultMinMaxWidth = ((MinMaxWidthLayoutResult)childResult).GetMinMaxWidth();
                         childResultMinMaxWidth.SetChildrenMaxWidth(childResultMinMaxWidth.GetChildrenMaxWidth() + MIN_MAX_WIDTH_CORRECTION_EPS
                             );
@@ -355,8 +366,16 @@ namespace iText.Layout.Renderer {
                 float childAscent = 0;
                 float childDescent = 0;
                 if (childRenderer is ILeafElementRenderer && childResult.GetStatus() != LayoutResult.NOTHING) {
-                    childAscent = ((ILeafElementRenderer)childRenderer).GetAscent();
-                    childDescent = ((ILeafElementRenderer)childRenderer).GetDescent();
+                    if (RenderingMode.HTML_MODE.Equals(childRenderer.GetProperty<RenderingMode?>(Property.RENDERING_MODE)) && 
+                        childRenderer is TextRenderer) {
+                        float[] ascenderDescender = LineHeightHelper.GetActualAscenderDescender((TextRenderer)childRenderer);
+                        childAscent = ascenderDescender[0];
+                        childDescent = ascenderDescender[1];
+                    }
+                    else {
+                        childAscent = ((ILeafElementRenderer)childRenderer).GetAscent();
+                        childDescent = ((ILeafElementRenderer)childRenderer).GetDescent();
+                    }
                 }
                 else {
                     if (isInlineBlockChild && childResult.GetStatus() != LayoutResult.NOTHING) {
@@ -479,8 +498,9 @@ namespace iText.Layout.Renderer {
                             else {
                                 if (isInlineBlockChild && childResult.GetOverflowRenderer().GetChildRenderers().Count == 0 && childResult.
                                     GetStatus() == LayoutResult.PARTIAL) {
-                                    LogManager.GetLogger(typeof(LineRenderer)).Warn(iText.IO.LogMessageConstant.INLINE_BLOCK_ELEMENT_WILL_BE_CLIPPED
-                                        );
+                                    if (logger.IsWarnEnabled) {
+                                        logger.Warn(iText.IO.LogMessageConstant.INLINE_BLOCK_ELEMENT_WILL_BE_CLIPPED);
+                                    }
                                 }
                                 else {
                                     split[1].childRenderers.Add(childResult.GetOverflowRenderer());
@@ -652,48 +672,7 @@ namespace iText.Layout.Renderer {
                             offset = initialPos;
                             newRenderer.line.SetGlyphs(replacementGlyphs);
                         }
-                        float currentXPos = occupiedArea.GetBBox().GetLeft();
-                        foreach (IRenderer child in children) {
-                            float currentWidth;
-                            if (child is TextRenderer) {
-                                currentWidth = ((TextRenderer)child).CalculateLineWidth();
-                                UnitValue[] margins = ((TextRenderer)child).GetMargins();
-                                if (!margins[1].IsPointValue()) {
-                                    ILog logger = LogManager.GetLogger(typeof(LineRenderer));
-                                    logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, Property
-                                        .MARGIN_RIGHT));
-                                }
-                                if (!margins[3].IsPointValue()) {
-                                    ILog logger = LogManager.GetLogger(typeof(LineRenderer));
-                                    logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, Property
-                                        .MARGIN_LEFT));
-                                }
-                                UnitValue[] paddings = ((TextRenderer)child).GetPaddings();
-                                if (!paddings[1].IsPointValue()) {
-                                    ILog logger = LogManager.GetLogger(typeof(LineRenderer));
-                                    logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, Property
-                                        .PADDING_RIGHT));
-                                }
-                                if (!paddings[3].IsPointValue()) {
-                                    ILog logger = LogManager.GetLogger(typeof(LineRenderer));
-                                    logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, Property
-                                        .PADDING_LEFT));
-                                }
-                                currentWidth += margins[1].GetValue() + margins[3].GetValue() + paddings[1].GetValue() + paddings[3].GetValue
-                                    ();
-                                ((TextRenderer)child).occupiedArea.GetBBox().SetX(currentXPos).SetWidth(currentWidth);
-                            }
-                            else {
-                                currentWidth = child.GetOccupiedArea().GetBBox().GetWidth();
-                                if (child is AbstractRenderer) {
-                                    child.Move(currentXPos - child.GetOccupiedArea().GetBBox().GetX(), 0);
-                                }
-                                else {
-                                    child.GetOccupiedArea().GetBBox().SetX(currentXPos);
-                                }
-                            }
-                            currentXPos += currentWidth;
-                        }
+                        AdjustChildPositionsAfterReordering(children, occupiedArea.GetBBox().GetLeft());
                     }
                     if (result.GetStatus() == LayoutResult.PARTIAL) {
                         LineRenderer overflow = (LineRenderer)result.GetOverflowRenderer();
@@ -776,8 +755,8 @@ namespace iText.Layout.Renderer {
             int numberOfSpaces = GetNumberOfSpaces();
             int baseCharsCount = BaseCharactersCount();
             float baseFactor = freeWidth / (ratio * numberOfSpaces + (1 - ratio) * (baseCharsCount - 1));
+            //Prevent a NaN when trying to justify a single word with spacing_ratio == 1.0
             if (float.IsInfinity(baseFactor)) {
-                //Prevent a NaN when trying to justify a single word with spacing_ratio == 1.0
                 baseFactor = 0;
             }
             float wordSpacing = ratio * baseFactor;
@@ -823,6 +802,7 @@ namespace iText.Layout.Renderer {
         /// Gets the total lengths of characters in this line. Other elements (images, tables) are not taken
         /// into account.
         /// </remarks>
+        /// <returns>the total lengths of characters in this line.</returns>
         protected internal virtual int Length() {
             int length = 0;
             foreach (IRenderer child in childRenderers) {
@@ -833,8 +813,8 @@ namespace iText.Layout.Renderer {
             return length;
         }
 
-        /// <summary>Returns the number of base characters, i.e.</summary>
-        /// <remarks>Returns the number of base characters, i.e. non-mark characters</remarks>
+        /// <summary>Returns the number of base characters, i.e. non-mark characters</summary>
+        /// <returns>the number of base non-mark characters</returns>
         protected internal virtual int BaseCharactersCount() {
             int count = 0;
             foreach (IRenderer child in childRenderers) {
@@ -941,6 +921,15 @@ namespace iText.Layout.Renderer {
             return result.GetMinMaxWidth();
         }
 
+        internal virtual bool HasChildRendererInHtmlMode() {
+            foreach (IRenderer childRenderer in childRenderers) {
+                if (RenderingMode.HTML_MODE.Equals(childRenderer.GetProperty<RenderingMode?>(Property.RENDERING_MODE))) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         internal virtual float GetTopLeadingIndent(Leading leading) {
             switch (leading.GetLeadingType()) {
                 case Leading.FIXED: {
@@ -951,7 +940,6 @@ namespace iText.Layout.Renderer {
                 case Leading.MULTIPLIED: {
                     UnitValue fontSize = this.GetProperty<UnitValue>(Property.FONT_SIZE, UnitValue.CreatePointValue(0f));
                     if (!fontSize.IsPointValue()) {
-                        ILog logger = LogManager.GetLogger(typeof(LineRenderer));
                         logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, Property
                             .FONT_SIZE));
                     }
@@ -983,7 +971,6 @@ namespace iText.Layout.Renderer {
                 case Leading.MULTIPLIED: {
                     UnitValue fontSize = this.GetProperty<UnitValue>(Property.FONT_SIZE, UnitValue.CreatePointValue(0f));
                     if (!fontSize.IsPointValue()) {
-                        ILog logger = LogManager.GetLogger(typeof(LineRenderer));
                         logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, Property
                             .FONT_SIZE));
                     }
@@ -1005,6 +992,44 @@ namespace iText.Layout.Renderer {
             }
         }
 
+        internal static void AdjustChildPositionsAfterReordering(IList<IRenderer> children, float initialXPos) {
+            float currentXPos = initialXPos;
+            foreach (IRenderer child in children) {
+                if (!FloatingHelper.IsRendererFloating(child)) {
+                    float currentWidth;
+                    if (child is TextRenderer) {
+                        currentWidth = ((TextRenderer)child).CalculateLineWidth();
+                        UnitValue[] margins = ((TextRenderer)child).GetMargins();
+                        if (!margins[1].IsPointValue() && logger.IsErrorEnabled) {
+                            logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, "right margin"
+                                ));
+                        }
+                        if (!margins[3].IsPointValue() && logger.IsErrorEnabled) {
+                            logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, "left margin"
+                                ));
+                        }
+                        UnitValue[] paddings = ((TextRenderer)child).GetPaddings();
+                        if (!paddings[1].IsPointValue() && logger.IsErrorEnabled) {
+                            logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, "right padding"
+                                ));
+                        }
+                        if (!paddings[3].IsPointValue() && logger.IsErrorEnabled) {
+                            logger.Error(MessageFormatUtil.Format(iText.IO.LogMessageConstant.PROPERTY_IN_PERCENTS_NOT_SUPPORTED, "left padding"
+                                ));
+                        }
+                        currentWidth += margins[1].GetValue() + margins[3].GetValue() + paddings[1].GetValue() + paddings[3].GetValue
+                            ();
+                        ((TextRenderer)child).occupiedArea.GetBBox().SetX(currentXPos).SetWidth(currentWidth);
+                    }
+                    else {
+                        currentWidth = child.GetOccupiedArea().GetBBox().GetWidth();
+                        child.Move(currentXPos - child.GetOccupiedArea().GetBBox().GetX(), 0);
+                    }
+                    currentXPos += currentWidth;
+                }
+            }
+        }
+
         private LineRenderer[] SplitNotFittingFloat(int childPos, LayoutResult childResult) {
             LineRenderer[] split = Split();
             split[0].childRenderers.AddAll(childRenderers.SubList(0, childPos));
@@ -1020,8 +1045,8 @@ namespace iText.Layout.Renderer {
                 ()) {
                 return;
             }
-            bool ltr = true;
             // TODO handle it
+            bool ltr = true;
             float floatWidth = justPlacedFloatBox.GetWidth();
             if (kidFloatPropertyVal.Equals(FloatPropertyValue.LEFT)) {
                 layoutBox.SetWidth(layoutBox.GetWidth() - floatWidth).MoveRight(floatWidth);

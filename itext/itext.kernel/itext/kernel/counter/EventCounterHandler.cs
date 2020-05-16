@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -50,6 +50,10 @@ using iText.Kernel.Counter.Event;
 namespace iText.Kernel.Counter {
     /// <summary>
     /// Manager that works with
+    /// <see cref="IEventCounterFactory"/>.
+    /// </summary>
+    /// <remarks>
+    /// Manager that works with
     /// <see cref="IEventCounterFactory"/>
     /// . Create
     /// <see cref="EventCounter"/>
@@ -59,7 +63,7 @@ namespace iText.Kernel.Counter {
     /// <see cref="OnEvent(iText.Kernel.Counter.Event.IEvent, iText.Kernel.Counter.Event.IMetaInfo, System.Type{T})
     ///     "/>
     /// method.
-    /// <p>
+    /// <para />
     /// You can implement your own
     /// <see cref="IEventCounterFactory"/>
     /// and register them with
@@ -69,14 +73,14 @@ namespace iText.Kernel.Counter {
     /// and register it with
     /// <see cref="SimpleEventCounterFactory"/>
     /// like this:
-    /// <code>EventCounterManager.getInstance().register(new SimpleEventCounterFactory(new SystemOutEventCounter());</code>
+    /// <c>EventCounterHandler.getInstance().register(new SimpleEventCounterFactory(new SystemOutEventCounter());</c>
     /// <see cref="SystemOutEventCounter"/>
     /// is just an example of a
     /// <see cref="EventCounter"/>
     /// implementation.
-    /// <p>
+    /// <para />
     /// This functionality can be used to create metrics in a SaaS context.
-    /// </summary>
+    /// </remarks>
     public class EventCounterHandler {
         /// <summary>The singleton instance.</summary>
         private static readonly iText.Kernel.Counter.EventCounterHandler instance = new iText.Kernel.Counter.EventCounterHandler
@@ -90,7 +94,7 @@ namespace iText.Kernel.Counter {
             Register(new SimpleEventCounterFactory(new DefaultEventCounter()));
         }
 
-        /// <summary>Returns the singleton instance of the factory.</summary>
+        /// <returns>the singleton instance of the factory.</returns>
         public static iText.Kernel.Counter.EventCounterHandler GetInstance() {
             return instance;
         }
@@ -103,9 +107,17 @@ namespace iText.Kernel.Counter {
         /// instance
         /// and count the event.
         /// </summary>
-        /// <param name="event"/>
-        /// <param name="metaInfo"/>
-        /// <param name="caller"/>
+        /// <param name="event">
+        /// 
+        /// <see cref="iText.Kernel.Counter.Event.IEvent"/>
+        /// to be counted
+        /// </param>
+        /// <param name="metaInfo">
+        /// 
+        /// <see cref="iText.Kernel.Counter.Event.IMetaInfo"/>
+        /// object that can holds information about instance that throws the event
+        /// </param>
+        /// <param name="caller">the class that throws the event</param>
         public virtual void OnEvent(IEvent @event, IMetaInfo metaInfo, Type caller) {
             IContext context = null;
             bool contextInitialized = false;
@@ -133,9 +145,13 @@ namespace iText.Kernel.Counter {
 
         /// <summary>
         /// Register new
+        /// <see cref="IEventCounterFactory"/>.
+        /// </summary>
+        /// <remarks>
+        /// Register new
         /// <see cref="IEventCounterFactory"/>
         /// . Does nothing if same factory was already registered.
-        /// </summary>
+        /// </remarks>
         /// <param name="factory">
         /// 
         /// <see cref="IEventCounterFactory"/>
@@ -148,10 +164,36 @@ namespace iText.Kernel.Counter {
         }
 
         /// <summary>
+        /// Checks whether the specified
+        /// <see cref="IEventCounterFactory"/>
+        /// is registered.
+        /// </summary>
+        /// <param name="factory">
+        /// 
+        /// <see cref="IEventCounterFactory"/>
+        /// to be checked
+        /// </param>
+        /// <returns>
+        /// 
+        /// <see langword="true"/>
+        /// if the specified factory is registered
+        /// </returns>
+        public virtual bool IsRegistered(IEventCounterFactory factory) {
+            if (factory != null) {
+                return factories.ContainsKey(factory);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Unregister specified
+        /// <see cref="IEventCounterFactory"/>.
+        /// </summary>
+        /// <remarks>
         /// Unregister specified
         /// <see cref="IEventCounterFactory"/>
         /// . Does nothing if this factory wasn't registered first.
-        /// </summary>
+        /// </remarks>
         /// <param name="factory">
         /// 
         /// <see cref="IEventCounterFactory"/>

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -130,13 +130,13 @@ namespace iText.Svg.Processors.Impl.Font {
         /// </param>
         /// <returns>true, if supported or unrecognized.</returns>
         private bool SupportedFontFormat(FontFace.FontFormat format) {
+            //TODO (DEVSIX-2230) code duplication
             switch (format) {
                 case FontFace.FontFormat.None:
                 case FontFace.FontFormat.TrueType:
                 case FontFace.FontFormat.OpenType:
                 case FontFace.FontFormat.WOFF:
                 case FontFace.FontFormat.WOFF2: {
-                    //TODO (RND-1065) code duplication
                     return true;
                 }
 

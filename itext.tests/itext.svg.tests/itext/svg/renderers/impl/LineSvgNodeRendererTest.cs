@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -53,7 +53,7 @@ using iText.Test;
 using iText.Test.Attributes;
 
 namespace iText.Svg.Renderers.Impl {
-    public class LineSvgNodeRendererTest {
+    public class LineSvgNodeRendererTest : SvgIntegrationTest {
         public static readonly String sourceFolder = iText.Test.TestUtil.GetParentProjectDirectory(NUnit.Framework.TestContext
             .CurrentContext.TestDirectory) + "/resources/itext/svg/renderers/impl/LineSvgNodeRendererTest/";
 
@@ -65,8 +65,6 @@ namespace iText.Svg.Renderers.Impl {
             ITextTest.CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void LineRendererTest() {
             String filename = "lineSvgRendererTest.pdf";
@@ -90,8 +88,6 @@ namespace iText.Svg.Renderers.Impl {
                  + "cmp_" + filename, destinationFolder, "diff_"));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void LineWithEmpyAttributesTest() {
             String filename = "lineWithEmpyAttributesTest.pdf";
@@ -130,9 +126,8 @@ namespace iText.Svg.Renderers.Impl {
 ;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
-        [LogMessage(iText.StyledXmlParser.LogMessageConstant.UNKNOWN_ABSOLUTE_METRIC_LENGTH_PARSED)]
+        [LogMessage(iText.StyledXmlParser.LogMessageConstant.UNKNOWN_ABSOLUTE_METRIC_LENGTH_PARSED, Count = 2)]
         public virtual void InvalidAttributeTest02() {
             IDictionary<String, String> lineProperties = new Dictionary<String, String>();
             lineProperties.Put("x1", "100");
@@ -152,8 +147,6 @@ namespace iText.Svg.Renderers.Impl {
             doc.Close();
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void EmptyPointsListTest() {
             String filename = "lineEmptyPointsListTest.pdf";

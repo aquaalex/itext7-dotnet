@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,18 +52,23 @@ using NUnit.Framework.Interfaces;
 namespace iText.Test {
     [AttributeUsage(AttributeTargets.Class)]
     public class LogListener : TestActionAttribute {
-        private CapturingLoggerFactoryAdapter adapter;
+        private static ITextMemoryAddapter adapter;
+
+        private ILoggerFactoryAdapter defaultLogAdapter;
 
         static LogListener() {
-            LogManager.Adapter = new ITextMemoryAddapter();
+            adapter = new ITextMemoryAddapter();
         }
 
         public override void BeforeTest(ITest testDetails) {
-            Init();
+            defaultLogAdapter = LogManager.Adapter;
+            LogManager.Adapter = adapter;
+            Init(testDetails);
         }
 
         public override void AfterTest(ITest testDetails) {
             CheckLogMessages(testDetails);
+            LogManager.Adapter = defaultLogAdapter;
         }
 
         public override ActionTargets Targets {
@@ -76,7 +81,7 @@ namespace iText.Test {
             if (attributes.Length > 0) {
                 for (int i = 0; i < attributes.Length; i++) {
                     LogMessageAttribute logMessage = attributes[i];
-                    int foundCount = Contains(logMessage.GetMessageTemplate());
+                    int foundCount = Contains(logMessage);
                     if (foundCount != logMessage.Count && !logMessage.Ignore) {
                         LogListenerHelper.FailWrongMessageCount(logMessage.Count, foundCount, logMessage.GetMessageTemplate(), testDetails);
                     } else {
@@ -90,20 +95,46 @@ namespace iText.Test {
             }
         }
 
-        private int Contains(String loggingStatement) {
+        private int Contains(LogMessageAttribute loggingStatement) {
             IList<CapturingLoggerEvent> eventList = adapter.LoggerEvents;
             int index = 0;
             for (int i = 0; i < eventList.Count; i++) {
-                if (LogListenerHelper.EqualsMessageByTemplate(eventList[i].RenderedMessage, loggingStatement)) {
+                if (IsLevelCompatible(loggingStatement.LogLevel, eventList[i].Level) 
+                    && LogListenerHelper.EqualsMessageByTemplate(eventList[i].RenderedMessage, loggingStatement.GetMessageTemplate())) {
                     index++;
                 }
             }
             return index;
         }
+        
+        private bool IsLevelCompatible(int logMessageLevel, LogLevel eventLevel) {
+            switch (logMessageLevel) {
+                case LogLevelConstants.UNKNOWN:
+                    return eventLevel >= LogLevel.Warn;
+                case LogLevelConstants.ERROR:
+                    return eventLevel == LogLevel.Error;
+                case LogLevelConstants.WARN:
+                    return eventLevel == LogLevel.Warn;
+                case LogLevelConstants.INFO:
+                    return eventLevel == LogLevel.Info;
+                case LogLevelConstants.DEBUG:
+                    return eventLevel == LogLevel.Debug;
+                default:
+                    return false;
+            }
+        }
 
-        private void Init() {
-            adapter = LogManager.Adapter as CapturingLoggerFactoryAdapter;
+        private void Init(ITest testDetails) {
             adapter.Clear();
+            LogMessageAttribute[] attributes = LogListenerHelper.GetTestAttributes<LogMessageAttribute>(testDetails);
+            if (attributes.Length > 0) {
+                HashSet<String> expectedTemplates = new HashSet<string>();
+                for (int i = 0; i < attributes.Length; i++) {
+                    LogMessageAttribute logMessage = attributes[i];
+                    expectedTemplates.Add(logMessage.GetMessageTemplate());
+                }
+                adapter.SetExpectedTemplates(expectedTemplates);
+            }
         }
 
         private int GetSize() {

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -56,10 +56,6 @@ namespace iText.Kernel.Pdf {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
-        /// <exception cref="Javax.Xml.Parsers.ParserConfigurationException"/>
-        /// <exception cref="Org.Xml.Sax.SAXException"/>
         [NUnit.Framework.Test]
         public virtual void ReaderTurnsCorrectlyNotWellFormattedValueInDictionary_01() {
             String inPath = sourceFolder + "documentWithMalformedNumberOnDictionary.pdf";
@@ -85,10 +81,6 @@ namespace iText.Kernel.Pdf {
             NUnit.Framework.Assert.AreEqual(EXPECTED, result);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
-        /// <exception cref="Javax.Xml.Parsers.ParserConfigurationException"/>
-        /// <exception cref="Org.Xml.Sax.SAXException"/>
         [NUnit.Framework.Test]
         public virtual void ReaderTurnsCorrectlyNotWellFormattedValueInDictionary_02() {
             String inPath = sourceFolder + "documentWithMalformedNumberOnDictionary2.pdf";
@@ -114,7 +106,6 @@ namespace iText.Kernel.Pdf {
             NUnit.Framework.Assert.AreEqual(EXPECTED, result);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private String GetItalicAngleValue(String inPath) {
             String result = "";
             PdfReader pdfR = new PdfReader(inPath);

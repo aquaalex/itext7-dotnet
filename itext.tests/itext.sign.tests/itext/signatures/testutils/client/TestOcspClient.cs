@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -55,14 +55,12 @@ namespace iText.Signatures.Testutils.Client {
         private readonly IDictionary<String, TestOcspResponseBuilder> issuerIdToResponseBuilder = new LinkedDictionary
             <String, TestOcspResponseBuilder>();
 
-        /// <exception cref="Org.BouncyCastle.Security.Certificates.CertificateEncodingException"/>
         public virtual TestOcspClient AddBuilderForCertIssuer(X509Certificate cert, ICipherParameters privateKey) {
             issuerIdToResponseBuilder.Put(cert.SerialNumber.ToString(16), new TestOcspResponseBuilder(cert, privateKey
                 ));
             return this;
         }
 
-        /// <exception cref="Org.BouncyCastle.Security.Certificates.CertificateEncodingException"/>
         public virtual TestOcspClient AddBuilderForCertIssuer(X509Certificate cert, TestOcspResponseBuilder builder
             ) {
             issuerIdToResponseBuilder.Put(cert.SerialNumber.ToString(16), builder);

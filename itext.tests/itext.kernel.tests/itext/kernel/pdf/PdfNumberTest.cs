@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -49,8 +49,8 @@ namespace iText.Kernel.Pdf {
         [LogMessage(iText.IO.LogMessageConstant.ATTEMPT_PROCESS_NAN)]
         public virtual void TestNaN() {
             PdfNumber number = new PdfNumber(double.NaN);
-            byte[] expected = new byte[] { 48 };
             // code for "0"
+            byte[] expected = new byte[] { 48 };
             NUnit.Framework.Assert.AreEqual(expected, number.GetInternalContent());
         }
     }

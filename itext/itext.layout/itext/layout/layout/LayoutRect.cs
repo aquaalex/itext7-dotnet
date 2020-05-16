@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -43,6 +43,7 @@ address: sales@itextpdf.com
 */
 namespace com.itextpdf.layout.layout
 {
+	[System.ObsoleteAttribute(@"Will be removed in iText 7.2. Use iText.Kernel.Geom.Rectangle instead.")]
 	public class LayoutRect
 	{
 		protected internal float x;

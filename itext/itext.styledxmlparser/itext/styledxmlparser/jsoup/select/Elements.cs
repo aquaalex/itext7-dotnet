@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,6 @@ namespace iText.StyledXmlParser.Jsoup.Select {
     /// object, use the
     /// <see cref="iText.StyledXmlParser.Jsoup.Nodes.Element.Select(System.String)"/>
     /// method.
-    /// </p>
     /// </summary>
     /// <author>Jonathan Hedley, jonathan@hedley.net</author>
     public class Elements : List<Element> {
@@ -398,17 +397,13 @@ namespace iText.StyledXmlParser.Jsoup.Select {
         /// dropping the elements but keeping their children.
         /// <p>
         /// This is useful for e.g removing unwanted formatting elements but keeping their contents.
-        /// </p>
         /// E.g. with HTML: <p>
         /// <c>&lt;div&gt;&lt;font&gt;One&lt;/font&gt; &lt;font&gt;&lt;a href="/"&gt;Two&lt;/a&gt;&lt;/font&gt;&lt;/div&gt;
         ///     </c>
-        /// </p>
         /// <p>
         /// <c>doc.select("font").unwrap();</c>
-        /// </p>
         /// <p>HTML =
         /// <c>&lt;div&gt;One &lt;a href="/"&gt;Two&lt;/a&gt;&lt;/div&gt;</c>
-        /// </p>
         /// </remarks>
         /// <returns>this (for chaining)</returns>
         /// <seealso cref="iText.StyledXmlParser.Jsoup.Nodes.Node.Unwrap()"/>

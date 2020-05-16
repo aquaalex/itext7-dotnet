@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -79,10 +79,17 @@ namespace iText.Kernel.Pdf {
         private SecurityHandler securityHandler;
 
         /// <summary>Creates the encryption.</summary>
-        /// <remarks>
-        /// Creates the encryption. The userPassword and the
-        /// ownerPassword can be null or have zero length. In this case the ownerPassword
-        /// is replaced by a random string. The open permissions for the document can be
+        /// <param name="userPassword">
+        /// the user password. Can be null or of zero length, which is equal to
+        /// omitting the user password
+        /// </param>
+        /// <param name="ownerPassword">
+        /// the owner password. If it's null or empty, iText will generate
+        /// a random string to be used as the owner password
+        /// </param>
+        /// <param name="permissions">
+        /// the user permissions
+        /// The open permissions for the document can be
         /// <see cref="EncryptionConstants.ALLOW_PRINTING"/>
         /// ,
         /// <see cref="EncryptionConstants.ALLOW_MODIFY_CONTENTS"/>
@@ -97,13 +104,9 @@ namespace iText.Kernel.Pdf {
         /// ,
         /// <see cref="EncryptionConstants.ALLOW_ASSEMBLY"/>
         /// and
-        /// <see cref="EncryptionConstants.ALLOW_DEGRADED_PRINTING"/>
-        /// .
-        /// The permissions can be combined by ORing them.
-        /// </remarks>
-        /// <param name="userPassword">the user password. Can be null or empty</param>
-        /// <param name="ownerPassword">the owner password. Can be null or empty</param>
-        /// <param name="permissions">the user permissions</param>
+        /// <see cref="EncryptionConstants.ALLOW_DEGRADED_PRINTING"/>.
+        /// The permissions can be combined by ORing them
+        /// </param>
         /// <param name="encryptionType">
         /// the type of encryption. It can be one of
         /// <see cref="EncryptionConstants.STANDARD_ENCRYPTION_40"/>
@@ -112,12 +115,26 @@ namespace iText.Kernel.Pdf {
         /// ,
         /// <see cref="EncryptionConstants.ENCRYPTION_AES_128"/>
         /// or
-        /// <see cref="EncryptionConstants.ENCRYPTION_AES_256"/>
-        /// .
+        /// <see cref="EncryptionConstants.ENCRYPTION_AES_256"/>.
         /// Optionally
         /// <see cref="EncryptionConstants.DO_NOT_ENCRYPT_METADATA"/>
-        /// can be ORed to output the metadata in cleartext
+        /// can be
+        /// ORed to output the metadata in cleartext.
+        /// <see cref="EncryptionConstants.EMBEDDED_FILES_ONLY"/>
+        /// can be ORed as well.
+        /// Please be aware that the passed encryption types may override permissions:
+        /// <see cref="EncryptionConstants.STANDARD_ENCRYPTION_40"/>
+        /// implicitly sets
+        /// <see cref="EncryptionConstants.DO_NOT_ENCRYPT_METADATA"/>
+        /// and
+        /// <see cref="EncryptionConstants.EMBEDDED_FILES_ONLY"/>
+        /// as false;
+        /// <see cref="EncryptionConstants.STANDARD_ENCRYPTION_128"/>
+        /// implicitly sets
+        /// <see cref="EncryptionConstants.EMBEDDED_FILES_ONLY"/>
+        /// as false;
         /// </param>
+        /// <param name="documentId">document id which will be used for encryption</param>
         /// <param name="version">
         /// the
         /// <see cref="PdfVersion"/>
@@ -168,8 +185,14 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>Creates the certificate encryption.</summary>
         /// <remarks>
-        /// Creates the certificate encryption. An array of one or more public certificates
-        /// must be provided together with an array of the same size for the permissions for each certificate.
+        /// Creates the certificate encryption.
+        /// <para />
+        /// An array of one or more public certificates must be provided together with
+        /// an array of the same size for the permissions for each certificate.
+        /// </remarks>
+        /// <param name="certs">the public certificates to be used for the encryption</param>
+        /// <param name="permissions">
+        /// the user permissions for each of the certificates
         /// The open permissions for the document can be
         /// <see cref="EncryptionConstants.ALLOW_PRINTING"/>
         /// ,
@@ -185,12 +208,9 @@ namespace iText.Kernel.Pdf {
         /// ,
         /// <see cref="EncryptionConstants.ALLOW_ASSEMBLY"/>
         /// and
-        /// <see cref="EncryptionConstants.ALLOW_DEGRADED_PRINTING"/>
-        /// .
-        /// The permissions can be combined by ORing them.
-        /// </remarks>
-        /// <param name="certs">the public certificates to be used for the encryption</param>
-        /// <param name="permissions">the user permissions for each of the certificates</param>
+        /// <see cref="EncryptionConstants.ALLOW_DEGRADED_PRINTING"/>.
+        /// The permissions can be combined by ORing them
+        /// </param>
         /// <param name="encryptionType">
         /// the type of encryption. It can be one of
         /// <see cref="EncryptionConstants.STANDARD_ENCRYPTION_40"/>
@@ -199,11 +219,29 @@ namespace iText.Kernel.Pdf {
         /// ,
         /// <see cref="EncryptionConstants.ENCRYPTION_AES_128"/>
         /// or
-        /// <see cref="EncryptionConstants.ENCRYPTION_AES_256"/>
-        /// .
+        /// <see cref="EncryptionConstants.ENCRYPTION_AES_256"/>.
         /// Optionally
         /// <see cref="EncryptionConstants.DO_NOT_ENCRYPT_METADATA"/>
-        /// can be ORed to output the metadata in cleartext
+        /// can be ORed
+        /// to output the metadata in cleartext.
+        /// <see cref="EncryptionConstants.EMBEDDED_FILES_ONLY"/>
+        /// can be ORed as well.
+        /// Please be aware that the passed encryption types may override permissions:
+        /// <see cref="EncryptionConstants.STANDARD_ENCRYPTION_40"/>
+        /// implicitly sets
+        /// <see cref="EncryptionConstants.DO_NOT_ENCRYPT_METADATA"/>
+        /// and
+        /// <see cref="EncryptionConstants.EMBEDDED_FILES_ONLY"/>
+        /// as false;
+        /// <see cref="EncryptionConstants.STANDARD_ENCRYPTION_128"/>
+        /// implicitly sets
+        /// <see cref="EncryptionConstants.EMBEDDED_FILES_ONLY"/>
+        /// as false;
+        /// </param>
+        /// <param name="version">
+        /// the
+        /// <see cref="PdfVersion"/>
+        /// of the target document for encryption
         /// </param>
         public PdfEncryption(X509Certificate[] certs, int[] permissions, int encryptionType, PdfVersion version)
             : base(new PdfDictionary()) {
@@ -381,8 +419,7 @@ namespace iText.Kernel.Pdf {
         /// <summary>Gets the encryption permissions.</summary>
         /// <remarks>
         /// Gets the encryption permissions. It can be used directly in
-        /// <see cref="WriterProperties.SetStandardEncryption(byte[], byte[], int, int)"/>
-        /// .
+        /// <see cref="WriterProperties.SetStandardEncryption(byte[], byte[], int, int)"/>.
         /// See ISO 32000-1, Table 22 for more details.
         /// </remarks>
         /// <returns>the encryption permissions, an unsigned 32-bit quantity.</returns>
@@ -480,12 +517,17 @@ namespace iText.Kernel.Pdf {
         /// <c>PdfObject</c>
         /// behind this wrapper, you have to ensure
         /// that this object is added to the document, i.e. it has an indirect reference.
+        /// </summary>
+        /// <remarks>
+        /// To manually flush a
+        /// <c>PdfObject</c>
+        /// behind this wrapper, you have to ensure
+        /// that this object is added to the document, i.e. it has an indirect reference.
         /// Basically this means that before flushing you need to explicitly call
-        /// <see cref="PdfObjectWrapper{T}.MakeIndirect(PdfDocument)"/>
-        /// .
+        /// <see cref="PdfObjectWrapper{T}.MakeIndirect(PdfDocument)"/>.
         /// For example: wrapperInstance.makeIndirect(document).flush();
         /// Note that not every wrapper require this, only those that have such warning in documentation.
-        /// </summary>
+        /// </remarks>
         public override void Flush() {
             base.Flush();
         }

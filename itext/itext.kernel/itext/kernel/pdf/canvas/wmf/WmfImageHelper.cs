@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -55,8 +55,7 @@ namespace iText.Kernel.Pdf.Canvas.Wmf {
     /// <summary>Helper class for the WmfImage implementation.</summary>
     /// <remarks>
     /// Helper class for the WmfImage implementation. Assists in the creation of a
-    /// <see cref="iText.Kernel.Pdf.Xobject.PdfFormXObject"/>
-    /// .
+    /// <see cref="iText.Kernel.Pdf.Xobject.PdfFormXObject"/>.
     /// </remarks>
     public class WmfImageHelper {
         /// <summary>Scales the WMF font size.</summary>

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -48,6 +48,7 @@ using iText.Kernel.Pdf.Colorspace;
 namespace iText.Kernel.Colors {
     public class IccBased : Color {
         public IccBased(PdfCieBasedCs.IccBased cs)
+            // TODO if zero is outside of the Range, default value should be the nearest to the zero valid value
             : this(cs, new float[cs.GetNumberOfComponents()]) {
         }
 
@@ -59,7 +60,6 @@ namespace iText.Kernel.Colors {
         /// <param name="iccStream">ICC profile stream. User is responsible for closing the stream.</param>
         public IccBased(Stream iccStream)
             : this(new PdfCieBasedCs.IccBased(iccStream), null) {
-            // TODO if zero if outside of the Range, default value should be the nearest to the zero valid value
             colorValue = new float[GetNumberOfComponents()];
             for (int i = 0; i < GetNumberOfComponents(); i++) {
                 colorValue[i] = 0f;

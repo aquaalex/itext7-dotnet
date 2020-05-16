@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,10 +41,13 @@ source product.
 For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
+using System;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 
 namespace iText.Kernel.Pdf.Annot {
+    [System.ObsoleteAttribute(@"Remove this class in 7.2. The deprecation relates to the fact that the prototype hasn't been implemented in a full yet and we do not expect the situation to change."
+        )]
     public class PdfRichMediaAnnotation : PdfAnnotation {
         public PdfRichMediaAnnotation(Rectangle rect)
             : base(rect) {

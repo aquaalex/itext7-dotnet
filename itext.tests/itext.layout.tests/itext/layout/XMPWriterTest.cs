@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -74,8 +74,6 @@ namespace iText.Layout {
             CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="iText.Kernel.XMP.XMPException"/>
         [NUnit.Framework.Test]
         public virtual void CreatePdfTest() {
             String fileName = "xmp_metadata.pdf";
@@ -101,7 +99,6 @@ namespace iText.Layout {
                 , true));
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void AddUAXMPMetaDataNotTaggedTest() {
             String fileName = "addUAXMPMetaDataNotTaggedTest.pdf";
@@ -112,8 +109,6 @@ namespace iText.Layout {
                  + fileName, true));
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void AddUAXMPMetaDataTaggedTest() {
             String fileName = "addUAXMPMetaDataTaggedTest.pdf";
@@ -124,7 +119,6 @@ namespace iText.Layout {
                  + fileName, true));
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void DoNotAddUAXMPMetaDataTaggedTest() {
             String fileName = "doNotAddUAXMPMetaDataTaggedTest.pdf";
@@ -135,7 +129,6 @@ namespace iText.Layout {
                  + fileName, true));
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private void ManipulatePdf(PdfDocument pdfDocument, bool setTagged) {
             Document document = new Document(pdfDocument);
             if (setTagged) {

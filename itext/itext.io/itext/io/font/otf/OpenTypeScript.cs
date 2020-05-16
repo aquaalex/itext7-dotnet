@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -52,7 +52,6 @@ namespace iText.IO.Font.Otf {
 
         private IList<ScriptRecord> records;
 
-        /// <exception cref="System.IO.IOException"/>
         public OpenTypeScript(OpenTypeFontTableReader openTypeReader, int locationScriptTable) {
             this.openTypeReader = openTypeReader;
             records = new List<ScriptRecord>();
@@ -109,7 +108,6 @@ namespace iText.IO.Font.Otf {
             return lang;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private void ReadScriptRecord(TagAndLocation tagLoc) {
             openTypeReader.rf.Seek(tagLoc.location);
             int locationDefaultLanguage = openTypeReader.rf.ReadUnsignedShort();
@@ -132,7 +130,6 @@ namespace iText.IO.Font.Otf {
             records.Add(srec);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         private LanguageRecord ReadLanguageRecord(TagAndLocation tagLoc) {
             LanguageRecord rec = new LanguageRecord();
             //skip lookup order

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -54,7 +54,6 @@ namespace iText.Kernel.Pdf.Canvas.Wmf {
 
         /// <summary>Creates a WmfImage from a file.</summary>
         /// <param name="fileName">pah to the file</param>
-        /// <exception cref="System.UriFormatException"/>
         public WmfImageData(String fileName)
             : this(UrlUtil.ToURL(fileName)) {
         }
@@ -73,7 +72,7 @@ namespace iText.Kernel.Pdf.Canvas.Wmf {
         /// <param name="bytes">the image bytes</param>
         public WmfImageData(byte[] bytes)
             : base(bytes, ImageType.WMF) {
-            byte[] imageType = ReadImageType(url);
+            byte[] imageType = ReadImageType(bytes);
             if (!ImageTypeIs(imageType, wmf)) {
                 throw new PdfException(PdfException.NotAWmfImage);
             }
@@ -108,6 +107,10 @@ namespace iText.Kernel.Pdf.Canvas.Wmf {
                     }
                 }
             }
+        }
+
+        private static byte[] ReadImageType(byte[] bytes) {
+            return JavaUtil.ArraysCopyOfRange(bytes, 0, 8);
         }
     }
 }

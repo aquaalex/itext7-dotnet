@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -116,7 +116,10 @@ namespace iText.IO.Util.Collections
         }
 
         public bool Remove(T item) {
-            throw new NotSupportedException("Collection is read-only.");
+            // According to .NET this method should throw NotSupportedException, if IsReadOnly is true.
+            // However this collection is generally intended to be used in context of autoportable Java code, 
+            // and in Java analogous method simply returns false.
+            return false;
         }
 
         public int Count {

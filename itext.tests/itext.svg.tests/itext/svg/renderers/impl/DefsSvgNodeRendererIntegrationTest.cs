@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -57,33 +57,24 @@ namespace iText.Svg.Renderers.Impl {
             ITextTest.CreateDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DefsWithNoChildrenTest() {
-            ConvertAndCompareSinglePageVisually(sourceFolder, destinationFolder, "onlyDefsWithNoChildren");
+            ConvertAndCompareSinglePage(sourceFolder, destinationFolder, "onlyDefsWithNoChildren");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DefsWithOneChildTest() {
-            ConvertAndCompareSinglePageVisually(sourceFolder, destinationFolder, "onlyDefsWithOneChild");
+            ConvertAndCompareSinglePage(sourceFolder, destinationFolder, "onlyDefsWithOneChild");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DefsWithMultipleChildrenTest() {
-            ConvertAndCompareSinglePageVisually(sourceFolder, destinationFolder, "onlyDefsWithMultipleChildren");
+            ConvertAndCompareSinglePage(sourceFolder, destinationFolder, "onlyDefsWithMultipleChildren");
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void DefsWithOneChildAndNonDefsBeingDrawnTest() {
-            ConvertAndCompareSinglePageVisually(sourceFolder, destinationFolder, "defsWithOneChildAndNonDefsBeingDrawn"
-                );
+            ConvertAndCompareSinglePage(sourceFolder, destinationFolder, "defsWithOneChildAndNonDefsBeingDrawn");
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -295,7 +295,7 @@ namespace iText.StyledXmlParser.Jsoup.Select {
 
         /// <summary>
         /// Evaluator for matching by sibling index number (e
-        /// <literal>&lt;</literal>
+        /// <literal></literal>
         /// idx)
         /// </summary>
         public sealed class IndexLessThan : Evaluator.IndexEvaluator {
@@ -523,7 +523,7 @@ namespace iText.StyledXmlParser.Jsoup.Select {
         }
 
         /// <summary>css3 pseudo-class :root</summary>
-        /// <seealso><a href="http://www.w3.org/TR/selectors/#root-pseudo">:root selector</a></seealso>
+        /// <seealso><a href="http://www.w3.org/tr/selectors/#root-pseudo">:root selector</a></seealso>
         public sealed class IsRoot : Evaluator {
             public override bool Matches(iText.StyledXmlParser.Jsoup.Nodes.Element root, iText.StyledXmlParser.Jsoup.Nodes.Element
                  element) {

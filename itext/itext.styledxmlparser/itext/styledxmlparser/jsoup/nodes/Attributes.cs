@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -55,11 +55,9 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
     /// The attributes of an Element.
     /// <p>
     /// Attributes are treated as a map: there can be only one value associated with an attribute key.
-    /// </p>
     /// <p>
     /// Attribute key and value comparisons are done case insensitively, and keys are normalised to
     /// lower-case.
-    /// </p>
     /// </remarks>
     /// <author>Jonathan Hedley, jonathan@hedley.net</author>
     public class Attributes : IEnumerable<iText.StyledXmlParser.Jsoup.Nodes.Attribute> {
@@ -190,8 +188,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
 
         /// <summary>Get the HTML representation of these attributes.</summary>
         /// <returns>HTML</returns>
-        /// <exception cref="iText.StyledXmlParser.Jsoup.SerializationException">if the HTML representation of the attributes cannot be constructed.
-        ///     </exception>
         public virtual String Html() {
             StringBuilder accum = new StringBuilder();
             try {
@@ -205,7 +201,6 @@ namespace iText.StyledXmlParser.Jsoup.Nodes {
             return accum.ToString();
         }
 
-        /// <exception cref="System.IO.IOException"/>
         internal virtual void Html(StringBuilder accum, OutputSettings @out) {
             if (attributes == null) {
                 return;

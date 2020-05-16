@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,6 @@ For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
 using System;
-using System.Text;
 using iText.Layout.Font;
 using iText.StyledXmlParser.Css.Media;
 using iText.Svg.Processors;
@@ -66,7 +65,7 @@ namespace iText.Svg.Processors.Impl {
 
         private ISvgNodeRendererFactory rendererFactory;
 
-        private String charset = Encoding.UTF8.Name();
+        private String charset = System.Text.Encoding.UTF8.Name();
 
         public virtual iText.Svg.Processors.Impl.SvgConverterProperties SetRendererFactory(ISvgNodeRendererFactory
              rendererFactory) {

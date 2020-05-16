@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -165,11 +165,14 @@ namespace iText.IO {
             return dictionary.ContainsKey(key);
         }
 
-        public static bool EqualsIgnoreCase(this String str, String anotherString)
-        {
+        public static bool IsEmpty<T>(this ICollection<T> collection) {
+            return 0 == collection.Count;
+        }
+
+        public static bool EqualsIgnoreCase(this String str, String anotherString) {
             return String.Equals(str, anotherString, StringComparison.OrdinalIgnoreCase);
         }
-        
+
         public static T[] ToArray<T>(this ICollection<T> col, T[] toArray) {
             T[] r;
             int colSize = col.Count;

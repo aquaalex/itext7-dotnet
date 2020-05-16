@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -46,9 +46,10 @@ using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
 using iText.Kernel.Pdf.Xobject;
 using iText.Svg.Renderers;
+using iText.Test;
 
 namespace iText.Svg.Renderers.Impl {
-    public class SvgTagSvgNodeRendererUnitTest {
+    public class SvgTagSvgNodeRendererUnitTest : ExtendedITextTest {
         [NUnit.Framework.Test]
         public virtual void CalculateNestedViewportSameAsParentTest() {
             Rectangle expected = new Rectangle(0, 0, 600, 600);

@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -89,7 +89,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap + dash);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap + dash);
             if (adjustedGap > dash) {
                 adjustedGap -= dash;
             }
@@ -112,7 +112,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap + dash);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap + dash);
             if (adjustedGap > dash) {
                 adjustedGap -= dash;
             }
@@ -130,7 +130,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap + dash);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap + dash);
             if (adjustedGap > dash) {
                 adjustedGap -= dash;
             }
@@ -142,6 +142,19 @@ namespace iText.Layout.Borders {
             float[] verticalRadii = new float[] { verticalRadius1, verticalRadius2 };
             DrawDiscontinuousBorders(canvas, boundingRectangle, horizontalRadii, verticalRadii, defaultSide, borderWidthBefore
                 , borderWidthAfter);
+        }
+
+        /// <summary>Adjusts the size of the gap between dots</summary>
+        /// <param name="distance">
+        /// the
+        /// <see cref="Border">border</see>
+        /// length
+        /// </param>
+        /// <param name="initialGap">the initial size of the gap</param>
+        /// <returns>the adjusted size of the gap</returns>
+        [System.ObsoleteAttribute(@"logic moved to super-class")]
+        protected internal override float GetDotsGap(double distance, float initialGap) {
+            return base.GetDotsGap(distance, initialGap);
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -159,7 +159,7 @@ namespace iText.Svg.Utils {
             trimmedText = iText.Svg.Utils.SvgTextUtil.TrimLeadingWhitespace(trimmedText);
             //Trim trailing whitespace
             trimmedText = iText.Svg.Utils.SvgTextUtil.TrimTrailingWhitespace(trimmedText);
-            return trimmedText.Equals("");
+            return "".Equals(trimmedText);
         }
 
         /// <summary>Resolve the font size stored inside the passed renderer</summary>
@@ -175,7 +175,6 @@ namespace iText.Svg.Utils {
             if (null != elementFontSize && !String.IsNullOrEmpty(elementFontSize)) {
                 if (CssUtils.IsRelativeValue(elementFontSize) || CommonCssConstants.LARGER.Equals(elementFontSize) || CommonCssConstants
                     .SMALLER.Equals(elementFontSize)) {
-                    // TODO DEVSIX-2866 Support rem value for svgs
                     fontSize = CssUtils.ParseRelativeFontSize(elementFontSize, parentFontSize);
                 }
                 else {
@@ -186,6 +185,14 @@ namespace iText.Svg.Utils {
                 fontSize = parentFontSize;
             }
             return fontSize;
+        }
+
+        /// <summary>The reference value may contain a hashtag character or 'url' designation and this method will filter them.
+        ///     </summary>
+        /// <param name="name">value to be filtered</param>
+        /// <returns>filtered value</returns>
+        public static String FilterReferenceValue(String name) {
+            return name.Replace("#", "").Replace("url(", "").Replace(")", "").Trim();
         }
     }
 }

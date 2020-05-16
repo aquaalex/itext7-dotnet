@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -57,6 +57,7 @@ namespace iText.IO.Font {
 
         private String uniMap;
 
+        // true if CMap is Identity-H/V
         private bool isDirect;
 
         private CMapCidUni cid2Uni;
@@ -69,7 +70,6 @@ namespace iText.IO.Font {
 
         /// <param name="cmap">CMap name.</param>
         public CMapEncoding(String cmap) {
-            // true if CMap is Identity-H/V
             this.cmap = cmap;
             if (cmap.Equals(PdfEncodings.IDENTITY_H) || cmap.Equals(PdfEncodings.IDENTITY_V)) {
                 isDirect = true;

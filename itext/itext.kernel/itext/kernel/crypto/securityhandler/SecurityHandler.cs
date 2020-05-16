@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -87,8 +87,8 @@ namespace iText.Kernel.Crypto.Securityhandler {
         /// <param name="objNumber"/>
         /// <param name="objGeneration"/>
         public virtual void SetHashKeyForNextObject(int objNumber, int objGeneration) {
-            md5.Reset();
             // added by ujihara
+            md5.Reset();
             extra[0] = (byte)objNumber;
             extra[1] = (byte)(objNumber >> 8);
             extra[2] = (byte)(objNumber >> 16);

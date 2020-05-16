@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -133,7 +133,10 @@ namespace iText.IO {
 
         public const String FAILED_TO_PARSE_ENCODING_STREAM = "Failed to parse encoding stream.";
 
+        [System.ObsoleteAttribute(@"Moved into cleanup module The constant will be removed in 7.2.")]
         public const String FAILED_TO_PROCESS_A_TRANSFORMATION_MATRIX = "Failed to process a transformation matrix which is noninvertible. Some content may be placed not as expected.";
+
+        public const String FIELD_VALUE_IS_NOT_CONTAINED_IN_OPT_ARRAY = "Value \"{0}\" is not contained in /Opt array of field \"{1}\".";
 
         public const String FLUSHED_OBJECT_CONTAINS_FREE_REFERENCE = "Flushed object contains indirect reference which is free. Null object will be written instead.";
 
@@ -178,6 +181,7 @@ namespace iText.IO {
 
         public const String IMAGE_HAS_MASK = "Image cannot be inline if it has a Mask";
 
+        [System.ObsoleteAttribute(@"Moved into cleanup module The constant will be removed in 7.2.")]
         public const String IMAGE_MASK_CLEAN_UP_NOT_SUPPORTED = "Partial clean up of transparent images with mask encoded with one of the following filters is not supported: JBIG2Decode, DCTDecode, JPXDecode. Image will become non-transparent.";
 
         public const String IMAGE_SIZE_CANNOT_BE_MORE_4KB = "Inline image size cannot be more than 4KB. It will be added as an ImageXObject";
@@ -206,6 +210,8 @@ namespace iText.IO {
 
         public const String METHOD_IS_NOT_IMPLEMENTED_BY_DEFAULT_OTHER_METHOD_WILL_BE_USED = "Method {0} is not implemented by default: please, override and implement it. {1} will be used instead.";
 
+        public const String MULTIPLE_VALUES_ON_A_NON_MULTISELECT_FIELD = "Multiple values were set to a field that does not have MultiSelect flag set.";
+
         public const String NAME_ALREADY_EXISTS_IN_THE_NAME_TREE = "Name \"{0}\" already exists in the name tree; old value will be replaced by the new one.";
 
         public const String NOT_TAGGED_PAGES_IN_TAGGED_DOCUMENT = "Not tagged pages are copied to the tagged document. Destination document now may contain not tagged content.";
@@ -228,6 +234,8 @@ namespace iText.IO {
 
         public const String OPENTYPE_GDEF_TABLE_ERROR = "OpenType GDEF table error: {0}";
 
+        public const String ORPHANS_CONSTRAINT_VIOLATED = "Orphans constraint violated for paragraph split at page {0}. Min number of orphans: {1}; actual: {2}. \nComment: {3}";
+
         public const String PAGE_TREE_IS_BROKEN_FAILED_TO_RETRIEVE_PAGE = "Page tree is broken. Failed to retrieve page number {0}. Null will be returned.";
 
         public const String PASSED_PAGE_SHALL_BE_ON_WHICH_CANVAS_WILL_BE_RENDERED = "The page passed to Canvas#enableAutoTagging(PdfPage) method shall be the one on which this canvas will be rendered. However the actual passed PdfPage instance sets not such page. This might lead to creation of malformed PDF document.";
@@ -246,12 +254,15 @@ namespace iText.IO {
 
         public const String POPUP_ENTRY_IS_NOT_POPUP_ANNOTATION = "Popup entry in the markup annotations refers not to the annotation with Popup subtype.";
 
+        public const String PREMATURE_CALL_OF_HANDLE_VIOLATION_METHOD = "Premature call of handleViolation method.";
+
         public const String PROPERTY_IN_PERCENTS_NOT_SUPPORTED = "Property {0} in percents is not supported";
 
         public const String RECTANGLE_HAS_NEGATIVE_OR_ZERO_SIZES = "The {0} rectangle has negative or zero sizes. It will not be displayed.";
 
         public const String RECTANGLE_HAS_NEGATIVE_SIZE = "The {0} rectangle has negative size. It will not be displayed.";
 
+        [System.ObsoleteAttribute(@"Moved into cleanup module The constant will be removed in 7.2.")]
         public const String REDACTION_OF_ANNOTATION_TYPE_WATERMARK_IS_NOT_SUPPORTED = "Redaction of annotation subtype /Watermark is not supported";
 
         public const String REMOVING_PAGE_HAS_ALREADY_BEEN_FLUSHED = "The removing page has already been flushed.";
@@ -312,12 +323,32 @@ namespace iText.IO {
 
         public const String VERSION_INCOMPATIBILITY_FOR_DICTIONARY_ENTRY = "\"{0}\" entry in the \"{1}\" dictionary is a {2} and higher version feature. It is meaningless for the current {3} version.";
 
+        public const String WIDOWS_CONSTRAINT_VIOLATED = "Widows constraint violated for paragraph split at page {0}. Min number of widows: {1}; actual: {2}.\nComment: {3}";
+
         public const String WRITER_ENCRYPTION_IS_IGNORED_APPEND = "Writer encryption will be ignored, because append mode is used. Document will preserve the original encryption (or will stay unencrypted)";
 
         public const String WRITER_ENCRYPTION_IS_IGNORED_PRESERVE = "Writer encryption will be ignored, because preservation of encryption is enabled. Document will preserve the original encryption (or will stay unencrypted)";
 
         public const String WRONG_MEDIABOX_SIZE_TOO_MANY_ARGUMENTS = "Wrong media box size: {0}. The arguments beyond the 4th will be ignored";
 
+        public const String XFDF_ANNOTATION_IS_NOT_SUPPORTED = "Xfdf annotation \"{0}\" is not supported";
+
+        public const String XFDF_HREF_ATTRIBUTE_AND_PDF_DOCUMENT_NAME_ARE_DIFFERENT = "Xfdf href attribute and pdf document name are different!";
+
+        public const String XFDF_NO_SUCH_FIELD_IN_PDF_DOCUMENT = "Xfdf no such field in pdf document!";
+
+        public const String XFDF_NO_F_OBJECT_TO_COMPARE = "Xfdf no f object to compare.";
+
+        public const String XFDF_OUTPUT_STREAM_CORRUPTED = "Xfdf output stream is corrupted.";
+
+        public const String XFDF_UNSUPPORTED_ANNOTATION_ATTRIBUTE = "Xfdf unsupported attribute type";
+
+        public const String XOBJECT_HAS_NO_STRUCT_PARENTS = "XObject has no StructParents entry in its stream, no entry in ParentTree will be created for the corresponding structure elements";
+
+        [System.ObsoleteAttribute(@"Use XREF_ERROR_WHILE_READING_TABLE_WILL_BE_REBUILT instead. The constant will be removed in 7.2."
+            )]
         public const String XREF_ERROR = "Error occurred while reading cross reference table. Cross reference table will be rebuilt.";
+
+        public const String XREF_ERROR_WHILE_READING_TABLE_WILL_BE_REBUILT = "Error occurred while reading cross reference table. Cross reference table will be rebuilt.";
     }
 }

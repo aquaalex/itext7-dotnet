@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -84,7 +84,6 @@ namespace iText.Kernel.Pdf.Xobject {
             return pngColorType;
         }
 
-        /// <exception cref="System.IO.IOException"/>
         public virtual byte[] DecodeTiffAndPngBytes(byte[] imageBytes) {
             MemoryStream ms = new MemoryStream();
             if (pngColorType < 0) {
@@ -172,9 +171,6 @@ namespace iText.Kernel.Pdf.Xobject {
         /// <summary>Sets state of this object according to the color space</summary>
         /// <param name="csObj">the colorspace to use</param>
         /// <param name="allowIndexed">whether indexed color spaces will be resolved (used for recursive call)</param>
-        /// <param name="width"/>
-        /// <param name="height"/>
-        /// <exception cref="System.IO.IOException">if there is a problem with reading from the underlying stream</exception>
         private void FindColorspace(PdfObject csObj, bool allowIndexed) {
             if (PdfName.DeviceGray.Equals(csObj) || (csObj == null && bpc == 1)) {
                 // handle imagemasks

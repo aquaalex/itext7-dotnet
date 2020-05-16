@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -69,8 +69,13 @@ namespace iText.Kernel.Pdf {
         /// Offset in a document of the
         /// <c>refersTo</c>
         /// object.
-        /// If the object placed into object stream then it is an object index inside object stream.
         /// </summary>
+        /// <remarks>
+        /// Offset in a document of the
+        /// <c>refersTo</c>
+        /// object.
+        /// If the object placed into object stream then it is an object index inside object stream.
+        /// </remarks>
         protected internal long offsetOrIndex = 0;
 
         /// <summary>PdfDocument object belongs to.</summary>
@@ -112,10 +117,9 @@ namespace iText.Kernel.Pdf {
         /// <summary>Gets direct object and try to resolve indirects chain.</summary>
         /// <remarks>
         /// Gets direct object and try to resolve indirects chain.
-        /// <p>
+        /// <para />
         /// Note: If chain of references has length of more than 32,
         /// this method return 31st reference in chain.
-        /// </p>
         /// </remarks>
         public virtual PdfObject GetRefersTo(bool recursively) {
             if (!recursively) {
@@ -200,15 +204,13 @@ namespace iText.Kernel.Pdf {
         /// it only ensures that corresponding xref entry is free and indirect object referred by this reference is no longer
         /// linked to it. Actual object still might be written to the resultant document (and would get a new corresponding
         /// indirect reference in this case) if it is still contained in some other object.
-        /// <p>
+        /// <para />
         /// This method will not give any result if the corresponding indirect object or another object
         /// that contains a reference to this object is already flushed.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Note: in some cases, removing a link of indirect object to it's indirect reference while
         /// leaving the actual object in the document structure might lead to errors, because some objects are expected
         /// to always have such explicit link (e.g. Catalog object, page objects, etc).
-        /// </p>
         /// </remarks>
         public virtual void SetFree() {
             GetDocument().GetXref().FreeReference(this);
@@ -218,11 +220,16 @@ namespace iText.Kernel.Pdf {
         /// Checks if this
         /// <see cref="PdfIndirectReference"/>
         /// instance corresponds to free indirect reference.
+        /// </summary>
+        /// <remarks>
+        /// Checks if this
+        /// <see cref="PdfIndirectReference"/>
+        /// instance corresponds to free indirect reference.
         /// Indirect reference might be in a free state either because it was read as such from the opened existing
         /// PDF document or because it was set free via
         /// <see cref="SetFree()"/>
         /// method.
-        /// </summary>
+        /// </remarks>
         /// <returns>
         /// 
         /// <see langword="true"/>

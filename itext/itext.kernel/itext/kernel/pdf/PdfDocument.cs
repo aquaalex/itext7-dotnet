@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -69,6 +69,8 @@ using iText.Kernel.XMP.Options;
 namespace iText.Kernel.Pdf {
     /// <summary>Main enter point to work with PDF document.</summary>
     public class PdfDocument : IEventDispatcher, IDisposable {
+        private static IPdfPageFactory pdfPageFactory = new PdfPageFactory();
+
         /// <summary>Currently active page.</summary>
         [System.ObsoleteAttribute(@"Will be removed in iText 7.2")]
         protected internal PdfPage currentPage = null;
@@ -185,8 +187,8 @@ namespace iText.Kernel.Pdf {
             }
             documentId = lastDocumentId.IncrementAndGet();
             this.reader = reader;
-            this.properties = new StampingProperties();
             // default values of the StampingProperties doesn't affect anything
+            this.properties = new StampingProperties();
             this.properties.SetEventCountingMetaInfo(properties.metaInfo);
             Open(null);
         }
@@ -214,8 +216,8 @@ namespace iText.Kernel.Pdf {
             }
             documentId = lastDocumentId.IncrementAndGet();
             this.writer = writer;
-            this.properties = new StampingProperties();
             // default values of the StampingProperties doesn't affect anything
+            this.properties = new StampingProperties();
             this.properties.SetEventCountingMetaInfo(properties.metaInfo);
             Open(writer.properties.pdfVersion);
         }
@@ -264,12 +266,10 @@ namespace iText.Kernel.Pdf {
             this.xmpMetadata = xmpMetadata;
         }
 
-        /// <exception cref="iText.Kernel.XMP.XMPException"/>
         public virtual void SetXmpMetadata(XMPMeta xmpMeta, SerializeOptions serializeOptions) {
             SetXmpMetadata(XMPMetaFactory.SerializeToBuffer(xmpMeta, serializeOptions));
         }
 
-        /// <exception cref="iText.Kernel.XMP.XMPException"/>
         public virtual void SetXmpMetadata(XMPMeta xmpMeta) {
             SerializeOptions serializeOptions = new SerializeOptions();
             serializeOptions.SetPadding(2000);
@@ -343,8 +343,7 @@ namespace iText.Kernel.Pdf {
         /// Gets the
         /// <see cref="PdfPage"/>
         /// instance by
-        /// <see cref="PdfDictionary"/>
-        /// .
+        /// <see cref="PdfDictionary"/>.
         /// </summary>
         /// <param name="pageDictionary">
         /// 
@@ -353,8 +352,7 @@ namespace iText.Kernel.Pdf {
         /// </param>
         /// <returns>
         /// page by
-        /// <see cref="PdfDictionary"/>
-        /// .
+        /// <see cref="PdfDictionary"/>.
         /// </returns>
         public virtual PdfPage GetPage(PdfDictionary pageDictionary) {
             CheckClosingStatus();
@@ -385,7 +383,7 @@ namespace iText.Kernel.Pdf {
         /// <returns>added page</returns>
         public virtual PdfPage AddNewPage(PageSize pageSize) {
             CheckClosingStatus();
-            PdfPage page = new PdfPage(this, pageSize);
+            PdfPage page = GetPageFactory().CreatePdfPage(this, pageSize);
             CheckAndAddPage(page);
             DispatchEvent(new PdfDocumentEvent(PdfDocumentEvent.START_PAGE, page));
             DispatchEvent(new PdfDocumentEvent(PdfDocumentEvent.INSERT_PAGE, page));
@@ -395,11 +393,6 @@ namespace iText.Kernel.Pdf {
         /// <summary>Creates and inserts new page to the document.</summary>
         /// <param name="index">position to addPage page to</param>
         /// <returns>inserted page</returns>
-        /// <exception cref="iText.Kernel.PdfException">
-        /// in case
-        /// <c>page</c>
-        /// is flushed
-        /// </exception>
         public virtual PdfPage AddNewPage(int index) {
             return AddNewPage(index, GetDefaultPageSize());
         }
@@ -408,14 +401,9 @@ namespace iText.Kernel.Pdf {
         /// <param name="index">position to addPage page to</param>
         /// <param name="pageSize">page size of the new page</param>
         /// <returns>inserted page</returns>
-        /// <exception cref="iText.Kernel.PdfException">
-        /// in case
-        /// <c>page</c>
-        /// is flushed
-        /// </exception>
         public virtual PdfPage AddNewPage(int index, PageSize pageSize) {
             CheckClosingStatus();
-            PdfPage page = new PdfPage(this, pageSize);
+            PdfPage page = GetPageFactory().CreatePdfPage(this, pageSize);
             CheckAndAddPage(index, page);
             currentPage = page;
             DispatchEvent(new PdfDocumentEvent(PdfDocumentEvent.START_PAGE, page));
@@ -426,11 +414,6 @@ namespace iText.Kernel.Pdf {
         /// <summary>Adds page to the end of document.</summary>
         /// <param name="page">page to add.</param>
         /// <returns>added page.</returns>
-        /// <exception cref="iText.Kernel.PdfException">
-        /// in case
-        /// <paramref name="page"/>
-        /// is flushed
-        /// </exception>
         public virtual PdfPage AddPage(PdfPage page) {
             CheckClosingStatus();
             CheckAndAddPage(page);
@@ -442,11 +425,6 @@ namespace iText.Kernel.Pdf {
         /// <param name="index">position to addPage page to</param>
         /// <param name="page">page to addPage</param>
         /// <returns>inserted page</returns>
-        /// <exception cref="iText.Kernel.PdfException">
-        /// in case
-        /// <paramref name="page"/>
-        /// is flushed
-        /// </exception>
         public virtual PdfPage AddPage(int index, PdfPage page) {
             CheckClosingStatus();
             CheckAndAddPage(index, page);
@@ -472,8 +450,7 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Gets page number by
-        /// <see cref="PdfDictionary"/>
-        /// .
+        /// <see cref="PdfDictionary"/>.
         /// </summary>
         /// <param name="pageDictionary">
         /// 
@@ -482,8 +459,7 @@ namespace iText.Kernel.Pdf {
         /// </param>
         /// <returns>
         /// page number by
-        /// <see cref="PdfDictionary"/>
-        /// .
+        /// <see cref="PdfDictionary"/>.
         /// </returns>
         public virtual int GetPageNumber(PdfDictionary pageDictionary) {
             return catalog.GetPageTree().GetPageNumber(pageDictionary);
@@ -613,12 +589,12 @@ namespace iText.Kernel.Pdf {
         }
 
         /// <summary><inheritDoc/></summary>
-        public virtual void DispatchEvent(Event @event) {
+        public virtual void DispatchEvent(iText.Kernel.Events.Event @event) {
             eventDispatcher.DispatchEvent(@event);
         }
 
         /// <summary><inheritDoc/></summary>
-        public virtual void DispatchEvent(Event @event, bool delayed) {
+        public virtual void DispatchEvent(iText.Kernel.Events.Event @event, bool delayed) {
             eventDispatcher.DispatchEvent(@event, delayed);
         }
 
@@ -937,14 +913,16 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Gets document
-        /// <c>TagStructureContext</c>
-        /// .
-        /// The document must be tagged, otherwise an exception will be thrown.
+        /// <c>TagStructureContext</c>.
         /// </summary>
+        /// <remarks>
+        /// Gets document
+        /// <c>TagStructureContext</c>.
+        /// The document must be tagged, otherwise an exception will be thrown.
+        /// </remarks>
         /// <returns>
         /// document
-        /// <c>TagStructureContext</c>
-        /// .
+        /// <c>TagStructureContext</c>.
         /// </returns>
         public virtual TagStructureContext GetTagStructureContext() {
             CheckClosingStatus();
@@ -959,11 +937,19 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Copies a range of pages from current document to
-        /// <paramref name="toDocument"/>
-        /// .
+        /// <paramref name="toDocument"/>.
+        /// </summary>
+        /// <remarks>
+        /// Copies a range of pages from current document to
+        /// <paramref name="toDocument"/>.
         /// Use this method if you want to copy pages across tagged documents.
         /// This will keep resultant PDF structure consistent.
-        /// </summary>
+        /// <para />
+        /// If outlines destination names are the same in different documents, all
+        /// such outlines will lead to a single location in the resultant document.
+        /// In this case iText will log a warning. This can be avoided by renaming
+        /// destinations names in the source document.
+        /// </remarks>
         /// <param name="pageFrom">start of the range of pages to be copied.</param>
         /// <param name="pageTo">end of the range of pages to be copied.</param>
         /// <param name="toDocument">a document to copy pages to.</param>
@@ -976,6 +962,10 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Copies a range of pages from current document to
+        /// <paramref name="toDocument"/>.
+        /// </summary>
+        /// <remarks>
+        /// Copies a range of pages from current document to
         /// <paramref name="toDocument"/>
         /// . This range is inclusive, both
         /// <c>page</c>
@@ -984,7 +974,12 @@ namespace iText.Kernel.Pdf {
         /// are included in list of copied pages.
         /// Use this method if you want to copy pages across tagged documents.
         /// This will keep resultant PDF structure consistent.
-        /// </summary>
+        /// <para />
+        /// If outlines destination names are the same in different documents, all
+        /// such outlines will lead to a single location in the resultant document.
+        /// In this case iText will log a warning. This can be avoided by renaming
+        /// destinations names in the source document.
+        /// </remarks>
         /// <param name="pageFrom">1-based start of the range of pages to be copied.</param>
         /// <param name="pageTo">1-based end (inclusive) of the range of pages to be copied. This page is included in list of copied pages.
         ///     </param>
@@ -1009,6 +1004,11 @@ namespace iText.Kernel.Pdf {
         /// <summary>
         /// Copies a range of pages from current document to
         /// <paramref name="toDocument"/>
+        /// appending copied pages to the end.
+        /// </summary>
+        /// <remarks>
+        /// Copies a range of pages from current document to
+        /// <paramref name="toDocument"/>
         /// appending copied pages to the end. This range
         /// is inclusive, both
         /// <c>page</c>
@@ -1017,7 +1017,12 @@ namespace iText.Kernel.Pdf {
         /// are included in list of copied pages.
         /// Use this method if you want to copy pages across tagged documents.
         /// This will keep resultant PDF structure consistent.
-        /// </summary>
+        /// <para />
+        /// If outlines destination names are the same in different documents, all
+        /// such outlines will lead to a single location in the resultant document.
+        /// In this case iText will log a warning. This can be avoided by renaming
+        /// destinations names in the source document.
+        /// </remarks>
         /// <param name="pageFrom">1-based start of the range of pages to be copied.</param>
         /// <param name="pageTo">1-based end (inclusive) of the range of pages to be copied. This page is included in list of copied pages.
         ///     </param>
@@ -1031,6 +1036,11 @@ namespace iText.Kernel.Pdf {
         /// <summary>
         /// Copies a range of pages from current document to
         /// <paramref name="toDocument"/>
+        /// appending copied pages to the end.
+        /// </summary>
+        /// <remarks>
+        /// Copies a range of pages from current document to
+        /// <paramref name="toDocument"/>
         /// appending copied pages to the end. This range
         /// is inclusive, both
         /// <c>page</c>
@@ -1039,7 +1049,12 @@ namespace iText.Kernel.Pdf {
         /// are included in list of copied pages.
         /// Use this method if you want to copy pages across tagged documents.
         /// This will keep resultant PDF structure consistent.
-        /// </summary>
+        /// <para />
+        /// If outlines destination names are the same in different documents, all
+        /// such outlines will lead to a single location in the resultant document.
+        /// In this case iText will log a warning. This can be avoided by renaming
+        /// destinations names in the source document.
+        /// </remarks>
         /// <param name="pageFrom">1-based start of the range of pages to be copied.</param>
         /// <param name="pageTo">1-based end (inclusive) of the range of pages to be copied. This page is included in list of copied pages.
         ///     </param>
@@ -1058,11 +1073,19 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Copies a range of pages from current document to
-        /// <paramref name="toDocument"/>
-        /// .
+        /// <paramref name="toDocument"/>.
+        /// </summary>
+        /// <remarks>
+        /// Copies a range of pages from current document to
+        /// <paramref name="toDocument"/>.
         /// Use this method if you want to copy pages across tagged documents.
         /// This will keep resultant PDF structure consistent.
-        /// </summary>
+        /// <para />
+        /// If outlines destination names are the same in different documents, all
+        /// such outlines will lead to a single location in the resultant document.
+        /// In this case iText will log a warning. This can be avoided by renaming
+        /// destinations names in the source document.
+        /// </remarks>
         /// <param name="pagesToCopy">list of pages to be copied.</param>
         /// <param name="toDocument">a document to copy pages to.</param>
         /// <param name="insertBeforePage">a position where to insert copied pages.</param>
@@ -1074,11 +1097,19 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Copies a range of pages from current document to
-        /// <paramref name="toDocument"/>
-        /// .
+        /// <paramref name="toDocument"/>.
+        /// </summary>
+        /// <remarks>
+        /// Copies a range of pages from current document to
+        /// <paramref name="toDocument"/>.
         /// Use this method if you want to copy pages across tagged documents.
         /// This will keep resultant PDF structure consistent.
-        /// </summary>
+        /// <para />
+        /// If outlines destination names are the same in different documents, all
+        /// such outlines will lead to a single location in the resultant document.
+        /// In this case iText will log a warning. This can be avoided by renaming
+        /// destinations names in the source document.
+        /// </remarks>
         /// <param name="pagesToCopy">list of pages to be copied.</param>
         /// <param name="toDocument">a document to copy pages to.</param>
         /// <param name="insertBeforePage">a position where to insert copied pages.</param>
@@ -1164,9 +1195,19 @@ namespace iText.Kernel.Pdf {
         /// Copies a range of pages from current document to
         /// <paramref name="toDocument"/>
         /// appending copied pages to the end.
+        /// </summary>
+        /// <remarks>
+        /// Copies a range of pages from current document to
+        /// <paramref name="toDocument"/>
+        /// appending copied pages to the end.
         /// Use this method if you want to copy pages across tagged documents.
         /// This will keep resultant PDF structure consistent.
-        /// </summary>
+        /// <para />
+        /// If outlines destination names are the same in different documents, all
+        /// such outlines will lead to a single location in the resultant document.
+        /// In this case iText will log a warning. This can be avoided by renaming
+        /// destinations names in the source document.
+        /// </remarks>
         /// <param name="pagesToCopy">list of pages to be copied.</param>
         /// <param name="toDocument">a document to copy pages to.</param>
         /// <returns>list of copied pages</returns>
@@ -1178,9 +1219,19 @@ namespace iText.Kernel.Pdf {
         /// Copies a range of pages from current document to
         /// <paramref name="toDocument"/>
         /// appending copied pages to the end.
+        /// </summary>
+        /// <remarks>
+        /// Copies a range of pages from current document to
+        /// <paramref name="toDocument"/>
+        /// appending copied pages to the end.
         /// Use this method if you want to copy pages across tagged documents.
         /// This will keep resultant PDF structure consistent.
-        /// </summary>
+        /// <para />
+        /// If outlines destination names are the same in different documents, all
+        /// such outlines will lead to a single location in the resultant document.
+        /// In this case iText will log a warning. This can be avoided by renaming
+        /// destinations names in the source document.
+        /// </remarks>
         /// <param name="pagesToCopy">list of pages to be copied.</param>
         /// <param name="toDocument">a document to copy pages to.</param>
         /// <param name="copier">
@@ -1198,7 +1249,7 @@ namespace iText.Kernel.Pdf {
         /// <summary>Flush all copied objects and remove them from copied cache.</summary>
         /// <remarks>
         /// Flush all copied objects and remove them from copied cache.
-        /// <p>
+        /// <para />
         /// Note, if you will copy objects from the same document, duplicated objects will be created.
         /// That's why usually this method is meant to be used when all copying from source document is finished.
         /// For other cases one can also consider other flushing mechanisms, e.g. pages-based flushing.
@@ -1272,8 +1323,14 @@ namespace iText.Kernel.Pdf {
         /// Checks, whether
         /// <see cref="Close()"/>
         /// will flush unused objects,
-        /// e.g. unreachable from PDF Catalog. By default - false.
+        /// e.g. unreachable from PDF Catalog.
         /// </summary>
+        /// <remarks>
+        /// Checks, whether
+        /// <see cref="Close()"/>
+        /// will flush unused objects,
+        /// e.g. unreachable from PDF Catalog. By default - false.
+        /// </remarks>
         /// <returns>
         /// false, if
         /// <see cref="Close()"/>
@@ -1445,35 +1502,27 @@ namespace iText.Kernel.Pdf {
         }
 
         /// <summary>Adds file attachment at document level.</summary>
-        /// <param name="description">the file description</param>
+        /// <param name="key">name of the destination.</param>
         /// <param name="fs">
         /// 
         /// <see cref="iText.Kernel.Pdf.Filespec.PdfFileSpec"/>
         /// object.
         /// </param>
-        public virtual void AddFileAttachment(String description, PdfFileSpec fs) {
+        public virtual void AddFileAttachment(String key, PdfFileSpec fs) {
             CheckClosingStatus();
-            catalog.AddNameToNameTree(description, fs.GetPdfObject(), PdfName.EmbeddedFiles);
+            catalog.AddNameToNameTree(key, fs.GetPdfObject(), PdfName.EmbeddedFiles);
         }
 
-        /// <summary>
-        /// <p>
-        /// Adds file associated with PDF document as a whole and identifies the relationship between them.
-        /// </summary>
+        /// <summary>Adds file associated with PDF document as a whole and identifies the relationship between them.</summary>
         /// <remarks>
-        /// <p>
         /// Adds file associated with PDF document as a whole and identifies the relationship between them.
-        /// </p>
-        /// <p>
+        /// <para />
         /// Associated files may be used in Pdf/A-3 and Pdf 2.0 documents.
         /// The method is very similar to
-        /// <see cref="AddFileAttachment(System.String, iText.Kernel.Pdf.Filespec.PdfFileSpec)"/>
-        /// .
+        /// <see cref="AddFileAttachment(System.String, iText.Kernel.Pdf.Filespec.PdfFileSpec)"/>.
         /// However, besides adding file description to Names tree, it adds file to array value of the AF key in the document catalog.
-        /// </p>
-        /// <p>
+        /// <para />
         /// For associated files their associated file specification dictionaries shall include the AFRelationship key
-        /// </p>
         /// </remarks>
         /// <param name="description">the file description</param>
         /// <param name="fs">file specification dictionary of associated file</param>
@@ -1684,16 +1733,20 @@ namespace iText.Kernel.Pdf {
         /// Create a new instance of
         /// <see cref="iText.Kernel.Font.PdfFont"/>
         /// or load already created one.
-        /// <p>
+        /// </summary>
+        /// <remarks>
+        /// Create a new instance of
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// or load already created one.
+        /// <para />
         /// Note, PdfFont which created with
         /// <see cref="iText.Kernel.Font.PdfFontFactory.CreateFont(PdfDictionary)"/>
         /// won't be cached
         /// until it will be added to
         /// <see cref="iText.Kernel.Pdf.Canvas.PdfCanvas"/>
         /// or
-        /// <see cref="PdfResources"/>
-        /// .
-        /// </summary>
+        /// <see cref="PdfResources"/>.
+        /// </remarks>
         public virtual PdfFont GetFont(PdfDictionary dictionary) {
             System.Diagnostics.Debug.Assert(dictionary.GetIndirectReference() != null);
             if (documentFonts.ContainsKey(dictionary.GetIndirectReference())) {
@@ -1737,13 +1790,19 @@ namespace iText.Kernel.Pdf {
         /// Adds a
         /// <see cref="iText.Kernel.Font.PdfFont"/>
         /// instance to this document so that this font is flushed automatically
-        /// on document close. As a side effect, the underlying font dictionary is made indirect if it wasn't the case yet
+        /// on document close.
         /// </summary>
+        /// <remarks>
+        /// Adds a
+        /// <see cref="iText.Kernel.Font.PdfFont"/>
+        /// instance to this document so that this font is flushed automatically
+        /// on document close. As a side effect, the underlying font dictionary is made indirect if it wasn't the case yet
+        /// </remarks>
         /// <returns>the same PdfFont instance.</returns>
         public virtual PdfFont AddFont(PdfFont font) {
             font.MakeIndirect(this);
-            font.SetForbidRelease();
             // forbid release for font dictionaries that are stored in #documentFonts collection
+            font.SetForbidRelease();
             documentFonts.Put(font.GetPdfObject().GetIndirectReference(), font);
             return font;
         }
@@ -1782,8 +1841,7 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Initialize
-        /// <see cref="iText.Kernel.Pdf.Tagutils.TagStructureContext"/>
-        /// .
+        /// <see cref="iText.Kernel.Pdf.Tagutils.TagStructureContext"/>.
         /// </summary>
         protected internal virtual void InitTagStructureContext() {
             tagStructureContext = new TagStructureContext(this);
@@ -1819,8 +1877,7 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Mark an object with
-        /// <see cref="PdfObject.MUST_BE_FLUSHED"/>
-        /// .
+        /// <see cref="PdfObject.MUST_BE_FLUSHED"/>.
         /// </summary>
         /// <param name="pdfObject">an object to mark.</param>
         protected internal virtual void MarkObjectAsMustBeFlushed(PdfObject pdfObject) {
@@ -1832,7 +1889,6 @@ namespace iText.Kernel.Pdf {
         /// <summary>Flush an object.</summary>
         /// <param name="pdfObject">object to flush.</param>
         /// <param name="canBeInObjStm">indicates whether object can be placed into object stream.</param>
-        /// <exception cref="System.IO.IOException">on error.</exception>
         protected internal virtual void FlushObject(PdfObject pdfObject, bool canBeInObjStm) {
             writer.FlushObject(pdfObject, canBeInObjStm);
         }
@@ -2051,10 +2107,8 @@ namespace iText.Kernel.Pdf {
 
         /// <summary>
         /// Update XMP metadata values from
-        /// <see cref="PdfDocumentInfo"/>
-        /// .
+        /// <see cref="PdfDocumentInfo"/>.
         /// </summary>
-        /// <exception cref="iText.Kernel.XMP.XMPException"/>
         protected internal virtual XMPMeta UpdateDefaultXmpMetadata() {
             XMPMeta xmpMeta = XMPMetaFactory.ParseFromBuffer(GetXmpMetadata(true));
             XmpMetaInfoConverter.AppendDocumentInfoToMetadata(info, xmpMeta);
@@ -2069,8 +2123,7 @@ namespace iText.Kernel.Pdf {
         /// <summary>List all newly added or loaded fonts</summary>
         /// <returns>
         /// List of
-        /// <see cref="iText.Kernel.Font.PdfFont"/>
-        /// .
+        /// <see cref="iText.Kernel.Font.PdfFont"/>.
         /// </returns>
         protected internal virtual ICollection<PdfFont> GetDocumentFonts() {
             return documentFonts.Values;
@@ -2149,6 +2202,16 @@ namespace iText.Kernel.Pdf {
             return CounterManager.GetInstance().GetCounters(typeof(iText.Kernel.Pdf.PdfDocument));
         }
 
+        /// <summary>Returns the factory for creating page instances.</summary>
+        /// <returns>
+        /// implementation of
+        /// <see cref="IPdfPageFactory"/>
+        /// for current document
+        /// </returns>
+        protected internal virtual IPdfPageFactory GetPageFactory() {
+            return pdfPageFactory;
+        }
+
         /// <summary>Gets iText version info.</summary>
         /// <returns>iText version info.</returns>
         internal VersionInfo GetVersionInfo() {
@@ -2169,7 +2232,7 @@ namespace iText.Kernel.Pdf {
             info.GetPdfObject().Put(PdfName.Producer, new PdfString(producer));
         }
 
-        private void TryInitTagStructure(PdfDictionary str) {
+        protected internal virtual void TryInitTagStructure(PdfDictionary str) {
             try {
                 structTreeRoot = new PdfStructTreeRoot(str, this);
                 structParentIndex = GetStructTreeRoot().GetParentTreeNextKey();
@@ -2300,7 +2363,7 @@ namespace iText.Kernel.Pdf {
             PdfOutline parent = outline.GetParent();
             //note there's no need to continue recursion if the current outline parent is root (first condition) or
             // if it is already in the Set of outlines to be copied (second condition)
-            if (parent.GetTitle().Equals("Outlines") || outlinesToCopy.Contains(parent)) {
+            if ("Outlines".Equals(parent.GetTitle()) || outlinesToCopy.Contains(parent)) {
                 return;
             }
             outlinesToCopy.Add(parent);
@@ -2343,7 +2406,6 @@ namespace iText.Kernel.Pdf {
             names.SetModified();
         }
 
-        /// <exception cref="iText.Kernel.XMP.XMPException"/>
         private static bool IsXmpMetaHasProperty(XMPMeta xmpMeta, String schemaNS, String propName) {
             return xmpMeta.GetProperty(schemaNS, propName) != null;
         }

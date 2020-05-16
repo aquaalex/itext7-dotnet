@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -119,6 +119,8 @@ namespace iText.StyledXmlParser.Css.Resolve {
             defaultValues.Put(CommonCssConstants.TEXT_DECORATION, CommonCssConstants.NONE);
             defaultValues.Put(CommonCssConstants.WHITE_SPACE, CommonCssConstants.NORMAL);
             defaultValues.Put(CommonCssConstants.WIDTH, CommonCssConstants.AUTO);
+            defaultValues.Put(CommonCssConstants.ORPHANS, "2");
+            defaultValues.Put(CommonCssConstants.WIDOWS, "2");
         }
 
         // TODO not complete

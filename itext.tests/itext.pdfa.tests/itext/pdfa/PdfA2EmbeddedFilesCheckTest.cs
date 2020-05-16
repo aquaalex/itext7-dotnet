@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -65,8 +65,6 @@ namespace iText.Pdfa {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(PdfAConformanceLogMessageConstant.EMBEDDED_FILE_SHALL_BE_COMPLIANT_WITH_SPEC, Count = 1)]
         public virtual void FileSpecNonConformingTest01() {
@@ -92,8 +90,6 @@ namespace iText.Pdfa {
             CompareResult(outPdf, cmpPdf);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         [LogMessage(PdfAConformanceLogMessageConstant.EMBEDDED_FILE_SHALL_BE_COMPLIANT_WITH_SPEC, Count = 1)]
         public virtual void FileSpecCheckTest02() {
@@ -109,7 +105,7 @@ namespace iText.Pdfa {
             PdfCanvas canvas = new PdfCanvas(page);
             canvas.SaveState().BeginText().MoveText(36, 700).SetFontAndSize(font, 36).ShowText("Hello World!").EndText
                 ().RestoreState();
-            FileStream fis = new FileStream(sourceFolder + "pdfa.pdf", FileMode.Open, FileAccess.Read);
+            FileStream fis = new FileStream(sourceFolder + "pdfs/pdfa.pdf", FileMode.Open, FileAccess.Read);
             MemoryStream os = new MemoryStream();
             byte[] buffer = new byte[1024];
             int length;
@@ -122,7 +118,6 @@ namespace iText.Pdfa {
             CompareResult(outPdf, cmpPdf);
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         [LogMessage(PdfAConformanceLogMessageConstant.EMBEDDED_FILE_SHALL_BE_COMPLIANT_WITH_SPEC, Count = 1)]
         public virtual void FileSpecCheckTest03() {
@@ -145,8 +140,6 @@ namespace iText.Pdfa {
             pdfDocument.Close();
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         private void CompareResult(String outPdf, String cmpPdf) {
             String result = new CompareTool().CompareByContent(outPdf, cmpPdf, destinationFolder, "diff_");
             if (result != null) {

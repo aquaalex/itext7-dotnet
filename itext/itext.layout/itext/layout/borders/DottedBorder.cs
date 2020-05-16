@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -51,8 +51,7 @@ namespace iText.Layout.Borders {
     /// <remarks>
     /// Draws a dotted border around the element it has been set to. Do note that this border draw square dots,
     /// if you want to draw round dots, see
-    /// <see cref="RoundDotsBorder"/>
-    /// .
+    /// <see cref="RoundDotsBorder"/>.
     /// </remarks>
     public class DottedBorder : Border {
         /// <summary>The modifier to be applied on the width to have the initial gap size</summary>
@@ -93,7 +92,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap + width);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap + width);
             if (adjustedGap > width) {
                 adjustedGap -= width;
             }
@@ -116,7 +115,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap);
             if (adjustedGap > width) {
                 adjustedGap -= width;
             }
@@ -137,7 +136,7 @@ namespace iText.Layout.Borders {
             float dx = x2 - x1;
             float dy = y2 - y1;
             double borderLength = Math.Sqrt(dx * dx + dy * dy);
-            float adjustedGap = GetDotsGap(borderLength, initialGap + width);
+            float adjustedGap = base.GetDotsGap(borderLength, initialGap + width);
             if (adjustedGap > width) {
                 adjustedGap -= width;
             }
@@ -145,6 +144,19 @@ namespace iText.Layout.Borders {
             transparentColor.ApplyStrokeTransparency(canvas);
             canvas.SetLineDash(width, adjustedGap, width + adjustedGap / 2).MoveTo(x1, y1).LineTo(x2, y2).Stroke().RestoreState
                 ();
+        }
+
+        /// <summary>Adjusts the size of the gap between dots</summary>
+        /// <param name="distance">
+        /// the
+        /// <see cref="Border">border</see>
+        /// length
+        /// </param>
+        /// <param name="initialGap">the initial size of the gap</param>
+        /// <returns>the adjusted size of the gap</returns>
+        [System.ObsoleteAttribute(@"logic moved to super-class")]
+        protected internal override float GetDotsGap(double distance, float initialGap) {
+            return base.GetDotsGap(distance, initialGap);
         }
     }
 }

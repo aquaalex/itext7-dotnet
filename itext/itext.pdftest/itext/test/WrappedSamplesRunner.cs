@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-    Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -69,7 +69,7 @@ namespace iText.Test {
             IList<TestFixtureData> parametersList = new List<TestFixtureData>();
             foreach (Type type in assembly.GetTypes()) {
                 WrappedSamplesRunner.RunnerParams runnerParams = CheckIfTestAndCreateParams(type, searchConfig);
-                if (runnerParams != null) {
+                if (runnerParams != null && !type.IsNested) {
                     parametersList.Add(new TestFixtureData(runnerParams));
                 }
             }
@@ -77,11 +77,10 @@ namespace iText.Test {
             return parametersList;
         }
 
-        /// <exception cref="System.Exception"/>
         public virtual void RunSamples() {
             Assume.That(sampleClassParams.ignoreMessage == null, sampleClassParams.ignoreMessage);
 
-            sampleClass = sampleClassParams.sampleType;
+            InitClass();
             System.Console.Out.WriteLine("Starting test " + sampleClassParams);
             
             string oldCurrentDir = Directory.GetCurrentDirectory();
@@ -108,11 +107,14 @@ namespace iText.Test {
 
         }
         
+        protected internal virtual void InitClass() {
+            sampleClass = sampleClassParams.sampleType;
+        }
+        
         /// <summary>Compares two PDF files using iText's CompareTool.</summary>
         /// <param name="outPath">The path to the working folder where comparison results and temp files will be created</param>
         /// <param name="dest">The PDF that resulted from the test</param>
         /// <param name="cmp">The reference PDF</param>
-        /// <exception cref="System.Exception">If there is a problem opening the compare files</exception>
         protected internal abstract void ComparePdf(String outPath, String dest, String cmp);
 
         /// <summary>Gets the path to the resulting PDF from the sample class;</summary>
@@ -126,8 +128,8 @@ namespace iText.Test {
                 return null;
             }
             int i = dest.LastIndexOf("/");
-            int j = dest.LastIndexOf("/chapter");
-            return "../../cmpfiles/" + dest.Substring(j, (i + 1) - j) + "cmp_" + dest.Substring(i + 1);
+            int j = dest.IndexOf("/") + 1;
+            return "../../../cmpfiles/" + dest.Substring(j, (i + 1) - j) + "cmp_" + dest.Substring(i + 1);
         }
 
         protected internal virtual String GetOutPath(String dest) {
@@ -171,13 +173,10 @@ namespace iText.Test {
             }
         }
 
-        /// <exception cref="System.MissingMethodException"/>
-        /// <exception cref="System.MemberAccessException"/>
-        /// <exception cref="System.Reflection.TargetInvocationException"/>
         private void RunMain() {
             MethodInfo mainMethod = GetMain(sampleClassParams.sampleType);
             if (mainMethod == null) {
-                throw new ArgumentException("Class marked with WrapToTest annotation must have main method.");
+                throw new ArgumentException("Class must have main method.");
             }
             mainMethod.Invoke(null, new Object[] { null });
         }
@@ -195,35 +194,24 @@ namespace iText.Test {
             if (!IsInSearchPath(classType.FullName, searchConfig)) {
                 return null;
             }
-            if (IsIgnoredClassOrPackage(classType.FullName, searchConfig)) {
+            if (IsIgnoredClassOrPackage(classType, searchConfig)) {
                 return null;
             }
 
             WrappedSamplesRunner.RunnerParams runnerParams = new WrappedSamplesRunner.RunnerParams();
             runnerParams.sampleType = classType;
-            Attribute attribute = classType.GetCustomAttribute(typeof(WrapToTestAttribute));
-            if (attribute == null) {
-                if (searchConfig.IsToMarkTestsWithoutAnnotationAsIgnored() && IsLookLikeTest(classType)) {
-                    runnerParams.ignoreMessage = String.Format("Class {0} seems to be a test but it doesn't have WrapToTest annotation."
-                        , classType.FullName);
-                    return runnerParams;
-                }
-                return null;
-            }
-            WrapToTestAttribute wrapToTestAttribute = (WrapToTestAttribute) attribute;
-            if (!String.IsNullOrEmpty(wrapToTestAttribute.IgnoreWithMessage)) {
-                runnerParams.ignoreMessage = wrapToTestAttribute.IgnoreWithMessage;
-            }
+            
             return runnerParams;
         }
 
-        private static bool IsLookLikeTest(Type c) {
-            return GetStringField(c, "DEST") != null && GetMain(c) != null;
-        }
-
-        private static bool IsIgnoredClassOrPackage(String fullName, RunnerSearchConfig searchConfig) {
+        private static bool IsIgnoredClassOrPackage(Type type, RunnerSearchConfig searchConfig) {
+            String fullName = type.FullName;
             foreach (String ignoredPath in searchConfig.GetIgnoredPaths()) {
-                if (fullName.Contains(ignoredPath)) {
+                String filePath = Path.Combine(TestUtil.GetParentProjectDirectory(type.GetAssembly().Location), 
+                    ignoredPath.Replace(".", "\\"));
+
+                if ((Directory.Exists(filePath) && fullName.Contains(ignoredPath))
+                    || (File.Exists(filePath + ".cs") && fullName.Equals(ignoredPath))) {
                     return true;
                 }
             }

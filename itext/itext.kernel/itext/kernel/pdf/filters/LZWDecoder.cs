@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -186,7 +186,7 @@ namespace iText.Kernel.Pdf.Filters {
             }
         }
 
-        /// <summary>Append <code>newString</code> to the end of <code>oldString</code>.</summary>
+        /// <summary>Append <c>newString</c> to the end of <c>oldString</c>.</summary>
         /// <param name="oldString">string be appended to</param>
         /// <param name="newString">string that is to be appended to oldString</param>
         /// <returns>combined string</returns>

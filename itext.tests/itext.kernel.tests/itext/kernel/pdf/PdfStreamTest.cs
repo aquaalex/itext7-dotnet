@@ -1,6 +1,6 @@
 /*
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: iText Software.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,6 @@ For more information, please contact iText Software Corp. at this
 address: sales@itextpdf.com
 */
 using System;
-using System.Text;
 using iText.Kernel.Pdf.Xobject;
 using iText.Kernel.Utils;
 using iText.Test;
@@ -59,8 +58,6 @@ namespace iText.Kernel.Pdf {
             CreateOrClearDestinationFolder(destinationFolder);
         }
 
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="System.Exception"/>
         [NUnit.Framework.Test]
         public virtual void StreamAppendDataOnJustCopiedWithCompression() {
             String srcFile = sourceFolder + "pageWithContent.pdf";
@@ -71,14 +68,13 @@ namespace iText.Kernel.Pdf {
             srcDocument.CopyPagesTo(1, 1, document);
             srcDocument.Close();
             String newContentString = "BT\n" + "/F1 36 Tf\n" + "50 700 Td\n" + "(new content here!) Tj\n" + "ET";
-            byte[] newContent = newContentString.GetBytes(Encoding.UTF8);
+            byte[] newContent = newContentString.GetBytes(System.Text.Encoding.UTF8);
             document.GetPage(1).GetLastContentStream().SetData(newContent, true);
             document.Close();
             NUnit.Framework.Assert.IsNull(new CompareTool().CompareByContent(destFile, cmpFile, destinationFolder, "diff_"
                 ));
         }
 
-        /// <exception cref="System.IO.IOException"/>
         [NUnit.Framework.Test]
         public virtual void RunLengthEncodingTest01() {
             String srcFile = sourceFolder + "runLengthEncodedImages.pdf";

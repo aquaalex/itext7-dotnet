@@ -1,7 +1,7 @@
 /*
 
 This file is part of the iText (R) project.
-Copyright (c) 1998-2019 iText Group NV
+Copyright (c) 1998-2020 iText Group NV
 Authors: Bruno Lowagie, Paulo Soares, et al.
 
 This program is free software; you can redistribute it and/or modify
@@ -61,10 +61,9 @@ namespace iText.Signatures {
     /// <remarks>
     /// Time Stamp Authority Client interface implementation using Bouncy Castle
     /// org.bouncycastle.tsp package.
-    /// <p>
+    /// <para />
     /// Created by Aiken Sam, 2006-11-15, refactored by Martin Brunecky, 07/15/2007
     /// for ease of subclassing.
-    /// </p>
     /// </remarks>
     public class TSAClientBouncyCastle : ITSAClient {
         /// <summary>The default value for the hash algorithm</summary>
@@ -147,7 +146,7 @@ namespace iText.Signatures {
         }
 
         /// <summary>Gets the TSA request policy that will be used when retrieving timestamp token.</summary>
-        /// <returns>policy id, or <code>null</code> if not set</returns>
+        /// <returns>policy id, or <c>null</c> if not set</returns>
         public virtual String GetTSAReqPolicy() {
             return tsaReqPolicy;
         }
@@ -160,7 +159,6 @@ namespace iText.Signatures {
 
         /// <summary>Gets the MessageDigest to digest the data imprint</summary>
         /// <returns>the digest algorithm name</returns>
-        /// <exception cref="Org.BouncyCastle.Security.GeneralSecurityException"/>
         public virtual IDigest GetMessageDigest() {
             return SignUtils.GetMessageDigest(digestAlgorithm);
         }
@@ -172,8 +170,6 @@ namespace iText.Signatures {
         /// </remarks>
         /// <param name="imprint">data imprint to be time-stamped</param>
         /// <returns>encoded, TSA signed data of the timeStampToken</returns>
-        /// <exception cref="System.IO.IOException"/>
-        /// <exception cref="Org.BouncyCastle.Tsp.TSPException"/>
         public virtual byte[] GetTimeStampToken(byte[] imprint) {
             byte[] respBytes = null;
             // Setup the time stamp request
@@ -221,7 +217,6 @@ namespace iText.Signatures {
 
         /// <summary>Get timestamp token - communications layer</summary>
         /// <returns>- byte[] - TSA response, raw bytes (RFC 3161 encoded)</returns>
-        /// <exception cref="System.IO.IOException"/>
         protected internal virtual byte[] GetTSAResponse(byte[] requestBytes) {
             // Setup the TSA connection
             SignUtils.TsaResponse response = SignUtils.GetTsaResponseForUserRequest(tsaURL, requestBytes, tsaUsername, 
